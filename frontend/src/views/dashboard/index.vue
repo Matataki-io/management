@@ -46,7 +46,7 @@ export default {
     }
   },
   created() {
-    this.dashboard()
+    // this.dashboard()
   },
   methods: {
     dashboard() {

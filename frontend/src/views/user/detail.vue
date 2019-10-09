@@ -54,7 +54,7 @@ export default {
   },
   mounted() {
     const ontId = this.$route.params.ontId
-    this.getDetail(ontId)
+    // this.getDetail(ontId)
   },
   methods: {
     getAuth(flag) {
