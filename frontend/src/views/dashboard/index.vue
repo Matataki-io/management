@@ -1,14 +1,14 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">Welcome to CandyBox Management System!</div>
-    <PanelGroup :d="panelData"/>
+    <div class="dashboard-text">Welcome to Matataki Management System!</div>
+    <!-- <PanelGroup :d="panelData"/>
     <line-chart :chart-data="dayCertLit" title="每日认证数量"/>
     <line-chart :chart-data="dayRegisterList" title="每日注册数量"/>
     <Table :list="dayValidRpAmountList" :headers="dayValidRpAmountListHeaders" title="每日有效红包数量"/>
     <Table :list="daySentTokenAmountList" :headers="daySentTokenAmountListHeaders" title="每日发放糖果量"/>
     <Table :list="allSentTokenAmountList" :headers="allSentTokenAmountListHeaders" title="总共发放糖果量"/>
     <Table :list="userGetAmountGt5000List" :headers="userGetAmountGt5000Headers" title="每天领取数量大于5000的用户"/>
-    <Table :list="userGetTokenGt1List" :headers="userGetTokenGt1ListHeaders" title="每天领取次数大于1次的用户"/>
+    <Table :list="userGetTokenGt1List" :headers="userGetTokenGt1ListHeaders" title="每天领取次数大于1次的用户"/> -->
   </div>
 </template>
 
