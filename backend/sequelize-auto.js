@@ -1,5 +1,5 @@
 const EggSequelizeAuto = require('egg-sequelize-auto')
-const auto = new EggSequelizeAuto('ssp_prod', 'ssp@kyubeydb', '6c651cd2d3bb4900a722e7bfba3f7375', {
+const auto = new EggSequelizeAuto('ssp_test', 'ssp_test@kyubeydb', 'f0e8619dc0e4483da533472f32dadf55', {
     host: 'kyubeydb.mysql.database.azure.com',
     dialect: 'mysql',
     port: '3306',
