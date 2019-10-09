@@ -1,7 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-class UserController extends Controller {
+class PostsController extends Controller {
   // 列表，GET
   async index() {}
   // 详情
@@ -13,4 +13,4 @@ class UserController extends Controller {
   // 删除 DELETE
   async destroy() {}
 }
-module.exports = UserController;
+module.exports = PostsController;
