@@ -31,16 +31,16 @@ module.exports = () => {
   };
   config.login = {
     username: 'admin',
-    password: 'admin'
-  }
+    password: 'admin',
+  };
   config.sequelize = {
     dialect: 'mysql',
     hostname: 'kyubeydb.mysql.database.azure.com', // 47.244.147.219
     host: 'kyubeydb.mysql.database.azure.com',
     port: 3306,
-    database: 'ssp_prod',
-    username: 'ssp@kyubeydb',
-    password: '6c651cd2d3bb4900a722e7bfba3f7375',
+    database: 'ssp_test',
+    username: 'ssp_test@kyubeydb',
+    password: 'f0e8619dc0e4483da533472f32dadf55',
     pool: {
       max: 50, // 连接池最大连接数量
       min: 5, // 连接池最小连接数量
@@ -50,7 +50,7 @@ module.exports = () => {
       multipleStatements: true,
       ssl: {
         rejectUnauthorized: false,
-      }
+      },
     },
   };
 

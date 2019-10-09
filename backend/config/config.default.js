@@ -32,7 +32,7 @@ module.exports = appInfo => {
       path: '',
       port: 7002,
       hostname: '0.0.0.0',
-    }
+    },
   };
   config.cors = {
     origin: '*',
@@ -41,7 +41,7 @@ module.exports = appInfo => {
   };
 
   // add your middleware config here
-  config.middleware = ['formatMessage'];
+  config.middleware = [ 'formatMessage' ];
 
   // add your user config here
   const userConfig = {
