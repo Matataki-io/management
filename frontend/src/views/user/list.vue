@@ -95,7 +95,7 @@ export default {
     }
   },
   created() {
-    this.getList(1)
+    // this.getList(1)
   },
   methods: {
     getAuth(flag) {

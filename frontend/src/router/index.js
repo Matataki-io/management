@@ -37,88 +37,24 @@ export const constantRouterMap = [
     }]
   },
   {
-    path: '/announcement',
+    path: '/account',
     component: Layout,
-    redirect: '/announcement/list',
-    name: 'Announcement',
-    meta: { title: '公告管理', icon: 'form' },
-    children: [{
-      path: 'list',
-      name: 'List',
-      component: () => import('@/views/announcement/list'),
-      meta: { title: '公告列表', icon: 'list' }
-    },
-    {
-      path: 'create',
-      name: 'Create',
-      component: () => import('@/views/announcement/CreateOrUpdate'),
-      meta: { title: '发布公告', icon: 'form' }
-    }, {
-      path: 'detail/:id',
-      name: 'Detail',
-      hidden: true,
-      component: () => import('@/views/announcement/CreateOrUpdate'),
-      meta: { title: '公告详情' }
-    }]
-  },
-  {
-    path: '/projects',
-    component: Layout,
-    redirect: '/projects/list',
-    name: 'Projects',
-    meta: { title: '项目管理', icon: 'example' },
+    redirect: '/account/list',
+    name: 'Account',
+    meta: { title: '账号管理', icon: 'nested' },
     children: [
       {
         path: 'list',
-        name: 'List',
-        component: () => import('@/views/projects/list'),
-        meta: { title: '项目列表', icon: 'tree' }
-      },
-      {
-        path: 'create',
-        name: 'Create',
-        component: () => import('@/views/projects/create'),
-        meta: { title: '创建项目', icon: 'form' }
+        name: 'AccountList',
+        component: () => import('@/views/account/list'),
+        meta: { title: '账号管理', icon: 'example' }
       },
       {
         path: 'detail/:id',
-        name: 'Detail',
+        name: 'AccountDetail',
         hidden: true,
-        component: () => import('@/views/projects/detail'),
-        meta: { title: '项目详情' }
-      },
-      {
-        path: 'redis',
-        name: 'Redis',
-        component: () => import('@/views/projects/redis'),
-        meta: { title: '设置库存', icon: 'form' }
-      }
-    ]
-  },
-  {
-    path: '/redpacket',
-    component: Layout,
-    redirect: '/redpacket/list',
-    name: 'RedPacket',
-    meta: { title: '红包管理', icon: 'nested' },
-    children: [
-      {
-        path: 'setting',
-        name: 'Setting',
-        component: () => import('@/views/redpacket/setting'),
-        meta: { title: '红包配置', icon: 'form' }
-      },
-      {
-        path: 'list',
-        name: 'RpList',
-        component: () => import('@/views/redpacket/list'),
-        meta: { title: '红包日志', icon: 'tree' }
-      },
-      {
-        path: 'send',
-        name: 'SendRp',
-        component: () => import('@/views/redpacket/send'),
-        meta: { title: '发红包', icon: 'example' }
+        component: () => import('@/views/account/list'),
+        meta: { title: '账号详情', icon: 'tree' }
       }
     ]
   },
@@ -133,10 +69,10 @@ export const constantRouterMap = [
         path: 'list',
         name: 'UserList',
         component: () => import('@/views/user/list'),
-        meta: { title: '用户列表', icon: 'user' }
+        meta: { title: '用户管理', icon: 'user' }
       },
       {
-        path: 'detail/:ontId',
+        path: 'detail/:id',
         name: 'UserDetail',
         hidden: true,
         component: () => import('@/views/user/detail'),
@@ -145,17 +81,24 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/withdraw',
+    path: '/p',
     component: Layout,
-    redirect: '/withdraw/record',
-    name: 'User',
-    meta: { title: '提币记录', icon: 'nested' },
+    redirect: '/p/list',
+    name: 'Post',
+    meta: { title: '文章管理', icon: 'nested' },
     children: [
       {
-        path: 'record',
-        name: 'WithdrawRecord',
-        component: () => import('@/views/withdraw/list'),
-        meta: { title: '提币记录', icon: 'nested' }
+        path: 'list',
+        name: 'PostList',
+        component: () => import('@/views/post/list'),
+        meta: { title: '文章管理', icon: 'nested' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'PostDetail',
+        hidden: true,
+        component: () => import('@/views/post/list'),
+        meta: { title: '文章详情', icon: 'nested' }
       }
     ]
   },
