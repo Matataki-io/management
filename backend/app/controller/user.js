@@ -31,7 +31,31 @@ class UserController extends Controller {
   // 创建，POST
   async create() {}
   // 更新 PUT
-  async update() {}
+  async update() {
+    const { ctx } = this;
+    const { id } = ctx.params;
+    const { isSeed = null, isMint = null, isExchange = null } = ctx.request.body;
+    let isSeedResult = null;
+    let isMintResult = null;
+    let isExchangeResult = null;
+    if (isSeed !== null) {
+      isSeedResult = await ctx.service.user.setSeedPermission(id, isSeed);
+    }
+    if (isMint !== null) {
+      isMintResult = await ctx.service.user.setMintPermission(id, isMint);
+    }
+    if (isExchange !== null) {
+      isExchangeResult = await ctx.service.user.setExchangePermission(id, isExchange);
+    }
+    ctx.body = {
+      ...ctx.msg.success,
+      data: {
+        isSeedResult,
+        isMintResult,
+        isExchangeResult,
+      },
+    };
+  }
   // 删除 DELETE
   async destroy() {}
 }
