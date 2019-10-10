@@ -73,7 +73,8 @@ module.exports = {
 
   // 用户权限控制，二进制
   userStatus: {
-    hasMineTokenPermission: 2, // 10
-    isSeedUser: 1, // 01
+    isSeedUser: 1, // 001
+    hasMineTokenPermission: 2, // 010
+    hasExchangePermission: 4, // 100
   },
 };
