@@ -4,6 +4,22 @@ const Service = require('egg').Service;
 const consts = require('./consts');
 
 class UserService extends Service {
+  async list(offset, limit, searchParams = null) {
+    const { ctx } = this;
+    const result = {};
+    if (ctx.helper.isNull(searchParams)) {
+      result.count = await ctx.model.Users.count();
+      result.rows = await ctx.model.Users.findAll({ offset, limit });
+    } else {
+      result.count = await ctx.model.Users.count({ where: searchParams });
+      result.rows = await ctx.model.Users.findAll({
+        where: searchParams,
+        offset,
+        limit,
+      });
+    }
+    return result;
+  }
   // 设置种子用户 010
   async setSeedPermission(id, permission = true) {
     const { ctx } = this;

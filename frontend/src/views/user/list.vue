@@ -1,13 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :inline="true">
-      <el-form-item label="手机号">
-        <el-input v-model="search.Mobile" placeholder="请输入手机号" clearable size="small"/>
-      </el-form-item>
-      <el-form-item label="用户状态">
-        <el-select v-model="search.AuthFlag" placeholder="请选择用户状态" clearable size="small">
-          <el-option v-for="item in AuthOptions" :key="item.value" :label="item.label" :value="item.value"/>
-        </el-select>
+      <el-form-item label="id">
+        <el-input v-model="search.id" placeholder="请输入用户ID" clearable size="small"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchList">查询</el-button>
@@ -20,33 +15,42 @@
       border
       fit
       highlight-current-row>
-      <el-table-column label="ONTID" prop="ONTID" align="center" fixed/>
-      <el-table-column label="认证状态" width="110" align="center">
+      <el-table-column label="id" prop="id" align="center" fixed/>
+      <el-table-column label="用户名" prop="username" align="center" fixed/>
+      <el-table-column label="邮箱" prop="email" align="center" fixed/>
+      <el-table-column label="昵称" prop="nickname" align="center"/>
+      <el-table-column label="头像" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag :type="getAuth(scope.row.AuthFlag).type">{{ getAuth(scope.row.AuthFlag).text }}</el-tag>
+          <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100px">
         </template>
       </el-table-column>
-      <el-table-column label="最后登录IP" width="110" align="center" prop="LastLoginIP" />
-      <el-table-column label="最后登录时间" width="110" align="center" prop="LastLoginDate" />
-      <el-table-column label="创建时间" width="110" align="center" prop="CreateDate" />
-      <el-table-column label="领取次数" width="110" align="center" prop="AP" />
-      <el-table-column label="最大领取次数" width="110" align="center" prop="MaxAP" />
-      <el-table-column label="领取次数回复速度(秒/点)" width="110" align="center" prop="APRecoverSpeed" />
-      <el-table-column label="体力上次更新时间" width="110" align="center" prop="APUpdateDate" />
-      <el-table-column label="手机号" width="110" align="center">
+      <el-table-column label="自我介绍" width="110" align="center" prop="introduction" />
+      <el-table-column label="来源平台" width="110" align="center" prop="platform" />
+      <el-table-column label="注册时间" width="110" align="center" prop="create_time" />
+      <el-table-column label="最后登录时间" width="110" align="center" prop="last_login_time" />
+      <el-table-column label="注册IP" width="110" align="center" prop="reg_ip" />
+      <el-table-column label="最后登录IP" width="110" align="center" prop="last_login_ip" />
+      <el-table-column label="种子用户" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.NationalCode + ' ' + scope.row.Mobile }}</span>
+          <el-switch @change="handleChange($event, 'isSeed')" :value="(scope.row.status & userStatus.isSeed) === userStatus.isSeed"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="邀请者ONTID" width="110" align="center" prop="InvitedONTID" />
-      <el-table-column label="我已邀请用户数量" width="110" align="center" prop="InvitedCount" />
-      <el-table-column label="我的红包数量" width="110" align="center" prop="RedpacketCount" />
-      <el-table-column label="我已开的红包数量" width="110" align="center" prop="RedpacketOpenCount" />
+      <el-table-column label="发币用户" width="110" align="center">
+        <template slot-scope="scope">
+          <el-switch @change="handleChange($event, 'isMint')" :value="(scope.row.status & userStatus.isMint) === userStatus.isMint"></el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column label="交易权限" width="110" align="center">
+        <template slot-scope="scope">
+          <el-switch @change="handleChange($event, 'isExchange')" :value="(scope.row.status & userStatus.isExchange) === userStatus.isExchange"></el-switch>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作" width="100" fixed="right">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetail(scope.row.ONTID)">详情</el-button>
+          <el-button type="text" size="small" @click="toDetail(scope.row.id)">详情</el-button>
         </template>
       </el-table-column>
+
     </el-table>
     <el-pagination
       :total="count"
@@ -58,6 +62,7 @@
 
 <script>
 import { isNull } from '@/utils/validate'
+import { userStatus } from '@/utils/consts'
 export default {
   filters: {
     statusFilter(status) {
@@ -77,33 +82,20 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       search: {
-        Mobile: '',
-        AuthFlag: ''
+        id: ''
       },
-      AuthOptions: [
-        {
-          value: '0',
-          label: '认证中'
-        }, {
-          value: '1',
-          label: '认证失败'
-        }, {
-          value: '2',
-          label: '认证成功'
-        }
-      ]
+      userStatus: userStatus
     }
   },
   created() {
-    // this.getList(1)
+    this.getList(1)
   },
   methods: {
-    getAuth(flag) {
-      flag = parseInt(flag)
-      if (flag === 0) return { text: '认证中', type: 'warning' }
-      if (flag === 1) return { text: '认证失败', type: 'danger' }
-      if (flag === 2) return { text: '认证成功', type: 'success' }
-      return { text: '未认证', type: 'info' }
+    handleChange(value, type) {
+      console.log(value, type)
+    },
+    getImg(hash) {
+      return `${this.apis.imgHost}${hash}`
     },
     fromUnixTimestamp(v) {
       return v * 1000

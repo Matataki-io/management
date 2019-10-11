@@ -12,6 +12,8 @@ module.exports = app => {
   router.resources('user', '/api/user', passport, controller.user);
   // 文章管理
   router.resources('posts', '/api/post', passport, controller.posts);
+  // ipfs
+  router.get('/api/ipfs/:hash', passport, controller.posts.ipfs);
   // 登录test
   router.post('/api/login', controller.login.login);
 };

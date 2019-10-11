@@ -97,7 +97,7 @@ export const constantRouterMap = [
         path: 'detail/:id',
         name: 'PostDetail',
         hidden: true,
-        component: () => import('@/views/post/list'),
+        component: () => import('@/views/post/detail'),
         meta: { title: '文章详情', icon: 'nested' }
       }
     ]

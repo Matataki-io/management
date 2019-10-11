@@ -62,5 +62,12 @@ module.exports = () => {
       db: 0,
     },
   };
+  config.matatakiServer = 'https://apitest.smartsignature.io';
+  config.ipfs_service = {
+    site: 'http://47.52.2.146:5001',
+    host: '47.52.2.146',
+    port: 5001,
+    protocol: 'http',
+  };
   return config;
 };

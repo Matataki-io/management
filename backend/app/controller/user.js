@@ -7,12 +7,10 @@ class UserController extends Controller {
   // 列表，GET
   async index() {
     const { ctx } = this;
-    let { pagesize = 10, page = 1 } = ctx.query;
-    pagesize = parseInt(pagesize);
-    page = parseInt(page);
-    const result = {};
-    result.rows = await ctx.model.Users.findAll({ offset: (page - 1) * pagesize, limit: pagesize });
-    result.count = await ctx.model.Users.count();
+    let { pageSize = 10, pageIndex = 1, ...searchParams } = ctx.query;
+    pageSize = parseInt(pageSize);
+    pageIndex = parseInt(pageIndex);
+    const result = await ctx.service.user.list((pageIndex - 1) * pageSize, pageSize, searchParams);
     ctx.body = {
       ...ctx.msg.success,
       data: result,
