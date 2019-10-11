@@ -5,12 +5,10 @@ class PostsController extends Controller {
   // 列表，GET
   async index() {
     const { ctx } = this;
-    let { pagesize = 10, page = 1 } = ctx.query;
-    pagesize = parseInt(pagesize);
-    page = parseInt(page);
-    const result = {};
-    result.rows = await ctx.model.Posts.findAll({ offset: (page - 1) * pagesize, limit: pagesize });
-    result.count = await ctx.model.Posts.count();
+    let { pageSize = 10, pageIndex = 1, ...searchParams } = ctx.query;
+    pageSize = parseInt(pageSize);
+    pageIndex = parseInt(pageIndex);
+    const result = await ctx.service.posts.list((pageIndex - 1) * pageSize, pageSize, searchParams);
     ctx.body = {
       ...ctx.msg.success,
       data: result,
@@ -67,6 +65,21 @@ class PostsController extends Controller {
       ...ctx.msg.success,
       data: result,
     };
+  }
+  async ipfs() {
+    const { ctx } = this;
+    const { hash } = ctx.params;
+    // 从ipfs获取内容
+    const catchRequest = await this.service.ipfs.cat(hash);
+
+    if (catchRequest) {
+      ctx.body = ctx.msg.success;
+      // 字符串转为json对象
+      ctx.body.data = JSON.parse(catchRequest.toString());
+      return;
+    }
+
+    ctx.body = ctx.msg.ipfsCatchFailed;
   }
 }
 module.exports = PostsController;

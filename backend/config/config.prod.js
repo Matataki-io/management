@@ -62,5 +62,6 @@ module.exports = () => {
       db: 0,
     },
   };
+  config.matatakiServer = 'https://api.smartsignature.io';
   return config;
 };
