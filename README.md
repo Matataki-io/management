@@ -1,7 +1,14 @@
 ## 部署文档
 
-### 前端部署
+前端配置文件目录 
+frontend/config/dev.env.js
+frontend/config/prod.env.js
 
+后端配置文件目录
+backend/config/config.local.js
+backend/config/config.prod.js
+
+### 前端部署
 ```bash
 # 克隆项目
 git clone https://git.coding.net/zg919506719/candybox_manage.git
