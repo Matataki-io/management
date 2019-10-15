@@ -18,11 +18,11 @@
       <el-table-column label="id" prop="id" align="center" fixed/>
       <el-table-column label="文章hash" prop="hash" align="center" fixed/>
       <el-table-column label="文章标题" prop="title" align="center" fixed/>
-      <el-table-column label="作者" prop="author" align="center" fixed/>
-      <el-table-column label="作者用户名" prop="username" align="center" fixed/>
+      <el-table-column label="作者" prop="author" align="center"/>
+      <el-table-column label="作者用户名" prop="username" align="center"/>
       <!-- <el-table-column label="摘要" prop="short_content" align="center" fixed/> -->
-      <el-table-column label="状态" prop="status" align="center" fixed/>
-      <el-table-column label="发布时间" prop="create_time" align="center" fixed/>
+      <el-table-column label="状态" prop="status" align="center"/>
+      <el-table-column label="发布时间" prop="create_time" align="center"/>
       <el-table-column label="封面" align="center">
         <template slot-scope="scope">
           <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">

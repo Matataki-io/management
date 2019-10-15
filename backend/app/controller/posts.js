@@ -18,7 +18,7 @@ class PostsController extends Controller {
   async show() {
     const { ctx } = this;
     const { id } = ctx.params;
-    const result = await ctx.model.Posts.find({ where: { id } });
+    const result = await ctx.service.posts.show(id);
     ctx.body = {
       ...ctx.msg.success,
       data: result,
@@ -44,7 +44,7 @@ class PostsController extends Controller {
       result2 = await ctx.model.PostReadCount.update({ down }, { where: { post_id: parseInt(id) } });
     }
     if (status) {
-      result3 = await ctx.model.PostReadCount.update({ status }, { where: { post_id: parseInt(id) } });
+      result3 = await ctx.model.Posts.update({ status }, { where: { id: parseInt(id) } });
     }
     ctx.body = {
       ...ctx.msg.success,
