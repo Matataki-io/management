@@ -16,7 +16,10 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const env = require('../config/prod.env')
+console.log(process.env.NODE_ENV)
+const prodEnv = require('../config/prod.env')
+const devEnv = require('../config/dev.env')
+const env = process.env.NODE_ENV === 'production' ? prodEnv : devEnv
 
 // For NamedChunksPlugin
 const seen = new Set()
