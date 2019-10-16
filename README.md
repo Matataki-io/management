@@ -22,7 +22,10 @@ npm install
 # 修改config 在config/prod.env.js 文件的host
 
 # 打包
-npm run build
+## 生产环境
+npm run build-prod
+## 测试环境
+npm run build-dev
 
 # 生成dist文件夹，直接部署到服务器上
 
