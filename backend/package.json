@@ -32,7 +32,7 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-candybox-management-new",
+    "start": "egg-scripts start --title=egg-server-candybox-management-new",
     "stop": "egg-scripts stop --title=egg-server-candybox-management-new",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
