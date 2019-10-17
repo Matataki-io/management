@@ -42,8 +42,8 @@ module.exports = () => {
     username: 'ssp_test@kyubeydb',
     password: 'f0e8619dc0e4483da533472f32dadf55',
     pool: {
-      max: 50, // 连接池最大连接数量
-      min: 5, // 连接池最小连接数量
+      max: 3, // 连接池最大连接数量
+      min: 1, // 连接池最小连接数量
       idle: 10000, // 如果一个线程超过10秒钟没有被使用过就释放该线程
     },
     dialectOptions: {
