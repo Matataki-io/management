@@ -6,6 +6,8 @@
 module.exports = app => {
   const passport = app.middleware.passport();
   const { router, controller } = app;
+
+  router.get('/', controller.home.index);
   // 账号管理
   router.resources('account', '/api/account', passport, controller.account);
   // 用户管理
