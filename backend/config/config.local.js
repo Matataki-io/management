@@ -47,6 +47,7 @@ module.exports = () => {
       idle: 10000, // 如果一个线程超过10秒钟没有被使用过就释放该线程
     },
     dialectOptions: {
+      charset: 'utf8mb4',
       multipleStatements: true,
       ssl: {
         rejectUnauthorized: false,
