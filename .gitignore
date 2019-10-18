@@ -13,3 +13,4 @@ package-lock.json
 *.ntvs*
 *.njsproj
 *.sln
+backend/config/config.prod.js
