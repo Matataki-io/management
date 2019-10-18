@@ -1,5 +1,5 @@
 'use strict'
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_API: '"http://api.manage.smartsignature.io:7665"',
+  BASE_API: '"http://api.manage.matataki.io:7665"',
 }
