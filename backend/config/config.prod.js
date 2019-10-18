@@ -31,7 +31,7 @@ module.exports = () => {
   };
   config.login = {
     username: 'admin',
-    password: 'admin',
+    password: 'fS2VfBnvz6EAwqdR',
   };
   config.sequelize = {
     dialect: 'mysql',
