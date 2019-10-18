@@ -15,11 +15,6 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1552895551811_5889';
 
-  // 请修改jwt密钥和失效时间
-  config.login = {
-    secretKey: 'HO88B58fgfsv1UafNOoYuyKZ9cjjDKOa', // jwt密钥
-    expires: 60 * 60 * 24, // 超时时间24小时
-  };
   config.security = {
     csrf: {
       enable: false,

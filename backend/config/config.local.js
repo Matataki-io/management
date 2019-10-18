@@ -29,7 +29,11 @@ module.exports = () => {
       },
     },
   };
+
+  // 请修改jwt密钥和失效时间
   config.login = {
+    secretKey: 'HO88B58fgfsv1UafNOoYuyKZ9cjjDKOa', // jwt密钥
+    expires: 60 * 60 * 24, // 超时时间24小时
     username: 'admin',
     password: 'QWzAed1MpvQ78FSK',
   };
