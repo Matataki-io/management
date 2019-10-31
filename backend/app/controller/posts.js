@@ -25,7 +25,7 @@ class PostsController extends Controller {
     };
   }
   // 创建，POST
-  async create() {}
+  async create() { }
   // 更新 PUT
   // 修改时间排序，修改热门排序
   async update() {
@@ -33,22 +33,27 @@ class PostsController extends Controller {
     // 文章id
     const { id } = ctx.params;
     // 时间排序和热门排序
-    const { time_down, down, status } = ctx.request.body;
+    const { is_recommend, time_down, down, status } = ctx.request.body;
+    let result0 = null;
     let result1 = null;
     let result2 = null;
     let result3 = null;
-    if (time_down) {
+    if (is_recommend !== undefined) {
+      result0 = await ctx.model.Posts.update({ is_recommend }, { where: { id: parseInt(id) } });
+    }
+    if (time_down !== undefined) {
       result1 = await ctx.model.Posts.update({ time_down }, { where: { id: parseInt(id) } });
     }
-    if (down) {
+    if (down !== undefined) {
       result2 = await ctx.model.PostReadCount.update({ down }, { where: { post_id: parseInt(id) } });
     }
-    if (status) {
+    if (status !== undefined) {
       result3 = await ctx.model.Posts.update({ status }, { where: { id: parseInt(id) } });
     }
     ctx.body = {
       ...ctx.msg.success,
       data: {
+        result0,
         result1,
         result2,
         result3,
