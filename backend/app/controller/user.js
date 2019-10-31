@@ -27,15 +27,16 @@ class UserController extends Controller {
     };
   }
   // 创建，POST
-  async create() {}
+  async create() { }
   // 更新 PUT
   async update() {
     const { ctx } = this;
     const { id } = ctx.params;
-    const { isSeed = null, isMint = null, isExchange = null } = ctx.request.body;
+    const { isSeed = null, isMint = null, isExchange = null, isRecommend = null } = ctx.request.body;
     let isSeedResult = null;
     let isMintResult = null;
     let isExchangeResult = null;
+    let isRecommendResult = null;
     if (isSeed !== null) {
       isSeedResult = await ctx.service.user.setSeedPermission(id, isSeed);
     }
@@ -45,16 +46,22 @@ class UserController extends Controller {
     if (isExchange !== null) {
       isExchangeResult = await ctx.service.user.setExchangePermission(id, isExchange);
     }
+
+    if (isRecommend !== null) {
+      isRecommendResult = await ctx.service.user.update(id, { is_recommend: isRecommend ? 1 : 0 });
+    }
+
     ctx.body = {
       ...ctx.msg.success,
       data: {
         isSeedResult,
         isMintResult,
         isExchangeResult,
+        isRecommendResult,
       },
     };
   }
   // 删除 DELETE
-  async destroy() {}
+  async destroy() { }
 }
 module.exports = UserController;
