@@ -12,6 +12,9 @@ module.exports = app => {
   router.resources('account', '/api/account', passport, controller.account);
   // 用户管理
   router.resources('user', '/api/user', passport, controller.user);
+  // 信息推送
+  router.post('/api/notification/telegram/md', passport, controller.telegrambot.sendMessageMarkdown);
+  router.post('/api/notification/telegram/html', passport, controller.telegrambot.sendMessageHtml);
   // 文章管理
   router.resources('posts', '/api/post', passport, controller.posts);
   // ipfs
