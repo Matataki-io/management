@@ -11,10 +11,10 @@
         <el-input v-model="search.nickname" placeholder="请输入昵称" clearable size="small" />
       </el-form-item>
       <el-form-item label="只看推荐">
-        <el-switch v-model="search.is_recommend" @change="getList(1)"></el-switch>
+        <el-switch v-model="search.is_recommend" @change="getList(1)"/>
       </el-form-item>
       <el-form-item label="有权限发币">
-        <el-switch v-model="search.isMint" @change="getList(1)"></el-switch>
+        <el-switch v-model="search.isMint" @change="getList(1)"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchList">查询</el-button>
@@ -34,7 +34,7 @@
       <el-table-column label="昵称" prop="nickname" align="center" />
       <el-table-column label="头像" width="110" align="center">
         <template slot-scope="scope">
-          <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100px" />
+          <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100px" >
         </template>
       </el-table-column>
       <el-table-column label="自我介绍" width="110" align="center" prop="introduction" />
@@ -46,25 +46,25 @@
       <el-table-column label="种子用户" width="110" align="center">
         <template slot-scope="scope">
           <el-switch
-            @change="handleChange($event, 'isSeed')"
             :value="(scope.row.status & userStatus.isSeed) === userStatus.isSeed"
-          ></el-switch>
+            @change="handleChange($event, 'isSeed')"
+          />
         </template>
       </el-table-column>
       <el-table-column label="发币用户" width="110" align="center">
         <template slot-scope="scope">
           <el-switch
-            @change="handleChange($event, 'isMint')"
             :value="(scope.row.status & userStatus.isMint) === userStatus.isMint"
-          ></el-switch>
+            @change="handleChange($event, 'isMint')"
+          />
         </template>
       </el-table-column>
       <el-table-column label="交易权限" width="110" align="center">
         <template slot-scope="scope">
           <el-switch
-            @change="handleChange($event, 'isExchange')"
             :value="(scope.row.status & userStatus.isExchange) === userStatus.isExchange"
-          ></el-switch>
+            @change="handleChange($event, 'isExchange')"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="100" fixed="right">
@@ -83,17 +83,17 @@
 </template>
 
 <script>
-import { isNull } from "@/utils/validate";
-import { userStatus } from "@/utils/consts";
+import { isNull } from '@/utils/validate'
+import { userStatus } from '@/utils/consts'
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     }
   },
   data() {
@@ -104,57 +104,57 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       search: {
-        id: "",
-        username: "",
-        nickname: "",
+        id: '',
+        username: '',
+        nickname: '',
         is_recommend: false,
         isMint: false
       },
       userStatus: userStatus
-    };
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
     handleChange(value, type) {
-      console.log(value, type);
+      console.log(value, type)
     },
     getImg(hash) {
-      return `${this.apis.imgHost}${hash}`;
+      return `${this.apis.imgHost}${hash}`
     },
     fromUnixTimestamp(v) {
-      return v * 1000;
+      return v * 1000
     },
     toUnixTimestamp(v) {
-      return Math.round(v / 1000);
+      return Math.round(v / 1000)
     },
     searchList() {
-      this.getList(1);
+      this.getList(1)
     },
     handleCurrentChange(v) {
-      this.getList(v);
+      this.getList(v)
     },
     toDetail(id) {
       this.$router.push({
         path: `/user/detail/${id}`
-      });
+      })
     },
     getList(pageIndex) {
-      this.listLoading = true;
-      const search = {};
+      this.listLoading = true
+      const search = {}
       for (const item in this.search) {
         if (!isNull(this.search[item])) {
-          if (["is_recommend", "isMint"].indexOf(item) >= 0) {
-            search[item] = this.search[item] ? "1" : "";
+          if (['is_recommend', 'isMint'].indexOf(item) >= 0) {
+            search[item] = this.search[item] ? '1' : ''
           } else {
-            search[item] = this.search[item];
+            search[item] = this.search[item]
           }
         }
       }
       this.request({
         url: this.apis.user,
-        method: "get",
+        method: 'get',
         noLoading: true,
         params: {
           pageSize: this.pageSize,
@@ -163,21 +163,21 @@ export default {
         }
       })
         .then(res => {
-          this.listLoading = false;
-          this.list = res.data.rows;
-          this.count = res.data.count;
+          this.listLoading = false
+          this.list = res.data.rows
+          this.count = res.data.count
         })
         .catch(error => {
           if (error.response.status === 401) {
-            console.log("登录超时");
-            this.$store.dispatch("FedLogOut").then(() => {
-              location.reload(); // 为了重新实例化vue-router对象 避免bug
-            });
+            console.log('登录超时')
+            this.$store.dispatch('FedLogOut').then(() => {
+              location.reload() // 为了重新实例化vue-router对象 避免bug
+            })
           }
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>

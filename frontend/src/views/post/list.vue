@@ -11,7 +11,7 @@
         <el-input v-model="search.author" placeholder="请输入作者Id/昵称/账号" clearable size="small" />
       </el-form-item>
       <el-form-item label="只看推荐">
-        <el-switch v-model="search.is_recommend" @change="getList(1)"></el-switch>
+        <el-switch v-model="search.is_recommend" @change="getList(1)"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchList">查询</el-button>
@@ -35,7 +35,7 @@
       <el-table-column label="发布时间" prop="create_time" align="center" />
       <el-table-column label="封面" align="center">
         <template slot-scope="scope">
-          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px" />
+          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px" >
         </template>
       </el-table-column>
       <el-table-column label="是否原创" prop="is_original" align="center" />
@@ -58,16 +58,16 @@
 </template>
 
 <script>
-import { isNull } from "@/utils/validate";
+import { isNull } from '@/utils/validate'
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     }
   },
   // watch: {
@@ -86,53 +86,53 @@ export default {
       pageSize: 10,
       pageIndex: 1,
       search: {
-        id: "",
-        title: "",
-        author: "",
+        id: '',
+        title: '',
+        author: '',
         is_recommend: false
       }
-    };
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
     getImg(hash) {
-      return `${this.apis.imgHost}${hash}`;
+      return `${this.apis.imgHost}${hash}`
     },
     fromUnixTimestamp(v) {
-      return v * 1000;
+      return v * 1000
     },
     toUnixTimestamp(v) {
-      return Math.round(v / 1000);
+      return Math.round(v / 1000)
     },
     searchList() {
-      this.getList(1);
+      this.getList(1)
     },
     handleCurrentChange(v) {
-      this.getList(v);
+      this.getList(v)
     },
     toDetail(id) {
       this.$router.push({
         path: `/p/detail/${id}`
-      });
+      })
     },
     getList(pageIndex) {
-      this.listLoading = true;
-      const search = {};
-      //debugger;
+      this.listLoading = true
+      const search = {}
+      // debugger;
       for (const item in this.search) {
         if (!isNull(this.search[item])) {
-          if (item === "is_recommend") {
-            search[item] = this.search[item] ? "1" : "";
+          if (item === 'is_recommend') {
+            search[item] = this.search[item] ? '1' : ''
           } else {
-            search[item] = this.search[item];
+            search[item] = this.search[item]
           }
         }
       }
       this.request({
         url: this.apis.posts,
-        method: "get",
+        method: 'get',
         noLoading: true,
         params: {
           pageSize: this.pageSize,
@@ -141,21 +141,21 @@ export default {
         }
       })
         .then(res => {
-          this.listLoading = false;
-          this.list = res.data.rows;
-          this.count = res.data.count;
+          this.listLoading = false
+          this.list = res.data.rows
+          this.count = res.data.count
         })
         .catch(error => {
           if (error.response.status === 401) {
-            console.log("登录超时");
-            this.$store.dispatch("FedLogOut").then(() => {
-              location.reload(); // 为了重新实例化vue-router对象 避免bug
-            });
+            console.log('登录超时')
+            this.$store.dispatch('FedLogOut').then(() => {
+              location.reload() // 为了重新实例化vue-router对象 避免bug
+            })
           }
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>

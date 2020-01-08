@@ -12,6 +12,12 @@ module.exports = app => {
   router.resources('account', '/api/account', passport, controller.account);
   // 用户管理
   router.resources('user', '/api/user', passport, controller.user);
+  // 信息推送
+  router.post('/api/message/telegram/md', passport, controller.telegrambot.sendMessageMarkdown);
+  router.post('/api/message/telegram/html', passport, controller.telegrambot.sendMessageHtml);
+  router.post('/api/boardcast/telegram/md', passport, controller.telegrambot.boardcastMessageMarkdown);
+  router.post('/api/boardcast/telegram/html', passport, controller.telegrambot.boardcastMessageHtml);
+  router.get('/api/getAllTelegramBindedUser', passport, controller.telegrambot.getAllTelegramBindedUser);
   // 文章管理
   router.resources('posts', '/api/post', passport, controller.posts);
   // ipfs

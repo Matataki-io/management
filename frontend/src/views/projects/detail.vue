@@ -5,7 +5,7 @@
         <BaseInfo :project-obj="projectObj"/>
       </el-collapse-item>
       <el-collapse-item title="多语言设置" name="2">
-        <MultiLang :langObj="langObj"/>
+        <MultiLang :lang-obj="langObj"/>
       </el-collapse-item>
       <el-collapse-item title="社交媒体" name="3">
         <SocialMedia :social-media="socialMedia"/>
@@ -50,7 +50,7 @@ export default {
       langObj: {
         zh: {},
         en: {},
-        ko: {},
+        ko: {}
       },
       activeNames: ['1', '2', '3'],
       projectId: null
@@ -80,7 +80,7 @@ export default {
         projectObj.EndDate = this.fromUnixTimestamp(projectObj.EndDate)
         projectObj.WithdrawTime = this.fromUnixTimestamp(projectObj.WithdrawTime)
         this.projectObj = projectObj
-        for (let item of res.data.projectMultiLang) {
+        for (const item of res.data.projectMultiLang) {
           if (item.Language === 'zh-Hans') {
             this.langObj.zh = item
           }

@@ -20,11 +20,11 @@
       border
       fit
       highlight-current-row>
-      <el-table-column label="项目ID" prop="ProjectId" width="100"  align="center" fixed/>
+      <el-table-column label="项目ID" prop="ProjectId" width="100" align="center" fixed/>
       <el-table-column label="提现地址" align="center" prop="Address" />
       <el-table-column label="提交时间" width="110" align="center">
         <template slot-scope="scope">
-          {{formatTimestamp(scope.row.CreateDate)}}
+          {{ formatTimestamp(scope.row.CreateDate) }}
         </template>
       </el-table-column>
       <el-table-column label="提现数量" align="center" prop="Amount" />
@@ -80,9 +80,6 @@ export default {
       ]
     }
   },
-  created() {
-    this.getList(1)
-  },
   computed: {
     downloadLink() {
       if (!isNull(this.search.ProjectId)) {
@@ -90,6 +87,9 @@ export default {
       }
       return process.env.BASE_API + this.apis.exportWithdraw
     }
+  },
+  created() {
+    this.getList(1)
   },
   methods: {
     exportList() {
@@ -111,7 +111,7 @@ export default {
       })
     },
     formatTimestamp(time) {
-      return this.utils.formatTimestamp(time);
+      return this.utils.formatTimestamp(time)
     },
     getAuth(flag) {
       flag = parseInt(flag)
