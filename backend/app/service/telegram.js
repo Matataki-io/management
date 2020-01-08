@@ -14,7 +14,6 @@ class TelegramBotService extends Service {
   async _sendMessage({
     chat_id, text, parse_mode = 'MarkdownV2', disable_notification = false,
     disable_web_page_preview = false, reply_to_message_id, reply_markup }) {
-
     try {
       const { data } = await axios.post(this.TELEGRAM_API_Endpoint + '/sendMessage', {
         chat_id, text, parse_mode, disable_notification,
@@ -25,6 +24,22 @@ class TelegramBotService extends Service {
       this.logger.error('sendMessage error: ', error);
       if (error.data) return error.data;
       return { ok: false, result: error };
+    }
+  }
+
+  async getAllTelegramBindedUser() {
+    const sql = `
+    select * from users 
+    join user_accounts as ua 
+    where ua.uid = users.id and ua.platform = :platform`;
+    try {
+      const [ result ] = await this.ctx.model.query(sql, {
+        raw: true,
+        replacements: { platform: 'telegram' },
+      });
+      return result;
+    } catch (error) {
+      throw error;
     }
   }
 }
