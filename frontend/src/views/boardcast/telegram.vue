@@ -1,7 +1,7 @@
 <template>
   <div class="telegram-boardcast">
     <p>将会发送到以下绑定了 Telegram 的 Matataki 用户: {{ getNameOfTheList }}</p>
-    <editor :initial-value="content" :init="editorInit" api-key="no-api-key" />
+    <editor :initial-value="content" :init="editorInit" v-model="content" api-key="no-api-key" />
     <el-row :gutter="20" class="boardcast-confirm">
       <el-col :span="12">
         <el-checkbox v-model="isSilent">静音模式</el-checkbox>
@@ -66,6 +66,10 @@ export default {
       return this.targets
         .map(user => user.nickname || user.username)
         .join(', ')
+    },
+    getEveryoneTelegramUid() {
+      return this.targets
+        .map(user => user.account)
     }
   },
   watch: {
@@ -108,7 +112,14 @@ export default {
       }
 
       // the real send happened here
-
+      const chat_ids = this.getEveryoneTelegramUid // @todo mapping all telegram ids
+      const disable_notification = this.isSilent
+      const result = await this.request({
+        url: this.apis.boardcast + '/telegram/html',
+        method: 'post',
+        data: { chat_ids, html: this.content, disable_notification }
+      })
+      console.info('boardcastMessage result', result)
       // after
       this.sendButtonStatus = {
         isSending: false,
