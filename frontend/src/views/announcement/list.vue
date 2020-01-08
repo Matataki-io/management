@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import { isNull } from '@/utils/validate'
 import moment from 'moment'
 
 export default {
@@ -76,11 +75,8 @@ export default {
         deleted: 'danger'
       }
       return statusMap[status]
-    }
-  },
-
-  filters: {
-    dateFilter: function(val) {
+    },
+    dateFilter(val) {
       return moment(val).format('YYYY-MM-DD HH:mm')
     }
   },
