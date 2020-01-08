@@ -76,10 +76,10 @@ export default {
         return {
           zh: {},
           en: {},
-          ko: {},
+          ko: {}
         }
       }
-    },
+    }
   }
 }
 </script>

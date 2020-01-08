@@ -8,7 +8,7 @@
             :key="item.locale"
             :label="item.zh"
             :value="item.locale"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -45,7 +45,7 @@
         <template slot-scope="scope">{{ scope.row.Content }}</template>
       </el-table-column>
       <el-table-column label="有效" width="110" align="center">
-        <template slot-scope="scope">{{ (scope.row.IsActive ?"有效":"无效")}}</template>
+        <template slot-scope="scope">{{ (scope.row.IsActive ?"有效":"无效") }}</template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="100">
         <template slot-scope="scope">
@@ -64,18 +64,20 @@
 </template>
 
 <script>
-import { isNull } from "@/utils/validate";
-import moment from "moment";
+import moment from 'moment'
 
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    },
+    dateFilter(val) {
+      return moment(val).format('YYYY-MM-DD HH:mm')
     }
   },
   data() {
@@ -87,63 +89,57 @@ export default {
       pageIndex: 1,
       createDate: null,
       search: {
-        CountryCode: "",
+        CountryCode: ''
       }
-    };
+    }
   },
-
-  filters: {
-    dateFilter: function(val) {
-      return moment(val).format("YYYY-MM-DD HH:mm");
+  computed: {
+    countryCodes: function() {
+      return this.utils.countryCode()
     }
   },
   watch: {},
   created() {
-    this.getList(1);
-  },
-  computed: {
-    countryCodes: function() {
-      return this.utils.countryCode();
-    }
+    this.getList(1)
   },
   methods: {
     del(id) {
-      this.$confirm("确认删除, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('确认删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
         .then(() => {
           this.request({
-            url: this.apis.announcement + "/" + id,
-            method: "delete",
+            url: this.apis.announcement + '/' + id,
+            method: 'delete',
             noLoading: true
           }).then(res => {
             this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-            this.getList(1);
-          });
+              type: 'success',
+              message: '删除成功!'
+            })
+            this.getList(1)
+          })
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     searchList() {
-      this.getList(1);
+      this.getList(1)
     },
     handleCurrentChange(v) {
-      this.getList(v);
+      this.getList(v)
     },
     toDetail(id) {
       this.$router.push({
         path: `/announcement/detail/${id}`
-      });
+      })
     },
     getList(pageIndex) {
-      this.listLoading = true;
+      this.listLoading = true
       this.request({
         url: this.apis.announcement,
-        method: "get",
+        method: 'get',
         noLoading: true,
         params: {
           pageSize: this.pageSize,
@@ -151,13 +147,13 @@ export default {
           ...this.search
         }
       }).then(res => {
-        this.listLoading = false;
-        this.list = res.data.rows;
-        this.count = res.data.count;
-      });
+        this.listLoading = false
+        this.list = res.data.rows
+        this.count = res.data.count
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

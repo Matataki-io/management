@@ -60,7 +60,7 @@
       <el-input-number v-model="projectObj.WithdrawTotalAmount" controls-position="right" disabled/>
     </el-form-item>
     <el-form-item label="最大提现设定数量" prop="WithdrawMaxAmount">
-      <el-input-number v-model="projectObj.WithdrawMaxAmount" controls-position="right" :min="0"/>
+      <el-input-number v-model="projectObj.WithdrawMaxAmount" :min="0" controls-position="right"/>
     </el-form-item>
     <el-form-item label="总奖励金额" prop="TotalAmount">
       <el-input-number v-model="projectObj.TotalAmount" controls-position="right"/>
