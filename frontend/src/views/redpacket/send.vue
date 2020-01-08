@@ -61,7 +61,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isNull } from '@/utils/validate'
 export default {
   name: 'Send',
   data() {

@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     loadDetail() {
-      var self = this
       this.request({
         url: `${this.apis.announcement}/${this.id}`,
         method: 'get'
@@ -89,7 +88,7 @@ export default {
         baseInfo.StartDate = new Date(res.data.baseInfo.Start)
         baseInfo.EndDate = new Date(res.data.baseInfo.End)
 
-        self.baseInfo = baseInfo
+        this.baseInfo = baseInfo
 
         for (const item of res.data.contents) {
           if (item.Language === 'zh-Hans') {
@@ -105,7 +104,6 @@ export default {
       })
     },
     update() {
-      var self = this
       this.request({
         url: `${this.apis.announcement}/${this.id}`,
         method: 'put',
@@ -121,7 +119,6 @@ export default {
       })
     },
     create() {
-      var self = this
       this.request({
         url: this.apis.announcement,
         method: 'post',
@@ -132,24 +129,23 @@ export default {
           message: '创建成功!'
         })
 
-        const id = res.data.baseInfo.id
+        // const id = res.data.baseInfo.id
         this.$router.push({
           path: `/announcement/list`
         })
       })
     },
     getRequestObj() {
-      var self = this
       const StartDate = new Date(this.baseInfo.StartDate).toISOString()
       const EndDate = new Date(this.baseInfo.EndDate).toISOString()
 
       const requestData = {
         baseInfo: {
-          Id: self.id,
+          Id: this.id,
           StartDate,
           EndDate,
-          IsActive: self.baseInfo.IsActive,
-          CountryCodes: self.baseInfo.CountryCodes
+          IsActive: this.baseInfo.IsActive,
+          CountryCodes: this.baseInfo.CountryCodes
         },
         contents: [
           { Language: 'zh-Hans', ...this.langObj.zh },

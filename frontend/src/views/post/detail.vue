@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import { userStatus } from '@/utils/consts'
-import axios from 'axios'
+// import { userStatus } from '@/utils/consts'
+// import axios from 'axios'
 export default {
   name: 'Detail',
   components: {},
