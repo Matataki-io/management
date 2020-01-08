@@ -71,7 +71,7 @@ export default {
   },
   created() {
     this.$store.dispatch('getProjectList')
-    this.getStore();
+    this.getStore()
   },
   methods: {
     createStore() {
@@ -87,7 +87,7 @@ export default {
           type: 'success',
           message: `库存创建成功，总库存数量：${res.data}`
         })
-        this.getStore();
+        this.getStore()
       })
     },
     getStore() {
@@ -95,9 +95,9 @@ export default {
         url: this.apis.store,
         method: 'get'
       }).then(res => {
-        this.storeList = res.data.storeResult;
-        this.waitList = res.data.waitResult;
-        this.orderList = res.data.orderResult;
+        this.storeList = res.data.storeResult
+        this.waitList = res.data.waitResult
+        this.orderList = res.data.orderResult
       })
     },
     delStore(candyKey) {
@@ -112,7 +112,7 @@ export default {
           type: 'success',
           message: `删除成功`
         })
-        this.getStore();
+        this.getStore()
       })
     }
   }
