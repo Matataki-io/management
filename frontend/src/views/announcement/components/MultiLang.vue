@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: "MultiLang",
+  name: 'MultiLang',
   props: {
     langObj: {
       type: Object,
@@ -50,11 +50,11 @@ export default {
           zh: {},
           en: {},
           ko: {}
-        };
+        }
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

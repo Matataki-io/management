@@ -19,7 +19,7 @@
             <span class="my-value">{{ u.nickname }}</span>
           </el-form-item>
           <el-form-item label="头像：">
-            <img v-if="u.avatar" :src="getImg(u.avatar)" alt="头像" width="100px" />
+            <img v-if="u.avatar" :src="getImg(u.avatar)" alt="头像" width="100px" >
           </el-form-item>
           <el-form-item label="自我介绍：">
             <span class="my-value">{{ u.introduction }}</span>
@@ -40,16 +40,16 @@
             <span class="my-value">{{ u.last_login_ip }}</span>
           </el-form-item>
           <el-form-item label="推荐用户：">
-            <el-switch @change="handleChange($event, 'isRecommend')" v-model="isRecommend"></el-switch>
+            <el-switch v-model="isRecommend" @change="handleChange($event, 'isRecommend')"/>
           </el-form-item>
           <el-form-item label="种子用户：">
-            <el-switch @change="handleChange($event, 'isSeed')" v-model="isSeed"></el-switch>
+            <el-switch v-model="isSeed" @change="handleChange($event, 'isSeed')"/>
           </el-form-item>
           <el-form-item label="发币用户：">
-            <el-switch @change="handleChange($event, 'isMint')" v-model="isMint"></el-switch>
+            <el-switch v-model="isMint" @change="handleChange($event, 'isMint')"/>
           </el-form-item>
           <el-form-item label="交易权限：">
-            <el-switch @change="handleChange($event, 'isExchange')" v-model="isExchange"></el-switch>
+            <el-switch v-model="isExchange" @change="handleChange($event, 'isExchange')"/>
           </el-form-item>
         </el-form>
         <!-- <p>id: {{ u.id }}</p>
@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import RpLog from "@/views/redpacket/components/rpLog";
-import TokenList from "./components/tokenList";
-import { userStatus } from "@/utils/consts";
+import RpLog from '@/views/redpacket/components/rpLog'
+import TokenList from './components/tokenList'
+import { userStatus } from '@/utils/consts'
 export default {
-  name: "Detail",
+  name: 'Detail',
   components: {
     RpLog,
     TokenList
@@ -98,48 +98,48 @@ export default {
       isMint: false,
       isExchange: false,
       isRecommend: false
-    };
-  },
-  mounted() {
-    const id = this.$route.params.id;
-    this.id = id;
-    this.getDetail(id);
+    }
   },
   computed: {},
+  mounted() {
+    const id = this.$route.params.id
+    this.id = id
+    this.getDetail(id)
+  },
   methods: {
     handleChange(value, type) {
-      console.log(value, type);
+      console.log(value, type)
       this.request({
         url: `${this.apis.user}/${this.id}`,
-        method: "put",
+        method: 'put',
         data: {
           [type]: value
         }
       }).then(res => {
         if (res.code === 0) {
-          this.$message.success("修改成功");
+          this.$message.success('修改成功')
         }
-      });
+      })
     },
     getImg(hash) {
-      return `${this.apis.imgHost}${hash}`;
+      return `${this.apis.imgHost}${hash}`
     },
     getDetail(id) {
       this.request({
         url: `${this.apis.user}/${id}`,
-        method: "get"
+        method: 'get'
       }).then(res => {
-        this.u = res.data;
-        const status = res.data.status;
-        this.isSeed = (status & userStatus.isSeed) === userStatus.isSeed;
-        this.isMint = (status & userStatus.isMint) === userStatus.isMint;
+        this.u = res.data
+        const status = res.data.status
+        this.isSeed = (status & userStatus.isSeed) === userStatus.isSeed
+        this.isMint = (status & userStatus.isMint) === userStatus.isMint
         this.isExchange =
-          (status & userStatus.isExchange) === userStatus.isExchange;
-        this.isRecommend = res.data.is_recommend;
-      });
+          (status & userStatus.isExchange) === userStatus.isExchange
+        this.isRecommend = res.data.is_recommend
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

@@ -10,7 +10,7 @@
     "build-prod": "cross-env NODE_ENV=production node build/build.js",
     "build-dev": "cross-env NODE_ENV=development node build/build.js",
     "build:report": "npm_config_report=true npm run build",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src --fix",
     "test": "npm run lint",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },

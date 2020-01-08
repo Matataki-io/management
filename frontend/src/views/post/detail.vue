@@ -16,7 +16,7 @@
             <span class="my-value">{{ detail.author }}</span>
           </el-form-item>
           <el-form-item label="头图：">
-            <img v-if="p.cover" :src="getImg(p.cover)" alt="头图" width="100px" />
+            <img v-if="p.cover" :src="getImg(p.cover)" alt="头图" width="100px" >
           </el-form-item>
           <el-form-item label="发布时间：">
             <span class="my-value">{{ p.create_time }}</span>
@@ -28,23 +28,23 @@
             <span class="my-value">{{ p.require_holdtokens }}</span>
           </el-form-item>
           <el-form-item label="推荐文章">
-            <el-switch @change="updateRecommend" v-model="is_recommend"></el-switch>
+            <el-switch v-model="is_recommend" @change="updateRecommend"/>
           </el-form-item>
           <el-form-item label="修改时间排序">
-            <el-input-number v-model="timeDown" :min="0" placeholder="默认0，越大越靠后"></el-input-number>
+            <el-input-number v-model="timeDown" :min="0" placeholder="默认0，越大越靠后"/>
             <el-button @click="updateTime">更新</el-button>
           </el-form-item>
           <el-form-item label="修改热门排序">
-            <el-input-number v-model="hotDown" :min="0" placeholder="默认0，越大越靠后"></el-input-number>
+            <el-input-number v-model="hotDown" :min="0" placeholder="默认0，越大越靠后"/>
             <el-button @click="updateHot">更新</el-button>
           </el-form-item>
           <el-form-item label="隐藏文章">
-            <el-switch @change="updateStatus" v-model="status"></el-switch>
+            <el-switch v-model="status" @change="updateStatus"/>
           </el-form-item>
         </el-form>
       </div>
     </el-card>
-    <el-card style="margin-top: 20px;" v-loading="contentLoading">
+    <el-card v-loading="contentLoading" style="margin-top: 20px;">
       <div slot="header">
         <span>文章内容数据</span>
       </div>
@@ -54,52 +54,52 @@
 </template>
 
 <script>
-import { userStatus } from "@/utils/consts";
-import axios from "axios";
+import { userStatus } from '@/utils/consts'
+import axios from 'axios'
 export default {
-  name: "Detail",
+  name: 'Detail',
   components: {},
   data() {
     return {
       id: 0,
       p: {},
       detail: {},
-      timeDown: "",
-      hotDown: "",
+      timeDown: '',
+      hotDown: '',
       status: 0,
       is_recommend: 0,
       contentLoading: false
-    };
-  },
-  mounted() {
-    const id = this.$route.params.id;
-    this.id = id;
-    this.getDetail(id);
+    }
   },
   computed: {},
+  mounted() {
+    const id = this.$route.params.id
+    this.id = id
+    this.getDetail(id)
+  },
   methods: {
-    //更新推荐
+    // 更新推荐
     updateRecommend(v) {
-      this.updatePost({ is_recommend: Number(v) });
+      this.updatePost({ is_recommend: Number(v) })
     },
     // 更新时间排序
     updateTime() {
       this.updatePost({
         time_down: this.timeDown
-      });
+      })
     },
     // 更新热门排序
     updateHot() {
       this.updatePost({
         down: this.hotDown
-      });
+      })
     },
     // 隐藏文章
     updateStatus(v) {
-      console.log();
+      console.log()
       this.updatePost({
         status: Number(v)
-      });
+      })
     },
     updatePost(data) {
       /* data格式
@@ -111,44 +111,44 @@ export default {
       */
       this.request({
         url: `${this.apis.posts}/${this.id}`,
-        method: "put",
+        method: 'put',
         data
       }).then(res => {
         if (res.code === 0) {
-          this.$message.success("修改成功");
+          this.$message.success('修改成功')
         }
-      });
+      })
     },
     getImg(hash) {
-      return `${this.apis.imgHost}${hash}`;
+      return `${this.apis.imgHost}${hash}`
     },
     getDetail(id) {
       this.request({
         url: `${this.apis.posts}/${id}`,
-        method: "get"
+        method: 'get'
       }).then(res => {
-        this.p = res.data;
-        this.timeDown = res.data.time_down;
-        this.hotDown = res.data.down;
-        this.status = Boolean(res.data.status);
-        this.is_recommend = Boolean(res.data.is_recommend);
-        this.getArticleDatafromIPFS(res.data.hash);
-      });
+        this.p = res.data
+        this.timeDown = res.data.time_down
+        this.hotDown = res.data.down
+        this.status = Boolean(res.data.status)
+        this.is_recommend = Boolean(res.data.is_recommend)
+        this.getArticleDatafromIPFS(res.data.hash)
+      })
     },
     getArticleDatafromIPFS(hash) {
-      this.contentLoading = true;
+      this.contentLoading = true
       this.request({
         url: `${this.apis.ipfs}/${hash}`,
-        method: "get",
+        method: 'get',
         noLoading: true
       }).then(res => {
-        this.contentLoading = false;
-        this.detail = res.data;
-        console.log(res);
-      });
+        this.contentLoading = false
+        this.detail = res.data
+        console.log(res)
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
