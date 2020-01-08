@@ -1,6 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const htmlSanitizer = require('sanitize-html');
 
 class telegramController extends Controller {
   /**
@@ -28,8 +29,8 @@ class telegramController extends Controller {
     */
   async boardcastMessageMarkdown() {
     const { ctx } = this;
-    const { chat_ids, text } = ctx.request.body;
-    const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text }));
+    const { chat_ids, text, disable_notification = true } = ctx.request.body;
+    const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text, disable_notification }));
     const result = await Promise.all(requests);
     ctx.body = { ...ctx.msg.success, result };
   }
@@ -39,8 +40,14 @@ class telegramController extends Controller {
    */
   async boardcastMessageHtml() {
     const { ctx } = this;
-    const { chat_ids, html } = ctx.request.body;
-    const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text: html, parse_mode: 'HTML' }));
+    let { chat_ids, html, disable_notification = true } = ctx.request.body;
+    html = htmlSanitizer(html, {
+      allowedTags: [ 'a', 'b', 'i', 'em', 'ins', 'strong', 'strike', 'del', 's', 'u', 'a', 'code', 'pre' ],
+      allowedAttributes: {
+        a: [ 'href' ],
+      },
+    });
+    const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text: html, disable_notification, parse_mode: 'HTML' }));
     const result = await Promise.all(requests);
     ctx.body = { ...ctx.msg.success, result };
   }
