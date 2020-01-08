@@ -10,11 +10,12 @@
     "build-prod": "cross-env NODE_ENV=production node build/build.js",
     "build-dev": "cross-env NODE_ENV=development node build/build.js",
     "build:report": "npm_config_report=true npm run build",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src --fix",
     "test": "npm run lint",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^3.0.1",
     "axios": "0.18.0",
     "echarts": "^4.2.1",
     "element-ui": "2.4.6",

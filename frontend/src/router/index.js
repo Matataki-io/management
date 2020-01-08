@@ -81,6 +81,27 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/boardcast',
+    component: Layout,
+    redirect: '/boardcast/telegram',
+    name: 'Boardcast',
+    meta: { title: '对用户广播', icon: 'example' },
+    children: [
+      {
+        path: 'telegram',
+        name: 'BoardcastWithTelegram',
+        component: () => import('@/views/boardcast/telegram'),
+        meta: { title: '电报广播', icon: 'guide' }
+      },
+      {
+        path: 'email',
+        name: 'BoardcastWithTelegram',
+        component: () => import('@/views/user/list'),
+        meta: { title: '邮件广播', icon: 'guide' }
+      }
+    ]
+  },
+  {
     path: '/p',
     component: Layout,
     redirect: '/p/list',

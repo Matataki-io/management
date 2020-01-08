@@ -5,7 +5,7 @@
         <BaseInfo :project-obj="projectObj" :is-create="true"/>
       </el-collapse-item>
       <el-collapse-item title="多语言设置" name="2">
-        <MultiLang :langObj="langObj"/>
+        <MultiLang :lang-obj="langObj"/>
       </el-collapse-item>
       <el-collapse-item title="社交媒体" name="3">
         <SocialMedia :social-media="socialMedia"/>
@@ -86,7 +86,7 @@ export default {
           Description: '',
           Language: 'ko',
           ProjectName: ''
-        },
+        }
       },
       activeNames: ['1', '2', '3'],
       projectId: null

@@ -8,21 +8,19 @@
               v-for="item in redPacketList"
               :key="item.RedpacketId"
               :label="item.RedpacketName"
-              :value="item.RedpacketId">
-            </el-option>
+              :value="item.RedpacketId"/>
           </el-select>
         </el-form-item>
         <el-form-item label="title">
-          <el-input v-model="rpTitle" placeholder="请输入title"></el-input>
+          <el-input v-model="rpTitle" placeholder="请输入title"/>
         </el-form-item>
         <el-form-item label="手机号/ont id">
           <span class="notice">注：手机号格式：+86*13576274714 ，ont ID格式： did:ont:xxx，多个手机号/ont id换行分隔，每次最多提交500个</span>
           <el-input
-            type="textarea"
             :rows="8"
-            placeholder="请输入手机号/ont id列表"
-            v-model="phoneList">
-          </el-input>
+            v-model="phoneList"
+            type="textarea"
+            placeholder="请输入手机号/ont id列表"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -38,7 +36,7 @@
           </div>
           <div v-if="allRp.length > 0">
             <el-checkbox-group v-model="checkedRp" @change="handleCheckedCitiesChange">
-              <el-checkbox v-for="rp in allRp" :label="rp" :key="rp.Id">{{rp.phone}}</el-checkbox>
+              <el-checkbox v-for="rp in allRp" :label="rp" :key="rp.Id">{{ rp.phone }}</el-checkbox>
             </el-checkbox-group>
             <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
             <div>
@@ -52,8 +50,8 @@
           <div slot="header">
             <span>未找到用户的手机号/ont id列表</span>
           </div>
-          <div class="phone-container" v-if="notFind.length > 0">
-            <p v-for="(item, i) in notFind" :key="i"><span class="sort-tag">{{i+1}}</span>{{item}}</p>
+          <div v-if="notFind.length > 0" class="phone-container">
+            <p v-for="(item, i) in notFind" :key="i"><span class="sort-tag">{{ i+1 }}</span>{{ item }}</p>
           </div>
         </el-card>
       </el-col>
@@ -63,9 +61,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isNull } from '@/utils/validate'
 export default {
-  name: 'send',
+  name: 'Send',
   data() {
     return {
       rpId: '',
@@ -75,39 +72,39 @@ export default {
       allRp: [],
       checkedRp: [],
       isIndeterminate: true,
-      checkAll: false,
+      checkAll: false
     }
   },
   computed: {
     ...mapGetters([
-      'redPacketList',
+      'redPacketList'
     ])
   },
   created() {
     this.$store.dispatch('getRedPacket')
   },
   mounted() {
-    window.addEventListener("beforeunload", function (e) {
-      (e || window.event).returnValue = '确定离开此页吗？';
-    });
+    window.addEventListener('beforeunload', function(e) {
+      (e || window.event).returnValue = '确定离开此页吗？'
+    })
   },
   methods: {
     submitRp() {
-      if (this.allRp.length <= 0) return;
+      if (this.allRp.length <= 0) return
 
-      let idArr = [];
-      let phoneHTML = '';
-      let i = 1;
-      for (let item of this.checkedRp) {
-        phoneHTML += `<p><span class="sort-tag">${i}</span> ${item.phone}</p>`;
-        i++;
-        idArr.push(item.Id);
+      const idArr = []
+      let phoneHTML = ''
+      let i = 1
+      for (const item of this.checkedRp) {
+        phoneHTML += `<p><span class="sort-tag">${i}</span> ${item.phone}</p>`
+        i++
+        idArr.push(item.Id)
       }
 
       this.$confirm(`<div class="phone-container">${phoneHTML}</div>`, '确认提交吗？此操作风险较大, 请仔细确认!', {
         dangerouslyUseHTMLString: true,
         confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        cancelButtonText: '取消'
       }).then(() => {
         this.request({
           url: this.apis.redpacketLog,
@@ -122,46 +119,46 @@ export default {
             message: '提交成功!'
           })
         })
-      });
+      })
     },
     handleCheckAllChange(val) {
-      this.checkedRp = val ? this.allRp : [];
-      this.isIndeterminate = false;
+      this.checkedRp = val ? this.allRp : []
+      this.isIndeterminate = false
     },
     handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
-      this.checkAll = checkedCount === this.allRp.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.allRp.length;
+      const checkedCount = value.length
+      this.checkAll = checkedCount === this.allRp.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.allRp.length
     },
     onSubmit() {
-      console.log(this.phoneList);
-      let phoneArr = this.phoneList.split(/\n/);
+      console.log(this.phoneList)
+      const phoneArr = this.phoneList.split(/\n/)
       if (phoneArr.length > 500) {
         this.$message({
           type: 'error',
           message: '每次最多提交500个!'
-        });
-        return;
+        })
+        return
       }
-      const len = phoneArr.length;
-      let phoneHTML = '';
-      let hasError = false;
+      const len = phoneArr.length
+      let phoneHTML = ''
+      let hasError = false
       for (let i = 0; i < len; i++) {
         if (phoneArr[i].startsWith('did:ont:') || phoneArr[i].startsWith('+')) {
-          phoneHTML += `<p><span class="sort-tag">${i+1}</span> ${phoneArr[i]}</p>`
+          phoneHTML += `<p><span class="sort-tag">${i + 1}</span> ${phoneArr[i]}</p>`
         } else {
-          hasError = true;
+          hasError = true
           this.$message({
             type: 'error',
             message: `手机号/ont id格式错误： ${phoneArr[i]}`
-          });
+          })
         }
       }
-      if (hasError) return;
+      if (hasError) return
       this.$confirm(`<div class="phone-container">${phoneHTML}</div>`, '确认保存吗？此操作风险较大, 请仔细确认!', {
         dangerouslyUseHTMLString: true,
         confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        cancelButtonText: '取消'
       }).then(() => {
         this.request({
           url: this.apis.redpacketLog,
@@ -172,9 +169,9 @@ export default {
             phoneList: phoneArr
           }
         }).then(res => {
-          this.notFind = res.data.notFind;
-          this.allRp = res.data.successCreate;
-          this.resetData();
+          this.notFind = res.data.notFind
+          this.allRp = res.data.successCreate
+          this.resetData()
           this.$message({
             type: 'success',
             message: '保存成功!'
@@ -183,16 +180,16 @@ export default {
       })
     },
     resetData() {
-      this.checkAll = false;
-      this.isIndeterminate = false;
-      this.checkedRp = [];
+      this.checkAll = false
+      this.isIndeterminate = false
+      this.checkedRp = []
     },
     fromUnixTimestamp(v) {
       return v * 1000
     },
     toUnixTimestamp(v) {
       return Math.round(v / 1000)
-    },
+    }
   }
 }
 </script>

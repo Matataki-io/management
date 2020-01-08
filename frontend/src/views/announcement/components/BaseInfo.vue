@@ -23,45 +23,43 @@
 
     <el-form-item label="有效区域">
       <template>
-        <el-select multiple collapse-tags v-model="baseInfo.CountryCodes" placeholder="有效区域">
+        <el-select v-model="baseInfo.CountryCodes" multiple collapse-tags placeholder="有效区域">
           <el-option
             v-for="item in countryCodes"
             :key="item.locale"
             :label="item.zh"
             :value="item.locale"
-          ></el-option>
+          />
         </el-select>
       </template>
     </el-form-item>
   </el-form>
 </template>
-  </el-form>
-</template>
 
 <script>
 export default {
-  name: "BaseInfo",
+  name: 'BaseInfo',
   props: {
     baseInfo: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     }
   },
   data() {
-    return {};
+    return {}
   },
   computed: {
     countryCodes: function() {
-      return this.utils.countryCode();
+      return this.utils.countryCode()
     }
   },
   created: function() {
-    //debugger;
+    // debugger;
   },
   methods: {}
-};
+}
 </script>
 
 <style scoped>

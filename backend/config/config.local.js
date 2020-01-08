@@ -74,5 +74,8 @@ module.exports = () => {
     port: 5001,
     protocol: 'http',
   };
+  config.telegram = {
+    botToken: '827566328:AAH5lfENE5cOat9IJ9r4_MOi4dvDYJt-SRI',
+  };
   return config;
 };

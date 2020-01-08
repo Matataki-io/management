@@ -127,7 +127,7 @@
           <span>{{ rpType.RedpacketId }}</span>
         </el-form-item>
         <el-form-item label="红包名称：">
-          <el-input v-model="rpType.RedpacketName" placeholder="请输入红包名称"></el-input>
+          <el-input v-model="rpType.RedpacketName" placeholder="请输入红包名称"/>
         </el-form-item>
         <el-form-item label="SentCount：">
           <el-input-number
@@ -152,7 +152,7 @@
     <el-dialog :visible.sync="addRpVisible" title="添加红包" center>
       <el-form label-width="150px">
         <el-form-item label="红包名称：">
-          <el-input v-model="rpType.RedpacketName" placeholder="请输入红包名称"></el-input>
+          <el-input v-model="rpType.RedpacketName" placeholder="请输入红包名称"/>
         </el-form-item>
         <el-form-item label="SentCount：">
           <el-input-number
@@ -245,7 +245,7 @@ export default {
   },
   methods: {
     addRp() {
-      this.addRpVisible = true;
+      this.addRpVisible = true
       this.rpType = {
         RedpacketName: '',
         SentCount: '',
