@@ -32,6 +32,15 @@
       <el-table-column label="作者用户名" prop="username" align="center" />
       <!-- <el-table-column label="摘要" prop="short_content" align="center" fixed/> -->
       <el-table-column label="状态" prop="status" align="center" />
+      <el-table-column label="是否删除" align="center">
+        <template slot-scope="scope">
+          <el-switch
+            :value="Boolean(scope.row.status)"
+            @change="handleChange($event, scope.$index)"
+          />
+        </template>
+      </el-table-column>
+
       <el-table-column label="发布时间" prop="create_time" align="center" />
       <el-table-column label="封面" align="center">
         <template slot-scope="scope">
@@ -97,6 +106,25 @@ export default {
     this.getList(1)
   },
   methods: {
+    handleChange(e, index) {
+      this.listLoading = true
+      const id = this.list[index].id
+      this.request({
+        url: `${this.apis.posts}/${id}`,
+        method: 'put',
+        data: {
+          status: Number(e)
+        }
+      }).then(res => {
+        this.listLoading = false
+        if (res.code === 0) {
+          this.list[index].status = Number(e)
+          this.$message.success(`修改成功，${e ? '已被删除' : '已被释出'}`)
+        } else {
+          this.$message.success('修改失败')
+        }
+      })
+    },
     getImg(hash) {
       return `${this.apis.imgHost}${hash}`
     },
