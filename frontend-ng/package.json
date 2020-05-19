@@ -3,16 +3,15 @@
   "version": "4.2.1",
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
   "author": "Pan <panfree23@gmail.com>",
-  "license": "MIT",
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "test:unit": "jest --clearCache && vue-cli-service test:unit",
+    "lint": "eslint --ext .js,.vue src --fix",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
+    "dev": "vue-cli-service serve",
     "preview": "node build/index.js --preview",
-    "lint": "eslint --ext .js,.vue src --fix",
-    "test:unit": "jest --clearCache && vue-cli-service test:unit",
-    "test:ci": "npm run lint && npm run test:unit",
-    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
+    "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.1",
@@ -23,6 +22,7 @@
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
+    "register-service-worker": "^1.7.1",
     "vue": "2.6.10",
     "vue-count-to": "^1.0.13",
     "vue-router": "3.0.6",
@@ -33,6 +33,7 @@
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.6.0",
     "@vue/cli-plugin-eslint": "^3.9.1",
+    "@vue/cli-plugin-pwa": "^4.3.1",
     "@vue/cli-plugin-unit-jest": "3.6.3",
     "@vue/cli-service": "3.6.0",
     "@vue/test-utils": "1.0.0-beta.29",
@@ -56,12 +57,13 @@
     "svgo": "1.2.2",
     "vue-template-compiler": "2.6.10"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "license": "MIT"
 }

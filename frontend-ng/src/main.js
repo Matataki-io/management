@@ -28,6 +28,7 @@ import '../mock' // simulation data
 import apis from '@/api/apis'
 import request from '@/utils/request'
 import utils from './utils/utils'
+import './registerServiceWorker'
 
 Vue.prototype.apis = apis
 Vue.prototype.request = request

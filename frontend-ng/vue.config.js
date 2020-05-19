@@ -124,5 +124,9 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+  },
+  pwa: {
+    name: 'Matataki 管理面板',
+    themeColor: '#66B0E9'
   }
 }
