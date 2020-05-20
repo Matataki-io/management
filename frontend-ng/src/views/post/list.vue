@@ -30,9 +30,13 @@
       <el-table-column label="文章标题" prop="title" align="center" fixed />
       <el-table-column label="作者" prop="author" align="center" />
       <el-table-column label="作者用户名" prop="username" align="center" />
-      <!-- <el-table-column label="摘要" prop="short_content" align="center" fixed/> -->
-      <el-table-column label="状态" prop="status" align="center" />
-      <el-table-column label="是否删除" align="center">
+      <el-table-column label="摘要" prop="short_content" align="center" width="300">
+        <template slot-scope="scope">
+          {{ scope.row.short_content.slice(0, 25) + '...' }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="状态" prop="status" align="center" /> -->
+      <el-table-column label="隐藏文章" align="center" fixed="right">
         <template slot-scope="scope">
           <el-switch
             :value="Boolean(scope.row.status)"
@@ -40,15 +44,31 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="推荐" align="center" fixed="right">
+        <template slot-scope="scope">
+          <el-switch
+            :value="Boolean(scope.row.is_recommend)"
+            @change="handlePromoteChange($event, scope.$index)"
+          />
+        </template>
+      </el-table-column>
 
-      <el-table-column label="发布时间" prop="create_time" align="center" />
+      <el-table-column label="发布时间" prop="create_time" width="105" align="center">
+        <template slot-scope="scope">
+          {{ new Date(scope.row.create_time).toLocaleString() }}
+        </template>
+      </el-table-column>
       <el-table-column label="封面" align="center">
         <template slot-scope="scope">
           <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
         </template>
       </el-table-column>
-      <el-table-column label="是否原创" prop="is_original" align="center" />
-      <el-table-column label="是否被推荐" prop="is_recommend" align="center" />
+      <el-table-column label="是否原创" prop="is_original" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.is_original ? "是" : "否" }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="是否被推荐" prop="is_recommend" align="center" /> -->
       <el-table-column label="评论需要支付的积分" prop="comment_pay_point" align="center" />
       <el-table-column label="干预时间排序" prop="time_down" align="center" />
       <el-table-column align="center" label="操作" width="100" fixed="right">
@@ -120,6 +140,25 @@ export default {
         if (res.code === 0) {
           this.list[index].status = Number(e)
           this.$message.success(`修改成功，${e ? '已被删除' : '已被释出'}`)
+        } else {
+          this.$message.success('修改失败')
+        }
+      })
+    },
+    handlePromoteChange(e, index) {
+      this.listLoading = true
+      const id = this.list[index].id
+      this.request({
+        url: `${this.apis.posts}/${id}`,
+        method: 'put',
+        data: {
+          is_recommend: Number(e)
+        }
+      }).then(res => {
+        this.listLoading = false
+        if (res.code === 0) {
+          this.list[index].is_recommend = Number(e)
+          this.$message.success(`修改成功，${e ? '已推荐' : '已取消推荐'}`)
         } else {
           this.$message.success('修改失败')
         }
