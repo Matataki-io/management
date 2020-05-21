@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: process.env.NODE_ENV === 'production' ? '🤵Matataki 管理平台（正式网）' : '（🚧测试网）Matataki 管理平台',
+  title: process.env.ENV === 'production' ? '🤵Matataki 管理平台（正式网）' : '（🚧测试网）Matataki 管理平台',
 
   /**
      * @type {boolean} true | false
