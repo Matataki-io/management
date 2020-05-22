@@ -3,6 +3,12 @@
     <el-card>
       <div slot="header">
         <span>用户基础数据</span>
+        <el-button
+          style="float: right;"
+          type="text"
+          icon="el-icon-close"
+          @click="closePage"
+        >关闭</el-button>
       </div>
       <div>
         <el-form ref="form" label-width="120px" class="sun-form">
@@ -107,6 +113,9 @@ export default {
     this.getDetail(id)
   },
   methods: {
+    closePage() {
+      window.close()
+    },
     handleChange(value, type) {
       console.log(value, type)
       this.request({
@@ -124,6 +133,13 @@ export default {
     getImg(hash) {
       return `${this.apis.imgHost}${hash}`
     },
+    updateTitle(u) {
+      let displayName = u.nickname || u.username
+      if (displayName.length > 5) {
+        displayName = displayName.slice(0, 5) + '...'
+      }
+      document.title = `👩 ${displayName} (UID:${u.id}) 的资料`
+    },
     getDetail(id) {
       this.request({
         url: `${this.apis.user}/${id}`,
@@ -136,6 +152,7 @@ export default {
         this.isExchange =
           (status & userStatus.isExchange) === userStatus.isExchange
         this.isRecommend = res.data.is_recommend
+        this.updateTitle(res.data)
       })
     }
   }

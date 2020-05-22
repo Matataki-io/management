@@ -36,28 +36,28 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-  {
-    path: '/account',
-    component: Layout,
-    redirect: '/account/list',
-    name: 'Account',
-    meta: { title: '账号管理', icon: 'nested' },
-    children: [
-      {
-        path: 'list',
-        name: 'AccountList',
-        component: () => import('@/views/account/list'),
-        meta: { title: '账号管理', icon: 'example' }
-      },
-      {
-        path: 'detail/:id',
-        name: 'AccountDetail',
-        hidden: true,
-        component: () => import('@/views/account/list'),
-        meta: { title: '账号详情', icon: 'tree' }
-      }
-    ]
-  },
+  // {
+  //   path: '/account',
+  //   component: Layout,
+  //   redirect: '/account/list',
+  //   name: 'Account',
+  //   meta: { title: '账号管理', icon: 'nested' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: 'AccountList',
+  //       component: () => import('@/views/account/list'),
+  //       meta: { title: '账号管理', icon: 'example' }
+  //     },
+  //     {
+  //       path: 'detail/:id',
+  //       name: 'AccountDetail',
+  //       hidden: true,
+  //       component: () => import('@/views/account/list'),
+  //       meta: { title: '账号详情', icon: 'tree' }
+  //     }
+  //   ]
+  // },
   {
     path: '/user',
     component: Layout,

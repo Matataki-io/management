@@ -69,7 +69,9 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="100" fixed="right">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetail(scope.row.id)">详情</el-button>
+          <router-link :to="`/user/detail/${scope.row.id}`" target="_blank">
+            <el-button type="text" size="small">详情</el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
