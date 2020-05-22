@@ -39,7 +39,7 @@ const user = {
       }).then(response => {
         const data = response.data
         const token = `${data.token_type} ${data.access_token}`
-        setToken(token)
+        setToken(token, { expires: new Date(Number(data.expires_in + '000')) })
         commit('SET_TOKEN', token)
       })
     },
