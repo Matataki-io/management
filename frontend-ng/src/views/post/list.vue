@@ -73,7 +73,9 @@
       <el-table-column label="干预时间排序" prop="time_down" align="center" />
       <el-table-column align="center" label="操作" width="100" fixed="right">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetail(scope.row.id)">详情</el-button>
+          <router-link :to="`/p/detail/${scope.row.id}`" target="_blank">
+            <el-button type="text" size="small">详情</el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -178,11 +180,6 @@ export default {
     },
     handleCurrentChange(v) {
       this.getList(v)
-    },
-    toDetail(id) {
-      this.$router.push({
-        path: `/p/detail/${id}`
-      })
     },
     getList(pageIndex) {
       this.listLoading = true

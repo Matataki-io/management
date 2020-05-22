@@ -3,6 +3,12 @@
     <el-card>
       <div slot="header">
         <span>文章基础数据</span>
+        <el-button
+          style="float: right;"
+          type="text"
+          icon="el-icon-close"
+          @click="closePage"
+        >关闭</el-button>
       </div>
       <div>
         <el-form ref="form" label-width="140px" class="sun-form">
@@ -78,6 +84,9 @@ export default {
     this.getDetail(id)
   },
   methods: {
+    closePage() {
+      window.close()
+    },
     // 更新推荐
     updateRecommend(v) {
       this.updatePost({ is_recommend: Number(v) })
@@ -122,6 +131,13 @@ export default {
     getImg(hash) {
       return `${this.apis.imgHost}${hash}`
     },
+    updateTitle(p) {
+      let displayName = p.title
+      if (displayName.length > 5) {
+        displayName = displayName.slice(0, 5) + '...'
+      }
+      document.title = `📃 ${displayName} (PID:${p.id}) - 文章详情`
+    },
     getDetail(id) {
       this.request({
         url: `${this.apis.posts}/${id}`,
@@ -133,6 +149,7 @@ export default {
         this.status = Boolean(res.data.status)
         this.is_recommend = Boolean(res.data.is_recommend)
         this.getArticleDatafromIPFS(res.data.hash)
+        this.updateTitle(res.data)
       })
     },
     getArticleDatafromIPFS(hash) {
