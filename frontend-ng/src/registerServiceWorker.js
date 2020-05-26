@@ -19,23 +19,20 @@ if (process.env.NODE_ENV === 'production') {
     updatefound() {
       console.log('New content is downloading.')
       Notification({
-        title: '消息',
-        message: '这是一条消息的提示消息',
-        type: 'info'
+        title: '找到更新',
+        message: '正在更新App，成功后提示刷新享受新版App。',
+        type: 'info',
+        duration: 0
       })
     },
     updated() {
       console.log('App 已经更新')
-      // var r = confirm("App 已经更新, 是否刷新以体验新版?");
       MessageBox('是否刷新以体验新版？', 'App 已经更新', {
         confirmButtonText: '确定',
         type: 'info'
       }).then(() => {
         window.location.reload()
       })
-      // if (r == true) {
-      //   window.location.reload()
-      // }
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.')
