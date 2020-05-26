@@ -127,6 +127,9 @@ module.exports = {
   },
   pwa: {
     name: 'Matataki 管理面板',
-    themeColor: '#66B0E9'
+    themeColor: '#66B0E9',
+    workboxOptions: {
+      skipWaiting: true
+    }
   }
 }
