@@ -21,6 +21,10 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('New content is available; please refresh.')
+      var r = confirm("App 已经更新，是否刷新以体验新版？");
+      if (r == true) {
+        window.location.reload()
+      }
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.')
