@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Notification } from "element-ui";
+import { Notification, MessageBox } from "element-ui";
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
@@ -26,10 +26,16 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('App 已经更新')
-      var r = confirm("App 已经更新，是否刷新以体验新版？");
-      if (r == true) {
+      // var r = confirm("App 已经更新, 是否刷新以体验新版?");
+      MessageBox('是否刷新以体验新版？', 'App 已经更新', {
+        confirmButtonText: '确定',
+        type: 'info'
+      }).then(() => {
         window.location.reload()
-      }
+      })
+      // if (r == true) {
+      //   window.location.reload()
+      // }
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.')
