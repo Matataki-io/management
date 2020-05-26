@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-
+import { Notification } from "element-ui";
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
@@ -18,9 +18,14 @@ if (process.env.NODE_ENV === 'production') {
     },
     updatefound() {
       console.log('New content is downloading.')
+      Notification({
+        title: '消息',
+        message: '这是一条消息的提示消息',
+        type: 'info'
+      })
     },
     updated() {
-      console.log('New content is available; please refresh.')
+      console.log('App 已经更新')
       var r = confirm("App 已经更新，是否刷新以体验新版？");
       if (r == true) {
         window.location.reload()
