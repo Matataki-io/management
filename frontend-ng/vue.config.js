@@ -2,6 +2,8 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
+process.env.VUE_APP_VERSION = require('./package.json').version
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
