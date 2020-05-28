@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Notification, MessageBox } from "element-ui";
+import { Notification, MessageBox } from 'element-ui'
 import { register } from 'register-service-worker'
 
 if (process.env.NODE_ENV === 'production') {
