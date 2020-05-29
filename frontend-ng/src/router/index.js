@@ -150,6 +150,17 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/list',
+    name: 'Logs',
+    meta: { title: '日志', icon: 'nested' },
+    children: [{
+      path: 'list',
+      component: () => import('@/views/log/list')
+    }]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
