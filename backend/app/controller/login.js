@@ -12,7 +12,7 @@ class LoginController extends Controller {
       return;
     }
     const msg = ctx.msg.success;
-    msg.data = ctx.helper.jwtSign({ username, password });
+    msg.data = ctx.helper.jwtSign({ id: user.id, username, password });
     ctx.body = msg;
   }
 }
