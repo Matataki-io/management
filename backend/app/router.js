@@ -26,4 +26,5 @@ module.exports = app => {
   router.post('/api/login', controller.login.login);
   // 添加管理员
   router.post('/api/admin/addUser', passport, controller.admin.addUser);
+  router.get('/api/admin', passport, controller.admin.list);
 };

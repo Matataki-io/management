@@ -11,9 +11,17 @@ class AdminController extends Controller {
         ctx.body = ctx.msg.regFailedUsername;
         return;
     }
-    const user = await this.service.admin.addUser(username, nickname, password);
+    await this.service.admin.addUser(username, nickname, password);
     const msg = ctx.msg.success;
     ctx.body = msg;
+  }
+
+  async list() {
+    const { ctx } = this;
+    const admins = await this.service.admin.list();
+    const msg = ctx.msg.success;
+    ctx.body = msg;
+    ctx.body.data = admins;
   }
 }
 
