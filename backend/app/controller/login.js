@@ -3,17 +3,17 @@
 const Controller = require('egg').Controller;
 
 class LoginController extends Controller {
-
   async login() {
     const { ctx } = this;
     const { username, password } = ctx.request.body;
-    if (username === this.config.login.username && password === this.config.login.password) {
-      const msg = ctx.msg.success;
-      msg.data = ctx.helper.jwtSign({ username, password });
-      ctx.body = msg;
-    } else {
+    const user = await this.service.admin.login(username, password);
+    if (!user) {
       ctx.body = ctx.msg.loginFailed;
+      return;
     }
+    const msg = ctx.msg.success;
+    msg.data = ctx.helper.jwtSign({ username, password });
+    ctx.body = msg;
   }
 }
 

@@ -24,4 +24,9 @@ module.exports = app => {
   router.get('/api/ipfs/:hash', passport, controller.posts.ipfs);
   // 登录test
   router.post('/api/login', controller.login.login);
+  // 添加管理员
+  router.post('/api/admin/addUser', passport, controller.admin.addUser);
+  router.patch('/api/admin/edit', passport, controller.admin.edit);
+  router.get('/api/admin', passport, controller.admin.list);
+  router.get('/api/admin/me', passport, controller.admin.getMe);
 };
