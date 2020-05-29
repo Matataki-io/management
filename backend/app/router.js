@@ -29,4 +29,8 @@ module.exports = app => {
   router.patch('/api/admin/edit', passport, controller.admin.edit);
   router.get('/api/admin', passport, controller.admin.list);
   router.get('/api/admin/me', passport, controller.admin.getMe);
+
+  // Logging
+  router.get('/api/logs', passport, controller.logging.index);
+
 };
