@@ -16,12 +16,29 @@ class AdminController extends Controller {
     ctx.body = msg;
   }
 
+  async getMe() {
+    const { ctx } = this;
+    const admin = await this.service.admin.get(ctx.user.username)
+    const msg = ctx.msg.success;
+    ctx.body = msg;
+    ctx.body.data = admin;
+  }
+
   async list() {
     const { ctx } = this;
     const admins = await this.service.admin.list();
     const msg = ctx.msg.success;
     ctx.body = msg;
     ctx.body.data = admins;
+  }
+
+  async edit() {
+    const { ctx } = this;
+    const { nickname, password } = ctx.request.body;
+    const admin = await this.service.admin.get(ctx.user.username)
+    await this.service.admin.update(admin.id, { nickname, password })
+    const msg = ctx.msg.success
+    ctx.body = msg;
   }
 }
 
