@@ -32,6 +32,11 @@ class PostsController extends Controller {
     const { ctx } = this;
     // 文章id
     const { id } = ctx.params;
+
+    const log = {
+      from: 'posts',
+      id: parseInt(id)
+    }
     // 时间排序和热门排序
     const { is_recommend, time_down, down, status } = ctx.request.body;
     let result0 = null;
@@ -40,16 +45,22 @@ class PostsController extends Controller {
     let result3 = null;
     if (is_recommend !== undefined) {
       result0 = await ctx.model.Posts.update({ is_recommend }, { where: { id: parseInt(id) } });
+      log.recommend = true;
     }
     if (time_down !== undefined) {
       result1 = await ctx.model.Posts.update({ time_down }, { where: { id: parseInt(id) } });
+      log.time_down = true;
     }
     if (down !== undefined) {
       result2 = await ctx.model.PostReadCount.update({ down }, { where: { post_id: parseInt(id) } });
+      log.down = true;
     }
     if (status !== undefined) {
       result3 = await ctx.model.Posts.update({ status }, { where: { id: parseInt(id) } });
+      log.isHide = true;
     }
+
+    await this.service.logging.addLog(ctx.user.id, log)
     ctx.body = {
       ...ctx.msg.success,
       data: {
