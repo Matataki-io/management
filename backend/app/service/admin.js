@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const consts = require('./consts');
 
 class AdminService extends Service {
-  async list(offset, limit, searchParams = null) {
+  async list(offset, limit) {
     const { ctx } = this;
     const result = {};
 
@@ -28,7 +28,10 @@ class AdminService extends Service {
   }
 
   async update(id, updates) {
-    const result = await this.ctx.model.Users.update(updates, { where: { id } });
+    if (updates.password && updates.password.length !== 64) { 
+      updates.password = crypto.createHash('sha256').update(updates.password).digest('hex')
+    }
+    const result = await this.ctx.model.AdminUser.update(updates, { where: { id } });
     return result;
   }
 
