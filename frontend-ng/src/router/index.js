@@ -102,6 +102,33 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/admin',
+    component: Layout,
+    redirect: '/admin/list',
+    name: 'Admin',
+    meta: { title: '管理员管理', icon: 'user' },
+    children: [
+      {
+        path: 'list',
+        name: 'AdminList',
+        component: () => import('@/views/admin-manage/list'),
+        meta: { title: '管理员列表', icon: 'nested' }
+      },
+      {
+        path: 'add',
+        name: 'AdminAdd',
+        component: () => import('@/views/admin-manage/add'),
+        meta: { title: '添加管理员', icon: 'user' }
+      },
+      {
+        path: 'edit',
+        name: 'edit',
+        component: () => import('@/views/admin-manage/list'),
+        meta: { title: '修改资料', icon: 'user' }
+      }
+    ]
+  },
+  {
     path: '/p',
     component: Layout,
     redirect: '/p/list',

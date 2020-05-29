@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const consts = require('./consts');
 
 class AdminService extends Service {
-  async list(offset, limit, searchParams = null) {
+  async list(offset, limit) {
     const { ctx } = this;
     const result = {};
 

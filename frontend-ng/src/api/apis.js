@@ -4,6 +4,7 @@ export default {
   posts: `/api/post`,
   ipfs: `/api/ipfs`,
   boardcast: `/api/boardcast`,
+  admin: `/api/admin`,
   getAllTelegramBindedUser: `/api/getAllTelegramBindedUser`,
   imgHost: `https://ssimg.frontenduse.top`
 }
