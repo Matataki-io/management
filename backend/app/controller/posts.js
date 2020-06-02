@@ -60,7 +60,7 @@ class PostsController extends Controller {
       log.isHide = true;
     }
 
-    await this.service.logging.addLog(ctx.user.id, log)
+    await this.service.logging.addLog('post', ctx.user.id, log)
     ctx.body = {
       ...ctx.msg.success,
       data: {
