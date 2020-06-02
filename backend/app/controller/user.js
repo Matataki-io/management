@@ -59,7 +59,7 @@ class UserController extends Controller {
       log.isRecommendResult = true;
     }
 
-    await this.service.logging.addLog(ctx.user.id, log)
+    await this.service.logging.addLog('user', ctx.user.id, log)
     ctx.body = {
       ...ctx.msg.success,
       data: {

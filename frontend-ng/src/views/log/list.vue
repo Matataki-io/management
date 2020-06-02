@@ -16,7 +16,12 @@
       </el-table-column>
       <el-table-column label="日志来源模块" prop="data" align="center">
         <template slot-scope="scope">
-          {{ fromMod(scope.row.data) }}
+          {{ fromMod(scope.row.source) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="级别" prop="data" align="center">
+        <template slot-scope="scope">
+          {{ logType(scope.row.type) }}
         </template>
       </el-table-column>
       <el-table-column label="日志数据" prop="data" align="center">
@@ -60,10 +65,16 @@ export default {
       this.getList(v)
     },
     fromMod(v) {
-      const obj = JSON.parse(v)
-      switch (obj.from) {
-        case 'posts': return '文章管理'
+      switch (v) {
+        case 'post': return '文章管理'
         case 'user': return '用户管理'
+        default: return v
+      }
+    },
+    logType(v) {
+      switch (v) {
+        case 'info': return '普通'
+        case 'warn': return '警告'
         default: return v
       }
     },
