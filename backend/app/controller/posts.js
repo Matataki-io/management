@@ -34,7 +34,7 @@ class PostsController extends Controller {
     const { id } = ctx.params;
 
     const log = {
-      from: 'posts',
+      for: 'updateFields',
       id: parseInt(id)
     }
     // 时间排序和热门排序
