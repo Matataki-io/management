@@ -8,20 +8,29 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="管理员ID" prop="uid" align="center" fixed />
-      <el-table-column label="时间" prop="timestamp" align="center" fixed>
+      <el-table-column label="管理员ID" prop="uid" align="center" width="100" fixed />
+      <el-table-column label="时间" prop="timestamp" align="center" width="200" fixed>
         <template slot-scope="scope">
           {{ new Date(scope.row.timestamp).toLocaleString() }}
         </template>
       </el-table-column>
-      <el-table-column label="日志来源模块" prop="data" align="center">
+      <el-table-column label="来源模块" prop="data" width="100" align="center">
         <template slot-scope="scope">
-          {{ fromMod(scope.row.data) }}
+          {{ fromMod(scope.row.source) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="级别" prop="data" width="100" align="center">
+        <template slot-scope="scope">
+          {{ logType(scope.row.type) }}
         </template>
       </el-table-column>
       <el-table-column label="日志数据" prop="data" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.data }}
+        <template slot-scope="scope" >
+          <vue-json-pretty style="text-align: left;"
+            :data="JSON.parse(scope.row.data)"
+            :deep="2"
+            >
+          </vue-json-pretty>
         </template>
       </el-table-column>
     </el-table>
@@ -35,6 +44,8 @@
 </template>
 
 <script>
+import VueJsonPretty from 'vue-json-pretty'
+
 export default {
   data() {
     return {
@@ -52,6 +63,9 @@ export default {
       }
     }
   },
+  components: {
+    VueJsonPretty
+  },
   created() {
     this.getList(1)
   },
@@ -60,10 +74,20 @@ export default {
       this.getList(v)
     },
     fromMod(v) {
-      const obj = JSON.parse(v)
-      switch (obj.from) {
-        case 'posts': return '文章管理'
+      switch (v) {
+        case 'post': return '文章管理'
         case 'user': return '用户管理'
+        default: return v
+      }
+    },
+    parseDataWithIndent(v) {
+      const obj = JSON.parse(v)
+      return JSON.stringify(obj, null, 2)
+    },
+    logType(v) {
+      switch (v) {
+        case 'info': return '普通'
+        case 'warn': return '警告'
         default: return v
       }
     },

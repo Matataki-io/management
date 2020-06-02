@@ -21,10 +21,10 @@ class LogService extends Service {
   }
 
 
-  async addLog(uid, data) {
+  async addLog(source, uid, data, type = 'info') {
     const { ctx } = this;
     if (typeof data === 'object') data = JSON.stringify(data);
-    const log = await ctx.model.AdminAction.create({ uid, data, timestamp: new Date().getTime() });
+    const log = await ctx.model.AdminAction.create({ uid, data, source, type, timestamp: new Date().getTime() });
     return log;
   }
 }
