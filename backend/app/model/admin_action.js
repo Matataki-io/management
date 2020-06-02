@@ -21,7 +21,15 @@ module.exports = app => {
         data: {
             type: DataTypes.TEXT,
             allowNull: false
-        }
+		},
+		source: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		type: {
+			type: DataTypes.STRING,
+			allowNull: false
+		}
 	}, {
 		tableName: '_admin_action_logs',
 		timestamps: false
