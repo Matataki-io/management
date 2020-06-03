@@ -102,6 +102,21 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/announcement',
+    component: Layout,
+    redirect: '/announcement/telegram',
+    name: 'Announcement',
+    meta: { title: '站内公告', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: 'AnnouncementList',
+        component: () => import('@/views/announcement/list'),
+        meta: { title: '公告列表', icon: 'guide' }
+      }
+    ]
+  },
+  {
     path: '/admin',
     component: Layout,
     redirect: '/admin/list',
