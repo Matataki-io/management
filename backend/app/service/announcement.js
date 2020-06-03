@@ -19,6 +19,7 @@ class AnnouncementService extends Service {
       JOIN ${ANNOUNCEMENT_TABLE} t2 ON t1.object_id = t2.id
       LEFT JOIN ${POSTS_TABLE} t3 ON t3.id = t1.remark
       WHERE t1.object_type = 'announcement'
+      ORDER BY t1.id DESC
       LIMIT :offset, :limit;
 
       SELECT

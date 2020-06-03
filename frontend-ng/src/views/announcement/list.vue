@@ -1,65 +1,59 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true">
-      <el-form-item label="生效区域">
-        <el-select v-model="search.CountryCode" clearable placeholder="有效区域">
-          <el-option
-            v-for="item in countryCodes"
-            :key="item.locale"
-            :label="item.zh"
-            :value="item.locale"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="searchList">查询</el-button>
-      </el-form-item>
-    </el-form>
     <el-table
       v-loading="listLoading"
       :data="list"
-      element-loading-text="Loading"
       border
-      fit
-      highlight-current-row
+      style="width: 100%"
     >
-      <el-table-column label="ID" width="80" align="center">
-        <template slot-scope="scope">{{ scope.row.Id }}</template>
-      </el-table-column>
-      <el-table-column label="开始时间" width="150" align="center">
+      <el-table-column
+        prop="id"
+        label="ID"
+        width="50"
+      />
+      <el-table-column
+        prop="sender"
+        label="发件人"
+        width="180"
+      />
+      <el-table-column
+        prop="title"
+        label="标题"
+        width="240"
+      />
+      <el-table-column
+        prop="content"
+        label="正文"
+      />
+      <el-table-column
+        prop="create_time"
+        label="发送时间"
+        width="200"
+      />
+      <el-table-column
+        prop="remark"
+        label="引用文章ID"
+        width="100"
+      />
+      <el-table-column label="引用文章封面" width="120" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.Start|dateFilter }}</span>
+          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
         </template>
       </el-table-column>
-      <el-table-column label="结束时间" width="150" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.End|dateFilter }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="生效区域" width="200" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.CountryCodes||'全部' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="中文内容" align="center">
-        <template slot-scope="scope">{{ scope.row.Content }}</template>
-      </el-table-column>
-      <el-table-column label="有效" width="110" align="center">
-        <template slot-scope="scope">{{ (scope.row.IsActive ?"有效":"无效") }}</template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="toDetail(scope.row.Id)">详情</el-button>
-          <el-button type="text" size="small" @click="del(scope.row.Id)">删除</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column
+        prop="post_title"
+        label="引用文章标题"
+      />
     </el-table>
-    <el-pagination
-      :total="count"
-      background
-      layout="prev, pager, next"
-      @current-change="handleCurrentChange"
-    />
+    <div class="pagination">
+      <el-pagination
+        :total="count"
+        :page-size="pageSize"
+        background
+        layout="prev, pager, next"
+        @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 </template>
 
@@ -86,55 +80,16 @@ export default {
       count: 0,
       listLoading: true,
       pageSize: 10,
-      pageIndex: 1,
-      createDate: null,
-      search: {
-        CountryCode: ''
-      }
+      pageIndex: 1
     }
   },
   computed: {
-    countryCodes: function() {
-      return this.utils.countryCode()
-    }
   },
   watch: {},
   created() {
     this.getList(1)
   },
   methods: {
-    del(id) {
-      this.$confirm('确认删除, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.request({
-            url: this.apis.announcement + '/' + id,
-            method: 'delete',
-            noLoading: true
-          }).then(res => {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            this.getList(1)
-          })
-        })
-        .catch(() => {})
-    },
-    searchList() {
-      this.getList(1)
-    },
-    handleCurrentChange(v) {
-      this.getList(v)
-    },
-    toDetail(id) {
-      this.$router.push({
-        path: `/announcement/detail/${id}`
-      })
-    },
     getList(pageIndex) {
       this.listLoading = true
       this.request({
@@ -143,18 +98,29 @@ export default {
         noLoading: true,
         params: {
           pageSize: this.pageSize,
-          pageIndex: pageIndex || this.pageIndex,
-          ...this.search
+          pageIndex: pageIndex || this.pageIndex
         }
       }).then(res => {
         this.listLoading = false
-        this.list = res.data.rows
+        this.list = res.data.list
         this.count = res.data.count
+        console.log(this.count, res.data)
       })
+    },
+    getImg(hash) {
+      return `${this.apis.imgHost}${hash}`
+    },
+    handleCurrentChange(v) {
+      this.getList(v)
     }
   }
 }
 </script>
 
 <style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
 </style>
