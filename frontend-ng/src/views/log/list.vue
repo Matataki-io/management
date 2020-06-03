@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import DataRenderer from "../../components/Logging/DataRenderer";
+import DataRenderer from '../../components/Logging/DataRenderer'
 
 export default {
   components: {
