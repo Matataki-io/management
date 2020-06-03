@@ -25,12 +25,8 @@
         </template>
       </el-table-column>
       <el-table-column label="日志数据" prop="data" align="center">
-        <template slot-scope="scope" >
-          <vue-json-pretty style="text-align: left;"
-            :data="JSON.parse(scope.row.data)"
-            :deep="2"
-            >
-          </vue-json-pretty>
+        <template slot-scope="scope">
+          <DataRenderer :log="scope.row" />
         </template>
       </el-table-column>
     </el-table>
@@ -44,9 +40,12 @@
 </template>
 
 <script>
-import VueJsonPretty from 'vue-json-pretty'
+import DataRenderer from "../../components/Logging/DataRenderer";
 
 export default {
+  components: {
+    DataRenderer
+  },
   data() {
     return {
       list: null,
@@ -62,9 +61,6 @@ export default {
         isMint: false
       }
     }
-  },
-  components: {
-    VueJsonPretty
   },
   created() {
     this.getList(1)
