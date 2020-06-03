@@ -18,7 +18,8 @@
     "ipfs-mini": "^1.1.5",
     "jsonwebtoken": "^8.5.0",
     "mysql2": "^1.6.5",
-    "sanitize-html": "^1.20.1"
+    "sanitize-html": "^1.20.1",
+    "ua-parser-js": "^0.7.21"
   },
   "devDependencies": {
     "autod": "^3.0.1",

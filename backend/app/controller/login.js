@@ -1,6 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
+const uaParser = require('ua-parser-js')
 
 class LoginController extends Controller {
   async login() {
@@ -13,6 +14,12 @@ class LoginController extends Controller {
     }
     const msg = ctx.msg.success;
     msg.data = ctx.helper.jwtSign({ id: user.id, username, password });
+    const ua = uaParser(ctx.get('user-agent'));
+    await this.service.logging.addLog('login', user.id, {
+      ip: ctx.ip,
+      os: ua.os,
+      browser: ua.browser
+    })
     ctx.body = msg;
   }
 }
