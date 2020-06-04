@@ -104,15 +104,21 @@ export const constantRouterMap = [
   {
     path: '/announcement',
     component: Layout,
-    redirect: '/announcement/telegram',
+    redirect: '/announcement/post',
     name: 'Announcement',
-    meta: { title: '站内公告', icon: 'example' },
+    meta: { title: '站内公告', icon: 'form' },
     children: [
+      {
+        path: 'post',
+        name: 'AnnouncementPost',
+        component: () => import('@/views/announcement/post'),
+        meta: { title: '发布公告', icon: 'form' }
+      },
       {
         path: 'list',
         name: 'AnnouncementList',
         component: () => import('@/views/announcement/list'),
-        meta: { title: '公告列表', icon: 'guide' }
+        meta: { title: '公告列表', icon: 'list' }
       }
     ]
   },
