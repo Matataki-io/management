@@ -43,7 +43,7 @@ class AnnouncementService extends Service {
       }
     }
     catch(e) {
-      console.error(e);
+      this.logger.error('Announce service error:', e);
       return {
         list: [],
         count: 0
@@ -61,7 +61,6 @@ class AnnouncementService extends Service {
   async post(sender, title, content, postId) {
     const { ctx } = this;
     const announcementId = await setAnnouncement(ctx, sender, title, content);
-    console.log('announcementId', announcementId)
     if(!announcementId) return false
 
     const sql = `
@@ -82,11 +81,10 @@ class AnnouncementService extends Service {
           create_time: moment().format('YYYY-MM-DD HH:mm:ss')
         }
       });
-      console.log('result', result);
       return result[1] > 0
     }
     catch(e) {
-      console.error(e);
+      this.logger.error('Announce service error:', e);
       return false
     }
   }
@@ -115,7 +113,7 @@ class AnnouncementService extends Service {
       return true
     }
     catch(e) {
-      console.error(e);
+      this.logger.error('Announce service error:', e);
       return false
     }
   }
@@ -139,7 +137,7 @@ async function setAnnouncement(ctx, sender, title, content) {
     return result[0]
   }
   catch (e) {
-    console.error(e);
+    this.logger.error('Announce service error:', e);
     return false
   }
 }
@@ -161,7 +159,7 @@ async function getAnnouceIdByeventId(ctx, eventId) {
     else return 0;
   }
   catch (e) {
-    console.error(e);
+    this.logger.error('Announce service error:', e);
     return false
   }
 }
