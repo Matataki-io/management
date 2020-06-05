@@ -32,6 +32,10 @@ class UserController extends Controller {
   async update() {
     const { ctx } = this;
     const { id } = ctx.params;
+    const log = {
+      for: 'update',
+      id: parseInt(id)
+    }
     const { isSeed = null, isMint = null, isExchange = null, isRecommend = null } = ctx.request.body;
     let isSeedResult = null;
     let isMintResult = null;
@@ -39,18 +43,23 @@ class UserController extends Controller {
     let isRecommendResult = null;
     if (isSeed !== null) {
       isSeedResult = await ctx.service.user.setSeedPermission(id, isSeed);
+      log.seedUpdate = true;
     }
     if (isMint !== null) {
       isMintResult = await ctx.service.user.setMintPermission(id, isMint);
+      log.mintUpdate = true;
     }
     if (isExchange !== null) {
       isExchangeResult = await ctx.service.user.setExchangePermission(id, isExchange);
+      log.isExchangeUpdate = true;
     }
 
     if (isRecommend !== null) {
       isRecommendResult = await ctx.service.user.update(id, { is_recommend: isRecommend ? 1 : 0 });
+      log.isRecommendUpdate = true;
     }
 
+    await this.service.logging.addLog('user', ctx.user.id, log)
     ctx.body = {
       ...ctx.msg.success,
       data: {

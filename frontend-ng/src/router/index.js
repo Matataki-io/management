@@ -102,6 +102,27 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/announcement',
+    component: Layout,
+    redirect: '/announcement/post',
+    name: 'Announcement',
+    meta: { title: '站内公告', icon: 'form' },
+    children: [
+      {
+        path: 'post',
+        name: 'AnnouncementPost',
+        component: () => import('@/views/announcement/post'),
+        meta: { title: '发布公告', icon: 'form' }
+      },
+      {
+        path: 'list',
+        name: 'AnnouncementList',
+        component: () => import('@/views/announcement/list'),
+        meta: { title: '公告列表', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/admin',
     component: Layout,
     redirect: '/admin/list',
@@ -149,6 +170,17 @@ export const constantRouterMap = [
         meta: { title: '文章详情', icon: 'nested' }
       }
     ]
+  },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/list',
+    name: 'Logs',
+    meta: { title: '日志', icon: 'nested' },
+    children: [{
+      path: 'list',
+      component: () => import('@/views/log/list')
+    }]
   },
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -31,13 +31,13 @@ export default {
       username: '',
       nickname: '',
       password: ''
-    },
+    }
   }),
   async mounted() {
-      const result = await this.request({
-        url: this.apis.admin + '/me',
-      });
-      this.form = result.data;
+    const result = await this.request({
+      url: this.apis.admin + '/me'
+    })
+    this.form = result.data
   },
   methods: {
     async onSubmit() {
@@ -58,7 +58,7 @@ export default {
           type: 'error'
         })
       })
-    },
+    }
   }
 }
 </script>
