@@ -78,7 +78,7 @@ class AnnouncementService extends Service {
           object_id: announcementId,
           object_type: 'announcement',
           remark: postId,
-          create_time: moment().format('YYYY-MM-DD HH:mm:ss')
+          create_time: moment().utc().format('YYYY-MM-DD HH:mm:ss')
         }
       });
       return result[1] > 0
