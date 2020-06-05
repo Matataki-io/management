@@ -6,5 +6,6 @@ export default {
   boardcast: `/api/boardcast`,
   admin: `/api/admin`,
   getAllTelegramBindedUser: `/api/getAllTelegramBindedUser`,
-  imgHost: `https://ssimg.frontenduse.top`
+  imgHost: `https://ssimg.frontenduse.top`,
+  announcement: `/api/announcement`
 }

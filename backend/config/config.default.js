@@ -35,6 +35,8 @@ module.exports = appInfo => {
     credentials: true,
   };
 
+  config.proxy = true;
+  
   // add your middleware config here
   config.middleware = [ 'formatMessage' ];
 

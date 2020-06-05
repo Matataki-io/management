@@ -77,5 +77,6 @@ module.exports = () => {
   config.telegram = {
     botToken: '827566328:AAH5lfENE5cOat9IJ9r4_MOi4dvDYJt-SRI',
   };
+  config.proxy = true;
   return config;
 };

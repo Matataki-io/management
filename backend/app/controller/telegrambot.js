@@ -32,6 +32,10 @@ class telegramController extends Controller {
     const { chat_ids, text, disable_notification = true } = ctx.request.body;
     const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text, disable_notification }));
     const result = await Promise.all(requests);
+    await this.service.logging.addLog('broadcast', ctx.user.id, {
+      msgType: 'telegram',
+      sentMessage: text
+    })
     ctx.body = { ...ctx.msg.success, result };
   }
 
@@ -49,6 +53,10 @@ class telegramController extends Controller {
     });
     const requests = chat_ids.map(chat_id => this.service.telegram._sendMessage({ chat_id, text: html, disable_notification, parse_mode: 'HTML' }));
     const result = await Promise.all(requests);
+    await this.service.logging.addLog('broadcast', ctx.user.id, {
+      msgType: 'telegram',
+      sentMessage: html
+    })
     ctx.body = { ...ctx.msg.success, result };
   }
 
