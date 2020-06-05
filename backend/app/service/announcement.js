@@ -147,12 +147,17 @@ async function setAnnouncement(ctx, sender, title, content) {
 /** 根据事件id获取公告id */
 async function getAnnouceIdByeventId(ctx, eventId) {
   const sql = `
-    SELECT id, object_id FROM notify_event 
-    WHERE object_type = 'announcement' AND id = 56;
+    SELECT id, object_id FROM ${EVENT_TABLE}
+    WHERE object_type = 'announcement' AND id = :eventId;
   `;
   try {
-    const annouce = await ctx.model.query(sql, { eventId });
-    if(annouce) return annouce[0][0].object_id;
+    const annouce = await ctx.model.query(sql, {
+      raw: true,
+      replacements: {
+        eventId
+      }
+    });
+    if(annouce && annouce[0] && annouce[0][0]) return annouce[0][0].object_id;
     else return 0;
   }
   catch (e) {
