@@ -17,6 +17,11 @@
         width="180"
       />
       <el-table-column
+        prop="create_time"
+        label="发送时间"
+        width="200"
+      />
+      <el-table-column
         prop="title"
         label="标题"
         width="240"
@@ -24,11 +29,7 @@
       <el-table-column
         prop="content"
         label="正文"
-      />
-      <el-table-column
-        prop="create_time"
-        label="发送时间"
-        width="200"
+        min-width="240"
       />
       <el-table-column
         prop="remark"
@@ -43,7 +44,26 @@
       <el-table-column
         prop="post_title"
         label="引用文章标题"
+        min-width="240"
       />
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-popconfirm title="确定要永久删除这条公告么？" @onConfirm="deleteAnnouce(scope.row.event_id)">
+            <el-button
+              slot="reference"
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+            >
+              删除
+            </el-button>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="pagination">
       <el-pagination
@@ -112,6 +132,36 @@ export default {
     },
     handleCurrentChange(v) {
       this.getList(v)
+      this.pageIndex = v
+    },
+    deleteAnnouce(eventId) {
+      console.log('delete', eventId)
+      this.request({
+        url: `${this.apis.announcement}/${eventId}`,
+        method: 'delete',
+        noLoading: true
+      }).then(res => {
+        if (res.code === 0) {
+          this.$notify({
+            title: '成功',
+            message: '公告删除成功',
+            type: 'success'
+          })
+          this.getList()
+        } else {
+          this.$notify({
+            title: '失败',
+            message: res.message || '公告删除失败',
+            type: 'error'
+          })
+        }
+      }).catch(() => {
+        this.$notify({
+          title: '失败',
+          message: '公告删除失败',
+          type: 'error'
+        })
+      })
     }
   }
 }
