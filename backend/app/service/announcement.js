@@ -4,6 +4,7 @@ const moment = require('moment');
 
 const ANNOUNCEMENT_TABLE = 'announcement';
 const EVENT_TABLE = 'notify_event';
+const EVENT_RECIPIENTS_TABLE = 'notify_event_recipients';
 const POSTS_TABLE = 'posts';
 
 class AnnouncementService extends Service {
@@ -65,7 +66,7 @@ class AnnouncementService extends Service {
 
     const sql = `
       INSERT INTO ${EVENT_TABLE} (user_id, action, object_id, object_type, remark, create_time)
-      VALUES(:user_id, :action, :object_id, :object_type, :remark, :create_time)
+      VALUES(:user_id, :action, :object_id, :object_type, :remark, :create_time);
     `;
 
     try {
@@ -89,13 +90,42 @@ class AnnouncementService extends Service {
       return false
     }
   }
+
+  /** 删除公告 */
+  async delete(eventId) {
+    const { ctx } = this;
+    const annouceId = await getAnnouceIdByeventId(ctx, eventId);
+    if(!annouceId) return false;
+
+    const sql = `
+      START TRANSACTION;
+        DELETE FROM ${EVENT_RECIPIENTS_TABLE} WHERE event_id = :eventId;
+        DELETE FROM ${EVENT_TABLE} WHERE object_type = 'announcement' AND id = :eventId;
+        DELETE FROM ${ANNOUNCEMENT_TABLE} WHERE id = :annouceId;
+      COMMIT;
+    `;
+    try {
+      const result = await ctx.model.query(sql, {
+        raw: true,
+        replacements: {
+          eventId,
+          annouceId
+        }
+      });
+      return true
+    }
+    catch(e) {
+      console.error(e);
+      return false
+    }
+  }
 }
 
 /** 设定公告内容  */
 async function setAnnouncement(ctx, sender, title, content) {
   const sql = `
     INSERT INTO ${ANNOUNCEMENT_TABLE} (sender, title, content)
-    VALUES(:sender, :title, :content)
+    VALUES(:sender, :title, :content);
   `;
   try {
     const result = await ctx.model.query(sql, {
@@ -107,6 +137,23 @@ async function setAnnouncement(ctx, sender, title, content) {
       }
     });
     return result[0]
+  }
+  catch (e) {
+    console.error(e);
+    return false
+  }
+}
+
+/** 根据事件id获取公告id */
+async function getAnnouceIdByeventId(ctx, eventId) {
+  const sql = `
+    SELECT id, object_id FROM notify_event 
+    WHERE object_type = 'announcement' AND id = 56;
+  `;
+  try {
+    const annouce = await ctx.model.query(sql, { eventId });
+    if(annouce) return annouce[0][0].object_id;
+    else return 0;
   }
   catch (e) {
     console.error(e);
