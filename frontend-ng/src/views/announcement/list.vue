@@ -52,7 +52,7 @@
         width="100"
       >
         <template slot-scope="scope">
-          <el-popconfirm title="确定要永久删除这条公告么？" @onConfirm="deleteAnnouce(scope.row.event_id)">
+          <el-popconfirm title="要永久删除这条公告么？" @onConfirm="deleteAnnouce(scope.row.event_id)">
             <el-button
               slot="reference"
               type="danger"
