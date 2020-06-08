@@ -4,6 +4,7 @@ const moment = require('moment');
 
 const ANNOUNCEMENT_TABLE = 'announcement';
 const EVENT_TABLE = 'notify_event';
+const EVENT_RECIPIENTS_TABLE = 'notify_event_recipients';
 const POSTS_TABLE = 'posts';
 
 class AnnouncementService extends Service {
@@ -42,7 +43,7 @@ class AnnouncementService extends Service {
       }
     }
     catch(e) {
-      console.error(e);
+      this.logger.error('Announce service error:', e);
       return {
         list: [],
         count: 0
@@ -60,12 +61,11 @@ class AnnouncementService extends Service {
   async post(sender, title, content, postId) {
     const { ctx } = this;
     const announcementId = await setAnnouncement(ctx, sender, title, content);
-    console.log('announcementId', announcementId)
     if(!announcementId) return false
 
     const sql = `
       INSERT INTO ${EVENT_TABLE} (user_id, action, object_id, object_type, remark, create_time)
-      VALUES(:user_id, :action, :object_id, :object_type, :remark, :create_time)
+      VALUES(:user_id, :action, :object_id, :object_type, :remark, :create_time);
     `;
 
     try {
@@ -78,14 +78,42 @@ class AnnouncementService extends Service {
           object_id: announcementId,
           object_type: 'announcement',
           remark: postId,
-          create_time: moment().format('YYYY-MM-DD HH:mm:ss')
+          create_time: moment().utc().format('YYYY-MM-DD HH:mm:ss')
         }
       });
-      console.log('result', result);
       return result[1] > 0
     }
     catch(e) {
-      console.error(e);
+      this.logger.error('Announce service error:', e);
+      return false
+    }
+  }
+
+  /** 删除公告 */
+  async delete(eventId) {
+    const { ctx } = this;
+    const annouceId = await getAnnouceIdByeventId(ctx, eventId);
+    if(!annouceId) return false;
+
+    const sql = `
+      START TRANSACTION;
+        DELETE FROM ${EVENT_RECIPIENTS_TABLE} WHERE event_id = :eventId;
+        DELETE FROM ${EVENT_TABLE} WHERE object_type = 'announcement' AND id = :eventId;
+        DELETE FROM ${ANNOUNCEMENT_TABLE} WHERE id = :annouceId;
+      COMMIT;
+    `;
+    try {
+      const result = await ctx.model.query(sql, {
+        raw: true,
+        replacements: {
+          eventId,
+          annouceId
+        }
+      });
+      return true
+    }
+    catch(e) {
+      this.logger.error('Announce service error:', e);
       return false
     }
   }
@@ -95,7 +123,7 @@ class AnnouncementService extends Service {
 async function setAnnouncement(ctx, sender, title, content) {
   const sql = `
     INSERT INTO ${ANNOUNCEMENT_TABLE} (sender, title, content)
-    VALUES(:sender, :title, :content)
+    VALUES(:sender, :title, :content);
   `;
   try {
     const result = await ctx.model.query(sql, {
@@ -109,7 +137,29 @@ async function setAnnouncement(ctx, sender, title, content) {
     return result[0]
   }
   catch (e) {
-    console.error(e);
+    this.logger.error('Announce service error:', e);
+    return false
+  }
+}
+
+/** 根据事件id获取公告id */
+async function getAnnouceIdByeventId(ctx, eventId) {
+  const sql = `
+    SELECT id, object_id FROM ${EVENT_TABLE}
+    WHERE object_type = 'announcement' AND id = :eventId;
+  `;
+  try {
+    const annouce = await ctx.model.query(sql, {
+      raw: true,
+      replacements: {
+        eventId
+      }
+    });
+    if(annouce && annouce[0] && annouce[0][0]) return annouce[0][0].object_id;
+    else return 0;
+  }
+  catch (e) {
+    this.logger.error('Announce service error:', e);
     return false
   }
 }
