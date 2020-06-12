@@ -46,6 +46,12 @@ class PostsController extends Controller {
     if (is_recommend !== undefined) {
       result0 = await ctx.model.Posts.update({ is_recommend }, { where: { id: parseInt(id) } });
       log.recommend = true;
+
+      // 通知用户入选
+      if(is_recommend) {
+        const post = await ctx.service.posts.show(parseInt(id));
+        if(post) this.service.notify.sendEvent(0, post.uid, 'annouce', post.id, 'featuredArticles');
+      }
     }
     if (time_down !== undefined) {
       result1 = await ctx.model.Posts.update({ time_down }, { where: { id: parseInt(id) } });
