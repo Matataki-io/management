@@ -55,30 +55,33 @@ class AnnouncementService extends Service {
    * @sender 发件人
    * @title 公告标题
    * @content 公告正文
-   * @postId 【可选】引用文章的ID
-   * 
+   * @postId 引用文章的ID (传入0表示不引用
+   * @informInstant 即时公告
+   * @informNewUser 新用户公告
+   * @expireTime 到期时间（用于新用户公告
    */
-  async post(sender, title, content, postId) {
+  async post(sender, title, content, postId, informInstant, informNewUser, expireTime = null) {
     const { ctx } = this;
-    const announcementId = await setAnnouncement(ctx, sender, title, content);
-    if(!announcementId) return false
-
-    const sql = `
-      INSERT INTO ${EVENT_TABLE} (user_id, action, object_id, object_type, remark, create_time)
-      VALUES(:user_id, :action, :object_id, :object_type, :remark, :create_time);
-    `;
 
     try {
+      const announcementId = await setAnnouncement(ctx, sender, title, content, informInstant, informNewUser, expireTime);
+      if(!announcementId) return false
+
+      const sql = `
+        INSERT INTO ${EVENT_TABLE} (user_id, action, object_id, object_type, remark, create_time)
+        VALUES(:userId, :action, :objectId, :objectType, :remark, :createTime);
+      `;
+
       // 创建一个公告事件
       const result = await ctx.model.query(sql, {
         raw: true,
         replacements: {
-          user_id: 0,
+          userId: 0,
           action: 'annouce',
-          object_id: announcementId,
-          object_type: 'announcement',
+          objectId: announcementId,
+          objectType: 'announcement',
           remark: postId,
-          create_time: moment().utc().format('YYYY-MM-DD HH:mm:ss')
+          createTime: moment().utc().format('YYYY-MM-DD HH:mm:ss')
         }
       });
       return result[1] > 0
@@ -92,17 +95,18 @@ class AnnouncementService extends Service {
   /** 删除公告 */
   async delete(eventId) {
     const { ctx } = this;
-    const annouceId = await getAnnouceIdByeventId(ctx, eventId);
-    if(!annouceId) return false;
 
-    const sql = `
-      START TRANSACTION;
-        DELETE FROM ${EVENT_RECIPIENTS_TABLE} WHERE event_id = :eventId;
-        DELETE FROM ${EVENT_TABLE} WHERE object_type = 'announcement' AND id = :eventId;
-        DELETE FROM ${ANNOUNCEMENT_TABLE} WHERE id = :annouceId;
-      COMMIT;
-    `;
     try {
+      const annouceId = await getAnnouceIdByeventId(ctx, eventId);
+      if(!annouceId) return false;
+
+      const sql = `
+        START TRANSACTION;
+          DELETE FROM ${EVENT_RECIPIENTS_TABLE} WHERE event_id = :eventId;
+          DELETE FROM ${EVENT_TABLE} WHERE object_type = 'announcement' AND id = :eventId;
+          DELETE FROM ${ANNOUNCEMENT_TABLE} WHERE id = :annouceId;
+        COMMIT;
+      `;
       const result = await ctx.model.query(sql, {
         raw: true,
         replacements: {
@@ -120,26 +124,23 @@ class AnnouncementService extends Service {
 }
 
 /** 设定公告内容  */
-async function setAnnouncement(ctx, sender, title, content) {
+async function setAnnouncement(ctx, sender, title, content, informInstant, informNewUser, expireTime = null) {
   const sql = `
-    INSERT INTO ${ANNOUNCEMENT_TABLE} (sender, title, content)
-    VALUES(:sender, :title, :content);
+    INSERT INTO ${ANNOUNCEMENT_TABLE} (sender, title, content, inform_instant, inform_new_user, expire_time)
+    VALUES(:sender, :title, :content, :informInstant, :informNewUser, :expireTime);
   `;
-  try {
-    const result = await ctx.model.query(sql, {
-      raw: true,
-      replacements: {
-        sender,
-        title,
-        content
-      }
-    });
-    return result[0]
-  }
-  catch (e) {
-    this.logger.error('Announce service error:', e);
-    return false
-  }
+  const result = await ctx.model.query(sql, {
+    raw: true,
+    replacements: {
+      sender,
+      title,
+      content,
+      informInstant,
+      informNewUser,
+      expireTime
+    }
+  });
+  return result[0]
 }
 
 /** 根据事件id获取公告id */
@@ -148,20 +149,14 @@ async function getAnnouceIdByeventId(ctx, eventId) {
     SELECT id, object_id FROM ${EVENT_TABLE}
     WHERE object_type = 'announcement' AND id = :eventId;
   `;
-  try {
-    const annouce = await ctx.model.query(sql, {
-      raw: true,
-      replacements: {
-        eventId
-      }
-    });
-    if(annouce && annouce[0] && annouce[0][0]) return annouce[0][0].object_id;
-    else return 0;
-  }
-  catch (e) {
-    this.logger.error('Announce service error:', e);
-    return false
-  }
+  const annouce = await ctx.model.query(sql, {
+    raw: true,
+    replacements: {
+      eventId
+    }
+  });
+  if(annouce && annouce[0] && annouce[0][0]) return annouce[0][0].object_id;
+  else return 0;
 }
 
 module.exports = AnnouncementService;

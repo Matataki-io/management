@@ -47,6 +47,33 @@
         min-width="240"
       />
       <el-table-column
+        prop="inform_instant"
+        label="即时通知"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.inform_instant ? 'success' : 'info'">
+            {{ scope.row.inform_instant ? '是' : '否' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="inform_new_user"
+        label="新用户通知"
+        width="100"
+      >
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.inform_new_user ? 'success' : 'info'">
+            {{ scope.row.inform_new_user ? '是' : '否' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="expire_time"
+        label="失效时间"
+        width="200"
+      />
+      <el-table-column
         fixed="right"
         label="操作"
         width="100"
