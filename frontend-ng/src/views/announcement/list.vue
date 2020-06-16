@@ -1,5 +1,15 @@
 <template>
   <div class="app-container">
+    <div class="header">
+      <p>
+        筛选：
+      </p>
+      <el-radio-group v-model="filter" size="small">
+        <el-radio-button label="all">全部</el-radio-button>
+        <el-radio-button label="informInstant">即时通知</el-radio-button>
+        <el-radio-button label="informNewUser">新用户通知</el-radio-button>
+      </el-radio-group>
+    </div>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -127,12 +137,17 @@ export default {
       count: 0,
       listLoading: true,
       pageSize: 10,
-      pageIndex: 1
+      pageIndex: 1,
+      filter: 'all'
     }
   },
   computed: {
   },
-  watch: {},
+  watch: {
+    filter() {
+      this.handleCurrentChange(1)
+    }
+  },
   created() {
     this.getList(1)
   },
@@ -145,7 +160,8 @@ export default {
         noLoading: true,
         params: {
           pageSize: this.pageSize,
-          pageIndex: pageIndex || this.pageIndex
+          pageIndex: pageIndex || this.pageIndex,
+          filter: this.filter
         }
       }).then(res => {
         this.listLoading = false
@@ -199,5 +215,14 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+}
+.header {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.header P {
+  margin: 0;
 }
 </style>
