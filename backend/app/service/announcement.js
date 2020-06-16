@@ -9,8 +9,15 @@ const POSTS_TABLE = 'posts';
 
 class AnnouncementService extends Service {
   /** 获取公告列表 */
-  async list(pageSize, pageIndex) {
+  async list(pageSize, pageIndex, filter) {
     const { ctx } = this;
+
+    let filterSql = {
+      all: '',
+      informInstant: ' AND t2.inform_instant = 1',
+      informNewUser: ' AND t2.inform_new_user = 1'
+    }[filter];
+
     const sql = `
       SELECT
         t2.*,
@@ -19,15 +26,15 @@ class AnnouncementService extends Service {
       FROM ${EVENT_TABLE} t1
       JOIN ${ANNOUNCEMENT_TABLE} t2 ON t1.object_id = t2.id
       LEFT JOIN ${POSTS_TABLE} t3 ON t3.id = t1.remark
-      WHERE t1.object_type = 'announcement'
+      WHERE t1.object_type = 'announcement'${filterSql}
       ORDER BY t1.id DESC
       LIMIT :offset, :limit;
 
       SELECT
         count(1) as count
-      FROM ${EVENT_TABLE} c1
-      JOIN ${ANNOUNCEMENT_TABLE} c2 ON c1.object_id = c2.id
-      WHERE c1.object_type = 'announcement';
+      FROM ${EVENT_TABLE} t1
+      JOIN ${ANNOUNCEMENT_TABLE} t2 ON t1.object_id = t2.id
+      WHERE t1.object_type = 'announcement'${filterSql};
     `;
     try {
       const result = await ctx.model.query(sql, {
