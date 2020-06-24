@@ -65,6 +65,47 @@
           <postCard v-loading="postLoding" :p="post" />
         </div>
       </div>
+      <el-divider content-position="left">通知方式</el-divider>
+      <div class="postform-entry">
+        <p>
+          即时通知
+        </p>
+        <div class="postform-entry-input">
+          <el-switch
+            v-model="from.informInstant"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="updateInformInstant"
+          />
+        </div>
+      </div>
+      <div class="postform-entry">
+        <p>
+          新用户通知
+        </p>
+        <div class="postform-entry-input">
+          <el-switch
+            v-model="from.informNewUser"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            @change="updateInformNewUser"
+          />
+        </div>
+      </div>
+      <div v-if="from.informNewUser" class="postform-entry">
+        <p>
+          失效时间
+        </p>
+        <div class="postform-entry-input">
+          <el-date-picker
+            v-model="from.expireTime"
+            type="datetime"
+            placeholder="选择日期时间"
+            align="right"
+            :picker-options="pickerOptions"
+          />
+        </div>
+      </div>
       <div class="postform-button">
         <el-button type="primary" @click="confirm">
           发布
@@ -87,6 +128,14 @@
 </template>
 
 <script>
+import moment from 'moment'
+
+function newDatePicker(time) {
+  const date = new Date()
+  date.setTime(date.getTime() + time)
+  return date
+}
+
 import postCard from '@/components/PostCard/index.vue'
 
 export default {
@@ -99,13 +148,44 @@ export default {
         title: '',
         content: '',
         postSwitch: false,
-        postId: null
+        postId: null,
+        informInstant: true,
+        informNewUser: false,
+        expireTime: ''
       },
       post: null,
       timeout: null,
       postLoding: false,
       centerDialogVisible: false,
-      finalFrom: null
+      finalFrom: null,
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '一小时后',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000))
+            }
+          },
+          {
+            text: '明天',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 24))
+            }
+          },
+          {
+            text: '后天',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 48))
+            }
+          },
+          {
+            text: '一周后',
+            onClick(picker) {
+              picker.$emit('pick', newDatePicker(3600 * 1000 * 24 * 7))
+            }
+          }
+        ]
+      }
     }
   },
   computed: {
@@ -137,16 +217,20 @@ export default {
     confirm() {
       // console.log(JSON.stringify(this.from))
       // 有效性检查
-      const { title, content, postSwitch, postId } = this.from
+      const { title, content, postSwitch, postId, informInstant, informNewUser, expireTime } = this.from
       if (!title || !content) return this.$message.error('请完整填写表单')
       else if (postSwitch) {
         if (!postId) return this.$message.error('请完整填写表单')
-        if (this.postLoding) this.$message.error('正在获取文章，请稍后重试')
-        if (!this.post) this.$message.error('您输入的文章ID有误')
+        if (this.postLoding) return this.$message.error('正在获取文章，请稍后重试')
+        if (!this.post) return this.$message.error('您输入的文章ID有误')
+      } else if (informNewUser && expireTime) {
+        const date = new Date()
+        if (expireTime <= date) return this.$message.error('失效时间不能小于当前时间')
       }
       // 整理表单
-      const from = { title, content }
+      const from = { title, content, informInstant, informNewUser }
       if (postSwitch) from.postId = postId
+      if (informNewUser && expireTime) from.expireTime = moment(expireTime).utc().format('YYYY-MM-DD HH:mm:ss')
       this.finalFrom = from
       this.centerDialogVisible = true
     },
@@ -186,9 +270,18 @@ export default {
         title: '',
         content: '',
         postSwitch: false,
-        postId: null
+        postId: null,
+        informInstant: true,
+        informNewUser: false,
+        expireTime: ''
       }
       this.finalFrom = null
+    },
+    updateInformInstant(newVal) {
+      if (!newVal) this.from.informNewUser = true
+    },
+    updateInformNewUser(newVal) {
+      if (!newVal) this.from.informInstant = true
     }
   }
 }
