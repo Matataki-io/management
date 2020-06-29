@@ -35,23 +35,6 @@
           {{ scope.row.short_content.slice(0, 25) + '...' }}
         </template>
       </el-table-column>
-      <!-- <el-table-column label="状态" prop="status" align="center" /> -->
-      <el-table-column label="隐藏文章" align="center" fixed="right">
-        <template slot-scope="scope">
-          <el-switch
-            :value="Boolean(scope.row.status)"
-            @change="handleChange($event, scope.$index)"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="推荐" align="center" fixed="right">
-        <template slot-scope="scope">
-          <el-switch
-            :value="Boolean(scope.row.is_recommend)"
-            @change="handlePromoteChange($event, scope.$index)"
-          />
-        </template>
-      </el-table-column>
 
       <el-table-column label="发布时间" prop="create_time" width="105" align="center">
         <template slot-scope="scope">
@@ -70,7 +53,49 @@
       </el-table-column>
       <!-- <el-table-column label="是否被推荐" prop="is_recommend" align="center" /> -->
       <el-table-column label="评论需要支付的积分" prop="comment_pay_point" align="center" />
-      <el-table-column label="干预时间排序" prop="time_down" align="center" />
+      <!-- <el-table-column label="干预时间排序" prop="time_down" align="center" /> -->
+
+      <el-table-column label="降低时间排序" align="center" width="90" fixed="right">
+        <template slot-scope="scope">
+          <div style="margin: 12px 0;">
+            <el-badge :value="scope.row.time_down" class="item" type="primary" :hidden="scope.row.time_down === 0">
+              <el-switch
+                :value="scope.row.time_down > 0"
+                @change="handleTimeOrder($event, scope.$index)"
+              />
+            </el-badge>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="降低热门排序" align="center" width="90" fixed="right">
+        <template slot-scope="scope">
+          <div style="margin: 12px 0;">
+            <el-badge :value="scope.row.down" class="item" type="primary" :hidden="scope.row.down === 0">
+              <el-switch
+                :value="scope.row.down > 0"
+                @change="handlePopularity($event, scope.$index)"
+              />
+            </el-badge>
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="隐藏文章" align="center" fixed="right">
+        <template slot-scope="scope">
+          <el-switch
+            :value="Boolean(scope.row.status)"
+            @change="handleChange($event, scope.$index)"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="推荐" align="center" fixed="right">
+        <template slot-scope="scope">
+          <el-switch
+            :value="Boolean(scope.row.is_recommend)"
+            @change="handlePromoteChange($event, scope.$index)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作" width="100" fixed="right">
         <template slot-scope="scope">
           <router-link :to="`/p/detail/${scope.row.id}`" target="_blank">
@@ -128,43 +153,63 @@ export default {
     this.getList(1)
   },
   methods: {
-    handleChange(e, index) {
-      this.listLoading = true
+    async handleChange(e, index) {
       const id = this.list[index].id
-      this.request({
-        url: `${this.apis.posts}/${id}`,
-        method: 'put',
-        data: {
-          status: Number(e)
-        }
-      }).then(res => {
-        this.listLoading = false
-        if (res.code === 0) {
-          this.list[index].status = Number(e)
-          this.$message.success(`修改成功，${e ? '已被删除' : '已被释出'}`)
-        } else {
-          this.$message.success('修改失败')
-        }
-      })
+      const result = await this.updatePost(
+        id,
+        { status: Number(e) },
+        `修改成功，${e ? '已被删除' : '已被释出'}`
+      )
+      if (result) this.list[index].status = Number(e)
     },
-    handlePromoteChange(e, index) {
-      this.listLoading = true
+    async handlePromoteChange(e, index) {
       const id = this.list[index].id
-      this.request({
-        url: `${this.apis.posts}/${id}`,
-        method: 'put',
-        data: {
-          is_recommend: Number(e)
-        }
-      }).then(res => {
+      const result = await this.updatePost(
+        id,
+        { is_recommend: Number(e) },
+        `修改成功，${e ? '已推荐' : '已取消推荐'}`
+      )
+      if (result) this.list[index].is_recommend = Number(e)
+    },
+
+    async handleTimeOrder(e, index) {
+      const time_down = Number(e) ? 10 : 0
+      const result = await this.updatePost(
+        this.list[index].id,
+        { time_down },
+        `修改成功，${e ? '已在时间排序中置底' : '已恢复时间排序中的默认位置'}`
+      )
+      if (result) this.list[index].time_down = time_down
+    },
+
+    async handlePopularity(e, index) {
+      const down = Number(e) ? 10 : 0
+      const result = await this.updatePost(
+        this.list[index].id,
+        { down },
+        `修改成功，${e ? '已在热门排序中置底' : '已恢复热门排序中的默认位置'}`
+      )
+      if (result) this.list[index].down = down
+    },
+
+    /** 修改文章参数（重复的代码封装一下） */
+    async updatePost(id, data, successMsg, errorMsg) {
+      this.listLoading = true
+      try {
+        const result = await this.request({
+          url: `${this.apis.posts}/${id}`,
+          method: 'put',
+          data
+        })
         this.listLoading = false
-        if (res.code === 0) {
-          this.list[index].is_recommend = Number(e)
-          this.$message.success(`修改成功，${e ? '已推荐' : '已取消推荐'}`)
-        } else {
-          this.$message.success('修改失败')
-        }
-      })
+        if (result.code === 0) this.$message.success(successMsg || '修改成功')
+        else this.$message.error(errorMsg || '修改失败')
+        return result.code === 0
+      } catch (e) {
+        this.listLoading = false
+        this.$message.error(errorMsg || '修改失败')
+        return false
+      }
     },
     getImg(hash) {
       return `${this.apis.imgHost}${hash}`
