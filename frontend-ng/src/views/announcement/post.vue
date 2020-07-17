@@ -10,6 +10,8 @@
             v-model="from.title"
             type="text"
             placeholder="请输入标题"
+            maxlength="255"
+            show-word-limit
           />
         </div>
       </div>
@@ -22,8 +24,10 @@
           <el-input
             v-model="from.content"
             type="textarea"
-            :autosize="{ minRows: 5, maxRows: 15}"
+            :autosize="{ minRows: 10 }"
             placeholder="请输入正文"
+            maxlength="1000"
+            show-word-limit
           />
         </div>
       </div>
