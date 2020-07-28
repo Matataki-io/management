@@ -63,16 +63,6 @@ export default {
     },
     getList(pageIndex) {
       this.listLoading = true;
-      const search = {};
-      for (const item in this.search) {
-        if (!isNull(this.search[item])) {
-          if (["is_recommend", "isMint"].indexOf(item) >= 0) {
-            search[item] = this.search[item] ? "1" : "";
-          } else {
-            search[item] = this.search[item];
-          }
-        }
-      }
       this.request({
         url: this.apis.minetokenApplicationSurvey,
         method: "get",
@@ -97,9 +87,8 @@ export default {
           }
         });
     },
-  },
-
-};
+  }
+}
 </script>
 
 <style lang="scss" scoped>
