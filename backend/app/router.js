@@ -37,4 +37,9 @@ module.exports = app => {
   // Logging
   router.get('/api/logs', passport, controller.logging.index);
 
+  // fan票申请管理
+  router.get('/api/minetoken_application', passport, controller.minetokenApplication.list);
+  router.post('/api/minetoken_application', passport, controller.minetokenApplication.modify);
+  router.get('/api/minetoken_application_survey', passport, controller.minetokenApplication.surveyList);
+  router.get('/api/minetoken_application_survey/:id', passport, controller.minetokenApplication.surveyListId);
 };
