@@ -63,13 +63,14 @@ class MineTokenService extends Service {
         })
 
         if (result) {
-          let { name, logo, symbol } = result[0]
+          let { name, logo, symbol, tag } = result[0]
           let data = {
             key: this.config.matatakiApiKey, // 服务端会验证
             uid: uid,
             name,
             logo,
             symbol,
+            tag: tag.split(','),
             initialSupply: 1000 * (10 ** 4)
           }
           // 发布token
