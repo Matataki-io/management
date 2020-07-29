@@ -7,5 +7,7 @@ export default {
   admin: `/api/admin`,
   getAllTelegramBindedUser: `/api/getAllTelegramBindedUser`,
   imgHost: `https://ssimg.frontenduse.top`,
-  announcement: `/api/announcement`
+  announcement: `/api/announcement`,
+  minetokenApplication: `/api/minetoken_application`,
+  minetokenApplicationSurvey: `/api/minetoken_application_survey`,
 }
