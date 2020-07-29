@@ -1,6 +1,6 @@
 'use strict';
 const Service = require('egg').Service;
-
+const axios = require('axios');
 
 class MineTokenService extends Service {
   // fan票申请列表
@@ -51,6 +51,39 @@ class MineTokenService extends Service {
     }
 
     try {
+      // 同意发布token
+      if (type === 'agree') {
+        // 查询数据
+        const sql = `SELECT * FROM minetokens_application WHERE uid = :uid;`;
+        const [ result ] = await ctx.model.query(sql, {
+          raw: true,
+          replacements: {
+            uid: uid
+          }
+        })
+
+        if (result) {
+          let { name, logo, symbol } = result[0]
+          let data = {
+            key: this.config.matatakiApiKey, // 服务端会验证
+            uid: uid,
+            name,
+            logo,
+            symbol,
+            initialSupply: 1000 * (10 ** 4)
+          }
+          // 发布token
+          const minetokenCreateResult = await axios.post(`${this.config.matatakiServer}/_minetoken/_create`, data)
+          if (minetokenCreateResult.status === 200 && minetokenCreateResult.data.code === 0) {
+            console.log('minetokenCreateResult', minetokenCreateResult.data)
+          } else {
+            throw new Error('error minetokenCreateResult: ', minetokenCreateResult.data)
+          }
+        } else {
+          throw new Error('error result: ', result)
+        }
+      }
+
       const sql = 'UPDATE minetokens_application SET `status` = :status WHERE uid = :uid;';
       const [ result ] = await ctx.model.query(sql, {
         raw: true,
