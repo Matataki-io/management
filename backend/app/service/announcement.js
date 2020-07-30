@@ -91,11 +91,36 @@ class AnnouncementService extends Service {
           createTime: moment().utc().format('YYYY-MM-DD HH:mm:ss')
         }
       });
-      return result[1] > 0
+      return result[0]
     }
     catch(e) {
       this.logger.error('Announce service error:', e);
       return false
+    }
+  }
+
+  /** 
+   * 发布定向公告
+   * @sender 发件人
+   * @receivingIds 事件接收者的列表
+   * @title 公告标题
+   * @content 公告正文
+   * @quoteId 引用内容的ID (传入0表示不引用)
+   * @quoteType 引用内容的类型，有 post 和 token 可选，默认是 post
+   */
+  async targetedPost(sender, receivingIds, title, content, quoteId, quoteType) {
+    const { ctx } = this;
+    const objectSwitch = { post: 'announcement', token: 'announcementToken' };
+    const objectType = objectSwitch[quoteType] || objectSwitch.post
+    try {
+      const announcementId = await setAnnouncement(ctx, sender, title, content, 0, 0);
+      if(!announcementId) return false;
+
+      return await this.service.notify.sendEvent(0, receivingIds, 'annouce', announcementId, objectType, quoteId || 0);
+    }
+    catch(e) {
+      this.logger.error('Announce service error:', e);
+      return false;
     }
   }
 
