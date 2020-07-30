@@ -39,7 +39,7 @@ class MineTokenService extends Service {
     }
   }
   // 修改状态
-  async modify(uid, type) {
+  async modify(uid, type, reason) {
     const { ctx } = this;
     let status = ''
     if (type === 'agree') {
@@ -91,14 +91,22 @@ class MineTokenService extends Service {
         }
       }
 
-      const sql = 'UPDATE minetokens_application SET `status` = :status WHERE uid = :uid;';
-      const [ result ] = await ctx.model.query(sql, {
+      let sql = 'UPDATE minetokens_application SET `status` = :status WHERE uid = :uid;';
+      let options = {
         raw: true,
         replacements: {
           status: status,
           uid: uid
         }
-      })
+      }
+      
+      // 拒绝理由
+      if (type === 'reject') {
+        sql = 'UPDATE minetokens_application SET `status` = :status, reason = :reason WHERE uid = :uid;';
+        options.replacements.reason = reason
+      }
+
+      const [ result ] = await ctx.model.query(sql, options)
 
       console.log('modify result', result)
 
