@@ -22,6 +22,7 @@ const OBJECT_TYPES = [
   'user', // 用户
   'comment', // 评论
   'announcement', // 公告
+  'announcementToken', // 引用内容为Fan票的公告
   'tokenWallet', // Token钱包
   'cnyWallet', // CNY钱包
   'featuredArticles' // 精选文章
@@ -67,27 +68,29 @@ class notifyService extends Service {
   /** 
    * 设定事件的接收者 (一个事件多个接收者)
    * @eventId 事件在数据库中的索引
-   * @uid 事件接收者
+   * @uids 事件接收者列表
    */
-  async setEventRecipient(eventId, uid) {
-    if(!uid || uid.length < 1) return false
-    try {
+  async setEventRecipients(eventId, uids) {
+    if(!uids || uids.length < 1) return false
+    let sql = `INSERT INTO ${EVENT_RECIPIENT_TABLE} (event_id, user_id) VALUES (?, ?)`;
+    let recipients = [];
+    uids.forEach((uid, index) =>  {
+      recipients.push(eventId);
+      recipients.push(uid);
+      if (index > 0) sql += ', (?, ?)';
+    });
+    sql += ';';
 
-      const result = await this.ctx.model.query(`
-        INSERT INTO ${EVENT_RECIPIENT_TABLE} (event_id, user_id)
-        VALUES(:eventId, :uid);
-      `, {
+    try {
+      const result = await this.ctx.model.query(sql, {
         raw: true,
-        replacements: {
-          eventId,
-          uid
-        }
+        replacements: recipients
       });
-      return result[1]
+      return result;
     }
     catch(e) {
       this.logger.error(e);
-      return false
+      return false;
     }
   }
 
@@ -101,7 +104,7 @@ class notifyService extends Service {
    * @remark 【可选】补充信息
    * @noDuplication 【默认：true】避免重复。开启时，如果参数相同的事件已经存在，将不会创建新事件。
    */
-  async sendEvent(senderId, receivingId,  action, objectId, objectType, remark, noDuplication = true) {
+  async sendEvent(senderId, receivingIds,  action, objectId, objectType, remark, noDuplication = true) {
     // 参数相同的事件如果已经存在了，就不会在创建新的
     if(noDuplication) {
       let sql = `
@@ -131,8 +134,8 @@ class notifyService extends Service {
     const eventId = await this.createEvent(senderId, action, objectId, objectType, remark);
     if(!eventId) return false;
     // 设定事件的接收者
-    const result = await this.setEventRecipient(eventId, receivingId);
-    return result > 0;
+    const result = await this.setEventRecipients(eventId, receivingIds);
+    return !!result[1];
   }
 
 }

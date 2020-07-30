@@ -50,7 +50,7 @@ class PostsController extends Controller {
       // 通知用户入选
       if(is_recommend) {
         const post = await ctx.service.posts.show(parseInt(id));
-        if(post) this.service.notify.sendEvent(0, post.uid, 'annouce', post.id, 'featuredArticles');
+        if(post) this.service.notify.sendEvent(0, [post.uid], 'annouce', post.id, 'featuredArticles');
       }
     }
     if (time_down !== undefined) {
