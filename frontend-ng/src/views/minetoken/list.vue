@@ -58,7 +58,7 @@
             <el-button
               type="primary"
               size="small"
-              @click="modify(scope.row.uid, 'reject')"
+              @click="reject(scope.row)"
               >拒绝</el-button
             >
           </span>
@@ -78,7 +78,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="调研表单" :visible.sync="dialogTableVisible">
+    <el-dialog title="调研表单" :visible.sync="dialogTableVisibleSurvey">
       <el-form ref="form" :model="surveyData" label-width="80px">
         <el-form-item label="用户ID">{{surveyData.uid}}</el-form-item>
         <el-form-item label="自我介绍">{{surveyData.introduction}}</el-form-item>
@@ -99,6 +99,23 @@
       </el-form>
     </el-dialog>
 
+    <el-dialog title="拒绝理由" :visible.sync="dialogTableVisibleReason">
+      <div class="reason">
+        <span>常用理由: </span>
+        <ol>
+          <li v-for="(item, index) in reasonList" :key="index" @click="setReason(item)">{{ item }}</li>
+        </ol>
+      </div>
+      <el-input
+        type="textarea"
+        :rows="6"
+        placeholder="请输入内容"
+        v-model="reasonValue">
+      </el-input> 
+      <el-button type="primary" style="margin-top: 20px;" @click="rejectButton" v-loading="dialogTableVisibleReason && dialogTableVisibleReasonLoading">确定</el-button>
+    </el-dialog>
+
+
     <div class="pagination">
       <el-pagination
         background
@@ -117,7 +134,23 @@ import moment from "moment";
 export default {
   data() {
     return {
-      dialogTableVisible: false,
+      dialogTableVisibleSurvey: false,
+      dialogTableVisibleReason: false,
+      dialogTableVisibleReasonLoading: false,
+      reasonValue: '',
+      reasonList: [
+        '不能包含主流币种名称',
+        '不能包含违法乱纪信息',
+        '不能包含敏感词汇',
+        '不能包含反动信息',
+        '不能包含黄赌毒信息',
+        '不能包含小广告信息',
+        '不能包含不健康的内容',
+        '不能使用特殊字符次',
+        '请完善信息',
+        '请认真填写内容',
+      ],
+      currentUserInfo: null,
       surveyData: [],
       list: [],
       count: 0,
@@ -179,14 +212,33 @@ export default {
           }
         });
     },
+    reject(data) {
+      this.currentUserInfo = data
+      this.dialogTableVisibleReason = true
+    },
+    rejectButton() {
+      if (this.reasonValue.trim()) {
+        this.modify(this.currentUserInfo.uid, 'reject')
+      } else {
+        this.$message.error('请输入内容')
+      }
+    },
     modify(uid, type) {
+      let data = {
+        uid: uid,
+        type: type
+      }
+
+      // 拒绝理由
+      if (type === 'reject') {
+        data.reason = this.reasonValue
+        this.dialogTableVisibleReasonLoading = true
+      }
+
       this.request({
         url: this.apis.minetokenApplication,
         method: "post",
-        data: {
-          uid: uid,
-          type: type
-        }
+        data: data
       })
         .then(res => {
           // console.log("res", res);
@@ -200,7 +252,14 @@ export default {
         .catch(error => {
           console.log("error", error);
           this.$message.error("操作错误");
-        });
+        })
+        .finally(() => {
+          // 拒绝理由
+          if (type === 'reject') {
+            this.dialogTableVisibleReasonLoading = false
+            this.dialogTableVisibleReason = false
+          }
+        })
     },
     changeSort(val) {
       this.sort = val;
@@ -215,7 +274,7 @@ export default {
         .then(res => {
           if (res.code === 0 && res.data) {
             this.surveyData = res.data
-            this.dialogTableVisible = true
+            this.dialogTableVisibleSurvey = true
           } else {
             this.$message.info('暂无表单')
           }
@@ -224,6 +283,10 @@ export default {
           console.log('error', error)
           this.$message.info('发生错误')
         });
+    },
+    setReason(item) {
+      let list = this.reasonValue.split('\n')
+      this.reasonValue += `${list.length}. ${item}\n`
     }
   }
 };
@@ -261,5 +324,18 @@ export default {
     font-weight: bold;
   }
   float: right;
+}
+
+.reason {
+  span {
+    font-size: 14px;
+  }
+
+  ol {
+    li {
+      margin: 10px 0;
+      cursor: pointer;
+    }
+  }
 }
 </style>
