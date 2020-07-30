@@ -82,7 +82,7 @@ class MineTokenService extends Service {
           const minetokenCreateResult = await axios.post(`${this.config.matatakiServer}/_minetoken/_create`, data)
           if (minetokenCreateResult.status === 200 && minetokenCreateResult.data.code === 0) {
             console.log('minetokenCreateResult', minetokenCreateResult.data)
-            tokenId = minetokenCreateResult.data
+            tokenId = minetokenCreateResult.data.data
           } else {
             throw new Error('error minetokenCreateResult: ', minetokenCreateResult.data)
           }
