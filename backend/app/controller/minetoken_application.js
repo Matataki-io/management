@@ -13,8 +13,8 @@ class MineTokenApplicationController extends Controller {
   }
   async modify() {
     const { ctx } = this;
-    const { type, uid } = ctx.request.body;
-    const result = await ctx.service.minetokenApplication.modify(uid, type);
+    const { type, uid, reason = '' } = ctx.request.body;
+    const result = await ctx.service.minetokenApplication.modify(uid, type, reason);
     if (result.code === 0) {
       ctx.body = ctx.msg.success;
     } else {
