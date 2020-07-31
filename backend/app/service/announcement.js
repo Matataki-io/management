@@ -6,6 +6,7 @@ const ANNOUNCEMENT_TABLE = 'announcement';
 const EVENT_TABLE = 'notify_event';
 const EVENT_RECIPIENTS_TABLE = 'notify_event_recipients';
 const POSTS_TABLE = 'posts';
+const OBJECT_TYPES = ['announcement', 'announcementToken'];
 
 class AnnouncementService extends Service {
   /** 获取公告列表 */
@@ -23,12 +24,12 @@ class AnnouncementService extends Service {
     const sql = `
       SELECT
         t2.*,
-        t1.id AS event_id, t1.create_time, t1.remark,
+        t1.id AS event_id, t1.object_type, t1.create_time, t1.remark,
         t3.title AS post_title, t3.short_content, t3.cover
       FROM ${EVENT_TABLE} t1
       JOIN ${ANNOUNCEMENT_TABLE} t2 ON t1.object_id = t2.id
-      LEFT JOIN ${POSTS_TABLE} t3 ON t3.id = t1.remark
-      WHERE t1.object_type = 'announcement'${filterSql}
+      LEFT JOIN ${POSTS_TABLE} t3 ON t3.id = t1.remark AND t1.object_type = 'announcement'
+      WHERE t1.object_type IN(:objectTypes)${filterSql}
       ORDER BY t1.id DESC
       LIMIT :offset, :limit;
 
@@ -36,14 +37,15 @@ class AnnouncementService extends Service {
         count(1) as count
       FROM ${EVENT_TABLE} t1
       JOIN ${ANNOUNCEMENT_TABLE} t2 ON t1.object_id = t2.id
-      WHERE t1.object_type = 'announcement'${filterSql};
+      WHERE t1.object_type IN(:objectTypes)${filterSql};
     `;
     try {
       const result = await ctx.model.query(sql, {
         raw: true,
         replacements: {
           offset: (pageIndex - 1) * pageSize,
-          limit: pageSize
+          limit: pageSize,
+          objectTypes: OBJECT_TYPES
         }
       });
       return {
@@ -101,7 +103,7 @@ class AnnouncementService extends Service {
     }
   }
 
-  /** 
+  /**
    * 发布定向公告
    * @sender 发件人
    * @receivingIds 事件接收者的列表
@@ -137,7 +139,7 @@ class AnnouncementService extends Service {
       const sql = `
         START TRANSACTION;
           DELETE FROM ${EVENT_RECIPIENTS_TABLE} WHERE event_id = :eventId;
-          DELETE FROM ${EVENT_TABLE} WHERE object_type = 'announcement' AND id = :eventId;
+          DELETE FROM ${EVENT_TABLE} WHERE object_type IN(:objectTypes) AND id = :eventId;
           DELETE FROM ${ANNOUNCEMENT_TABLE} WHERE id = :annouceId;
         COMMIT;
       `;
@@ -145,7 +147,8 @@ class AnnouncementService extends Service {
         raw: true,
         replacements: {
           eventId,
-          annouceId
+          annouceId,
+          objectTypes: OBJECT_TYPES
         }
       });
       return true
@@ -181,12 +184,13 @@ async function setAnnouncement(ctx, sender, title, content, informInstant, infor
 async function getAnnouceIdByeventId(ctx, eventId) {
   const sql = `
     SELECT id, object_id FROM ${EVENT_TABLE}
-    WHERE object_type = 'announcement' AND id = :eventId;
+    WHERE object_type IN(:objectTypes) AND id = :eventId;
   `;
   const annouce = await ctx.model.query(sql, {
     raw: true,
     replacements: {
-      eventId
+      eventId,
+      objectTypes: OBJECT_TYPES
     }
   });
   if(annouce && annouce[0] && annouce[0][0]) return annouce[0][0].object_id;

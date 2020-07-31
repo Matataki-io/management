@@ -43,9 +43,14 @@
         label="正文"
         min-width="240"
       />
+      <el-table-column prop="object_type" label="引用类型" width="80">
+        <template slot-scope="scope">
+          {{ scope.row.object_type === 'announcementToken'? 'Fan票' : '文章' }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="remark"
-        label="引用文章ID"
+        label="引用ID"
         width="100"
       />
       <el-table-column label="引用文章封面" width="120" align="center">
