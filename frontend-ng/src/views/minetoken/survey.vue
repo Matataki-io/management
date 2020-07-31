@@ -6,10 +6,10 @@
       <el-table-column prop="age" label="年龄" width="80"></el-table-column>
       <el-table-column prop="number" label="手机号码" width="110"></el-table-column>
       <el-table-column prop="career" label="职业领域" ></el-table-column>
-      <el-table-column prop="field" label="领域" ></el-table-column>
-      <el-table-column prop="platform" label="平台" ></el-table-column>
-      <el-table-column prop="nickname" label="昵称" ></el-table-column>
-      <el-table-column prop="link" label="链接" ></el-table-column>
+      <el-table-column prop="field" label="创作领域" ></el-table-column>
+      <el-table-column prop="platform" label="创作平台" ></el-table-column>
+      <el-table-column prop="nickname" label="创作者昵称" ></el-table-column>
+      <el-table-column prop="link" label="主页链接" ></el-table-column>
       <el-table-column width="260" label="是否愿意参与Fan票产品的用户访谈？">
         <template slot-scope="scope">
           {{ scope.row.interview === 0 ? '愿意' : '不愿意' }}
