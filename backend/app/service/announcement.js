@@ -15,7 +15,9 @@ class AnnouncementService extends Service {
     let filterSql = {
       all: '',
       informInstant: ' AND t2.inform_instant = 1',
-      informNewUser: ' AND t2.inform_new_user = 1'
+      informNewUser: ' AND t2.inform_new_user = 1',
+      targetedPost: ' AND t2.inform_instant = 0 AND t2.inform_new_user = 0',
+      noTargetedPost: ' AND (t2.inform_instant != 0 OR t2.inform_new_user != 0)'
     }[filter];
 
     const sql = `
