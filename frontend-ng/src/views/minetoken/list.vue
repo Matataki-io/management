@@ -55,23 +55,24 @@
               @click="modify(scope.row.uid, 'agree')"
               >同意</el-button
             >
-            <el-button
-              type="primary"
-              size="small"
-              @click="reject(scope.row)"
+            <el-button type="primary" size="small" @click="reject(scope.row)"
               >拒绝</el-button
             >
           </span>
           <span v-else-if="scope.row.status === 3">拒绝申请</span>
           <span v-else>其他</span>
-          <span style="padding-left: 10px;">          
+          <span style="padding-left: 10px;">
             <el-tooltip
               class="item"
               effect="dark"
               content="查看调研表单"
               placement="top"
             >
-              <el-button icon="el-icon-search" circle @click="viewSurvey(scope.row.uid)"></el-button>
+              <el-button
+                icon="el-icon-search"
+                circle
+                @click="viewSurvey(scope.row.uid)"
+              ></el-button>
             </el-tooltip>
           </span>
         </template>
@@ -79,42 +80,106 @@
     </el-table>
 
     <el-dialog title="调研表单" :visible.sync="dialogTableVisibleSurvey">
-      <el-form ref="form" :model="surveyData" label-width="80px">
-        <el-form-item label="用户ID">{{surveyData.uid}}</el-form-item>
-        <el-form-item label="自我介绍">{{surveyData.introduction}}</el-form-item>
-        <el-form-item label="年龄">{{surveyData.age}}</el-form-item>
-        <el-form-item label="手机号码">{{surveyData.number}}</el-form-item>
-        <el-form-item label="职业领域">{{surveyData.career}}</el-form-item>
-        <el-form-item label="领域">{{surveyData.field}}</el-form-item>
-        <el-form-item label="平台">{{surveyData.platform}}</el-form-item>
-        <el-form-item label="昵称">{{surveyData.nickname}}</el-form-item>
-        <el-form-item label="链接">{{surveyData.link}}</el-form-item>
-        <el-form-item label="是否愿意参与Fan票产品的用户访谈？" label-width="260px" >{{surveyData.interview === 0 ? '愿意' : '不愿意'}}</el-form-item>
-        <el-form-item label="您如何了解到了Fan票？" label-width="170px">{{surveyData.know}}</el-form-item>
-        <el-form-item label="为什么想要发行Fan票？" label-width="170px">{{surveyData.publish}}</el-form-item>
-        <el-form-item label="您希望了解什么信息？" label-width="170px">{{surveyData.info}}</el-form-item>
-        <el-form-item label="您会如何推广自己的Fan票？" label-width="200px">{{surveyData.promote}}</el-form-item>
-        <el-form-item label="创建时间">{{time(surveyData.create_time)}}</el-form-item>
-        <el-form-item label="更新时间">{{time(surveyData.create_time)}}</el-form-item>
-      </el-form>
+      <ul class="survey-list">
+        <li>
+          <section class="item-title w80">用户ID</section>
+          <section class="item-text">{{ surveyData.uid }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">自我介绍</section>
+          <section class="item-text">{{ surveyData.introduction }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">年龄</section>
+          <section class="item-text">{{ surveyData.age }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">手机号码</section>
+          <section class="item-text">{{ surveyData.number }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">职业领域</section>
+          <section class="item-text">{{ surveyData.career }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">创作领域</section>
+          <section class="item-text">{{ surveyData.field }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">创作平台</section>
+          <section class="item-text">{{ surveyData.platform }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">创作者昵称</section>
+          <section class="item-text">{{ surveyData.nickname }}</section>
+        </li>
+        <li>
+          <section class="item-title w80">主页链接</section>
+          <section class="item-text">{{ surveyData.link }}</section>
+        </li>
+        <li>
+          <section class="item-title">
+            是否愿意参与Fan票产品的用户访谈？
+          </section>
+          <section class="item-text">
+            {{ surveyData.interview === 0 ? "愿意" : "不愿意" }}
+          </section>
+        </li>
+        <li>
+          <section class="item-title w180">您如何了解到了Fan票？</section>
+          <section class="item-text">{{ surveyData.know }}</section>
+        </li>
+        <li>
+          <section class="item-title w180">为什么想要发行Fan票？</section>
+          <section class="item-text">{{ surveyData.publish }}</section>
+        </li>
+        <li>
+          <section class="item-title w180">您希望了解什么信息？</section>
+          <section class="item-text">{{ surveyData.info }}</section>
+        </li>
+        <li>
+          <section class="item-title w210">您会如何推广自己的Fan票？</section>
+          <section class="item-text">{{ surveyData.promote }}</section>
+        </li>
+        <li>
+          <section class="item-title">创建时间</section>
+          <section class="item-text">{{ surveyData.create_time }}</section>
+        </li>
+        <li>
+          <section class="item-title">更新时间</section>
+          <section class="item-text">{{ surveyData.update_time }}</section>
+        </li>
+      </ul>
     </el-dialog>
 
     <el-dialog title="拒绝理由" :visible.sync="dialogTableVisibleReason">
       <div class="reason">
         <span>常用理由: </span>
         <ol>
-          <li v-for="(item, index) in reasonList" :key="index" @click="setReason(item)">{{ item }}</li>
+          <li
+            v-for="(item, index) in reasonList"
+            :key="index"
+            @click="setReason(item)"
+          >
+            {{ item }}
+          </li>
         </ol>
       </div>
       <el-input
         type="textarea"
         :rows="6"
         placeholder="请输入内容"
-        v-model="reasonValue">
-      </el-input> 
-      <el-button type="primary" style="margin-top: 20px;" @click="rejectButton" v-loading="dialogTableVisibleReason && dialogTableVisibleReasonLoading">确定</el-button>
+        v-model="reasonValue"
+      >
+      </el-input>
+      <el-button
+        type="primary"
+        style="margin-top: 20px;"
+        @click="rejectButton"
+        v-loading="dialogTableVisibleReason && dialogTableVisibleReasonLoading"
+        >确定</el-button
+      >
     </el-dialog>
-
 
     <div class="pagination">
       <el-pagination
@@ -137,18 +202,18 @@ export default {
       dialogTableVisibleSurvey: false,
       dialogTableVisibleReason: false,
       dialogTableVisibleReasonLoading: false,
-      reasonValue: '',
+      reasonValue: "",
       reasonList: [
-        '不能包含主流币种名称',
-        '不能包含违法乱纪信息',
-        '不能包含敏感词汇',
-        '不能包含反动信息',
-        '不能包含黄赌毒信息',
-        '不能包含小广告信息',
-        '不能包含不健康的内容',
-        '不能使用特殊字符次',
-        '请完善信息',
-        '请认真填写内容',
+        "不能包含主流币种名称",
+        "不能包含违法乱纪信息",
+        "不能包含敏感词汇",
+        "不能包含反动信息",
+        "不能包含黄赌毒信息",
+        "不能包含小广告信息",
+        "不能包含不健康的内容",
+        "不能使用特殊字符次",
+        "请完善信息",
+        "请认真填写内容"
       ],
       currentUserInfo: null,
       surveyData: [],
@@ -213,26 +278,26 @@ export default {
         });
     },
     reject(data) {
-      this.currentUserInfo = data
-      this.dialogTableVisibleReason = true
+      this.currentUserInfo = data;
+      this.dialogTableVisibleReason = true;
     },
     rejectButton() {
       if (this.reasonValue.trim()) {
-        this.modify(this.currentUserInfo.uid, 'reject')
+        this.modify(this.currentUserInfo.uid, "reject");
       } else {
-        this.$message.error('请输入内容')
+        this.$message.error("请输入内容");
       }
     },
     modify(uid, type) {
       let data = {
         uid: uid,
         type: type
-      }
+      };
 
       // 拒绝理由
-      if (type === 'reject') {
-        data.reason = this.reasonValue
-        this.dialogTableVisibleReasonLoading = true
+      if (type === "reject") {
+        data.reason = this.reasonValue;
+        this.dialogTableVisibleReasonLoading = true;
       }
 
       this.request({
@@ -255,38 +320,38 @@ export default {
         })
         .finally(() => {
           // 拒绝理由
-          if (type === 'reject') {
-            this.dialogTableVisibleReasonLoading = false
-            this.dialogTableVisibleReason = false
+          if (type === "reject") {
+            this.dialogTableVisibleReasonLoading = false;
+            this.dialogTableVisibleReason = false;
           }
-        })
+        });
     },
     changeSort(val) {
       this.sort = val;
       this.getList(this.currentPage);
     },
     viewSurvey(uid) {
-      if (!uid) return
+      if (!uid) return;
       this.request({
         url: this.apis.minetokenApplicationSurvey + `/${uid}`,
-        method: "get",
+        method: "get"
       })
         .then(res => {
           if (res.code === 0 && res.data) {
-            this.surveyData = res.data
-            this.dialogTableVisibleSurvey = true
+            this.surveyData = res.data;
+            this.dialogTableVisibleSurvey = true;
           } else {
-            this.$message.info('暂无表单')
+            this.$message.info("暂无表单");
           }
         })
         .catch(error => {
-          console.log('error', error)
-          this.$message.info('发生错误')
+          console.log("error", error);
+          this.$message.info("发生错误");
         });
     },
     setReason(item) {
-      let list = this.reasonValue.split('\n')
-      this.reasonValue += `${list.length}. ${item}\n`
+      let list = this.reasonValue.split("\n");
+      this.reasonValue += `${list.length}. ${item}\n`;
     }
   }
 };
@@ -335,6 +400,36 @@ export default {
     li {
       margin: 10px 0;
       cursor: pointer;
+    }
+  }
+}
+
+.survey-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  li {
+    padding: 0;
+    margin: 14px 0;
+    display: flex;
+    .item-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #333;
+      margin: 0 20px 0 0;
+      &.w80 {
+        flex: 0 0 80px;
+      }
+      &.w180 {
+        flex: 0 0 180px;
+      }
+      &.w210 {
+        flex: 0 0 210px;
+      }
+    }
+    .item-text {
+      font-size: 16px;
+      color: #606266;
     }
   }
 }
