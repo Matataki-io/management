@@ -8,6 +8,8 @@
         <el-radio-button label="all">全部</el-radio-button>
         <el-radio-button label="informInstant">即时通知</el-radio-button>
         <el-radio-button label="informNewUser">新用户通知</el-radio-button>
+        <el-radio-button label="targetedPost">定向通知</el-radio-button>
+        <el-radio-button label="noTargetedPost">排除定向通知</el-radio-button>
       </el-radio-group>
     </div>
     <el-table
