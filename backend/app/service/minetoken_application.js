@@ -9,14 +9,16 @@ class MineTokenService extends Service {
     try {
 
       let filterOrderBy = {
-        'update_time': 'update_time DESC',
-        'status': 'status = 2 DESC, status DESC',
+        'update_time': 'm.update_time DESC',
+        'status': 'm.status = 2 DESC, m.status DESC',
       };
 
       let sortSql = filterOrderBy[sort] || 'update_time DESC'
 
       const sql = `
-      SELECT * FROM minetokens_application ORDER BY ${sortSql} LIMIT :offset, :limit;
+      SELECT m.*, u.account AS email FROM minetokens_application m 
+      LEFT JOIN user_accounts u ON m.uid = u.uid AND u.platform = 'email'
+      ORDER BY ${sortSql} LIMIT :offset, :limit;
       SELECT COUNT(1) AS count FROM minetokens_application;
       `;
       const [ result ] = await ctx.model.query(sql, {
@@ -85,7 +87,8 @@ class MineTokenService extends Service {
             console.log('minetokenCreateResult', minetokenCreateResult.data)
             tokenId = minetokenCreateResult.data.data
           } else {
-            throw new Error('error minetokenCreateResult: ', minetokenCreateResult.data)
+            console.log(minetokenCreateResult.data)
+            throw new Error(`error minetokenCreateResult: ${minetokenCreateResult.data.message}`)
           }
         } else {
           throw new Error('error result: ', result)
@@ -117,8 +120,11 @@ class MineTokenService extends Service {
 
       return { code: -1 }
     } catch (e) {
-      console.log('MineTokenService list error', e)
-      return { code: -1 }
+      console.log('modify error', e)
+      return { 
+        code: -1,
+        message: e.toString()
+      }
     }
   }
 
