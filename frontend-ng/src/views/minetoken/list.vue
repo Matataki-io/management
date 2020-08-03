@@ -33,6 +33,7 @@
       </el-table-column>
       <el-table-column prop="name" label="名称"> </el-table-column>
       <el-table-column prop="symbol" label="缩写"> </el-table-column>
+      <el-table-column prop="brief" label="简介"> </el-table-column>
       <el-table-column prop="tag" label="标签"> </el-table-column>
       <el-table-column prop="create_time" label="创建时间" width="160">
         <template slot-scope="scope">
