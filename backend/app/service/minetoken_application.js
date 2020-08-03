@@ -85,7 +85,8 @@ class MineTokenService extends Service {
             console.log('minetokenCreateResult', minetokenCreateResult.data)
             tokenId = minetokenCreateResult.data.data
           } else {
-            throw new Error('error minetokenCreateResult: ', minetokenCreateResult.data)
+            console.log(minetokenCreateResult.data)
+            throw new Error(`error minetokenCreateResult: ${minetokenCreateResult.data.message}`)
           }
         } else {
           throw new Error('error result: ', result)
@@ -117,8 +118,11 @@ class MineTokenService extends Service {
 
       return { code: -1 }
     } catch (e) {
-      console.log('MineTokenService list error', e)
-      return { code: -1 }
+      console.log('modify error', e)
+      return { 
+        code: -1,
+        message: e.toString()
+      }
     }
   }
 
