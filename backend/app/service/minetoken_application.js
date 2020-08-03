@@ -64,7 +64,7 @@ class MineTokenService extends Service {
         })
 
         if (result) {
-          let { name, logo, symbol, tag } = result[0]
+          let { name, logo, symbol, brief, tag } = result[0]
 
           // 修改发币权限
           await ctx.service.user.setMintPermission(uid, true);
@@ -75,6 +75,7 @@ class MineTokenService extends Service {
             name,
             logo,
             symbol,
+            brief,
             tags: tag.split(','),
             initialSupply: 1000 * (10 ** 4)
           }
