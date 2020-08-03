@@ -21,6 +21,7 @@
     </div>
     <el-table :data="list" border stripe class="table">
       <el-table-column prop="uid" label="用户ID"> </el-table-column>
+      <el-table-column prop="email" label="邮箱"> </el-table-column>
       <el-table-column prop="logo" label="Logo">
         <template slot-scope="scope">
           <img
