@@ -83,6 +83,43 @@ class UserService extends Service {
     const result = await this.ctx.model.Users.update(updates, { where: { id } });
     return result;
   }
+
+  async search(pageSize, pageIndex, word) {
+    const { ctx } = this;
+    const sql = `
+      SELECT
+        id, username, email, nickname, avatar, introduction
+      FROM
+        users
+      WHERE
+        id = :word
+        OR username LIKE CONCAT('%',:word,'%')
+        OR nickname LIKE CONCAT('%',:word,'%')
+      LIMIT
+        :offset, :limit;
+
+      SELECT
+        count(1) as count
+      FROM
+        users
+      WHERE
+        id = :word
+        OR username LIKE CONCAT('%',:word,'%')
+        OR nickname LIKE CONCAT('%',:word,'%');
+    `;
+    const result = await ctx.model.query(sql, {
+      raw: true,
+      replacements: {
+        word,
+        offset: (pageIndex - 1) * pageSize,
+        limit: pageSize
+      }
+    });
+    return {
+      list: result[0][0],
+      count: result[0][1][0].count
+    }
+  }
 }
 
 module.exports = UserService;

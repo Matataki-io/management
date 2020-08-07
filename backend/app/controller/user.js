@@ -74,5 +74,16 @@ class UserController extends Controller {
   }
   // 删除 DELETE
   async destroy() { }
+
+  async search() {
+    const { ctx } = this;
+    const { pageSize = 10, pageIndex = 1, word = '' } = ctx.query;
+    const result = await ctx.service.user.search(parseInt(pageSize), parseInt(pageIndex), word);
+    ctx.body = {
+      ...ctx.msg.success,
+      data: result
+    }
+    
+  }
 }
 module.exports = UserController;
