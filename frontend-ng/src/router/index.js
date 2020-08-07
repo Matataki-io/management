@@ -115,6 +115,12 @@ export const constantRouterMap = [
         meta: { title: '发布公告', icon: 'form' }
       },
       {
+        path: 'post/targeted',
+        name: 'AnnouncementPost',
+        component: () => import('@/views/announcement/postTargeted'),
+        meta: { title: '发布定向公告', icon: 'user' }
+      },
+      {
         path: 'list',
         name: 'AnnouncementList',
         component: () => import('@/views/announcement/list'),
@@ -200,7 +206,7 @@ export const constantRouterMap = [
         name: 'MinetokenSurvey',
         component: () => import('@/views/minetoken/survey'),
         meta: { title: '调研提交', icon: 'user' }
-      },
+      }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
