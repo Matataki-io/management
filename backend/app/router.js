@@ -12,6 +12,8 @@ module.exports = app => {
   router.resources('account', '/api/account', passport, controller.account);
   // 用户管理
   router.resources('user', '/api/user', passport, controller.user);
+  // 搜索用户
+  router.get('/api/search/user', passport, controller.user.search);
   // 信息推送
   router.post('/api/message/telegram/md', passport, controller.telegrambot.sendMessageMarkdown);
   router.post('/api/message/telegram/html', passport, controller.telegrambot.sendMessageHtml);
@@ -32,6 +34,8 @@ module.exports = app => {
   // 公告
   router.get('/api/announcement', passport, controller.announcement.index);
   router.post('/api/announcement', passport, controller.announcement.post);
+  // 定向公告
+  router.post('/api/announcement/targeted', passport, controller.announcement.targetedPost);
   router.delete('/api/announcement/:id', passport, controller.announcement.delete);
 
   // Logging

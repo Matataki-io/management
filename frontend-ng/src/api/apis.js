@@ -8,6 +8,8 @@ export default {
   getAllTelegramBindedUser: `/api/getAllTelegramBindedUser`,
   imgHost: `https://ssimg.frontenduse.top`,
   announcement: `/api/announcement`,
+  announcementTargeted: `/api/announcement/targeted`,
   minetokenApplication: `/api/minetoken_application`,
   minetokenApplicationSurvey: `/api/minetoken_application_survey`,
+  searchUsers: `/api/search/user`
 }
