@@ -18,8 +18,15 @@ class AnnouncementController extends Controller {
     const { ctx } = this;
     const { title, content, postId = 0, informInstant = 1, informNewUser = 0, expireTime } = ctx.request.body;
     const result = await ctx.service.announcement.post(ctx.user.username, title, content, postId, informInstant, informNewUser, expireTime)
-    if(result) ctx.body = ctx.msg.success;
+    if (result) ctx.body = ctx.msg.success;
     else ctx.body = ctx.msg.failure;
+  }
+
+  async targetedPost() {
+    const { ctx } = this;
+    const { receivingIds, title, content, postId = 0 } = ctx.request.body;
+    const result = await ctx.service.announcement.targetedPost(ctx.user.username, receivingIds, title, content, postId, 'post');
+    ctx.body = result ? ctx.msg.success : ctx.msg.failure;
   }
 
   async delete() {

@@ -34,6 +34,8 @@ module.exports = app => {
   // 公告
   router.get('/api/announcement', passport, controller.announcement.index);
   router.post('/api/announcement', passport, controller.announcement.post);
+  // 定向公告
+  router.post('/api/announcement/targeted', passport, controller.announcement.targetedPost);
   router.delete('/api/announcement/:id', passport, controller.announcement.delete);
 
   // Logging
