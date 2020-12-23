@@ -1,6 +1,8 @@
 'use strict';
 
+const axios = require('axios').default
 const Controller = require('egg').Controller;
+const moment = require('moment')
 class PostsController extends Controller {
   // 列表，GET
   async index() {
@@ -63,6 +65,30 @@ class PostsController extends Controller {
     }
     if (status !== undefined) {
       result3 = await ctx.model.Posts.update({ status }, { where: { id: parseInt(id) } });
+
+      const post = await ctx.model.query(`SELECT id, uid, create_time FROM posts WHERE id = '${parseInt(id)}';`)
+      const entity = post.filter(item => item[0].id === parseInt(id))
+      let res = JSON.parse(JSON.stringify(entity[0])).pop()
+
+      res.timestamp = moment(res.create_time).format('YYYY-MM-DD HH:mm:ss')
+      delete res.create_time
+      
+      if (status === 0) {
+        try {
+          await axios.post(this.config.cacheAPI.uri + '/sync/post/add', { id: res.id, uid: res.uid, timestamp: res.timestamp }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }})
+        }
+        catch (e) {
+          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }}).catch(err => { return })
+        }
+      }
+      if (status === 1) {
+        try {
+          await axios.post(this.config.cacheAPI.uri + '/sync/post/delete', { id: id }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }})
+        }
+        catch (e) {
+          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }}).catch(err => { return })
+        }
+      }
       log.isHide = true;
     }
 
@@ -83,6 +109,7 @@ class PostsController extends Controller {
     const { id } = ctx.params;
     // status 状态，0有效，1隐藏
     const result = await ctx.model.Posts.update({ status: 1 }, { where: { id } });
+
     ctx.body = {
       ...ctx.msg.success,
       data: result,
