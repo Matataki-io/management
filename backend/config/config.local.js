@@ -79,5 +79,9 @@ module.exports = () => {
     botToken: '827566328:AAH5lfENE5cOat9IJ9r4_MOi4dvDYJt-SRI',
   };
   config.proxy = true;
+  config.cacheAPI = {
+    uri: 'https://cache.ayaka.moe/matatakitest',
+    apiToken: 'DxD38Jr2OpNklYbMD3SI8mJ2vwZtBG1zqa41kDir'
+  }
   return config;
 };
