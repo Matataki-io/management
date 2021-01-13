@@ -23,7 +23,8 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/login', name: 'login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/oauth', name: 'oauth', component: () => import('@/views/oauth/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
     path: '/',
@@ -161,14 +162,14 @@ export const constantRouterMap = [
         name: 'PostList',
         component: () => import('@/views/post/list'),
         meta: { title: '文章管理', icon: 'nested' }
-      },
-      {
-        path: 'detail/:id',
-        name: 'PostDetail',
-        hidden: true,
-        component: () => import('@/views/post/detail'),
-        meta: { title: '文章详情', icon: 'nested' }
       }
+      // {
+      //   path: 'detail/:id',
+      //   name: 'PostDetail',
+      //   hidden: true,
+      //   component: () => import('@/views/post/detail'),
+      //   meta: { title: '文章详情', icon: 'nested' }
+      // }
     ]
   },
   // {
@@ -207,7 +208,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox, Loading } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import { getCookie } from '../utils/cookie'
 
 // 创建axios实例
 const service = axios.create({
@@ -16,8 +17,9 @@ service.interceptors.request.use(
     if (!config.noLoading) {
       loadingInstance = Loading.service({ background: 'rgba(0, 0, 0, 0.5)' })
     }
-    if (store.getters.token) {
-      config.headers['authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
+    const accesstoken = getCookie('access-token')
+    if (accesstoken) {
+      config.headers['authorization'] = getCookie('access-token') // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     return config
   },
