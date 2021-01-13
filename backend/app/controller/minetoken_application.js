@@ -21,7 +21,7 @@ class MineTokenApplicationController extends Controller {
       // 告知用户
       if (type === 'agree') {
         ctx.service.announcement.targetedPost(
-          ctx.user.username,
+          ctx.user.address,
           [uid],
           'Fan票发行申请已通过',
           '恭喜您！您申请发行的Fan票已经通过审核，请前往Fan票页查看明细。</br><a href="https://www.yuque.com/matataki/matataki/oiqv9k">点击查看帮助文档</a>',
@@ -31,7 +31,7 @@ class MineTokenApplicationController extends Controller {
       }
       else if (type === 'reject') {
         ctx.service.announcement.targetedPost(
-          ctx.user.username,
+          ctx.user.address,
           [uid],
           'Fan票发行申请失败',
           '很抱歉！您申请发行的Fan票未能通过审核，审核结果将会发送至您的邮箱，前往Fan票页可再次提交发行申请。</br><a href="https://www.yuque.com/matataki/matataki/oiqv9k">点击查看帮助文档</a>'
