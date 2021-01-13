@@ -2,12 +2,12 @@
   <div class="dashboard-container">
     <div class="dashboard-text">欢迎来到 Matataki 治理委员会</div>
     <p class="stat">当前网络：<code>{{ network }}</code>， 版本号 <code>{{ version }}</code>。</p>
-    <div class="change-logs">
+    <!-- <div class="change-logs">
       <h1 class="title">更新日志</h1>
       <div v-for="changeLog in changeLogs" :key="changeLog.date" class="log">
         <code>{{ changeLog.date }}</code>： {{ changeLog.content }} - By {{ changeLog.author }}
       </div>
-    </div>
+    </div> -->
     <!-- <PanelGroup :d="panelData"/>
     <line-chart :chart-data="dayCertLit" title="每日认证数量"/>
     <line-chart :chart-data="dayRegisterList" title="每日注册数量"/>
