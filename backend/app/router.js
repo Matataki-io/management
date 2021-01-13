@@ -33,6 +33,7 @@ module.exports = app => {
   // router.get('/api/announcement', passport, controller.announcement.index);
   // router.post('/api/announcement', passport, controller.announcement.post);
   // router.delete('/api/announcement/:id', passport, controller.announcement.delete);
+  router.post('/api/loginBySignature', controller.login.loginBySignature);
 
   // // Logging
   // router.get('/api/logs', passport, controller.logging.index);

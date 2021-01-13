@@ -1,17 +1,18 @@
-const jwt = require('jsonwebtoken')
+'use strict';
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     // jwt签名
-    jwtSign(user) {
+    jwtSign(user, stakeExpireAt) {
         // 过期时间
-        const expires = this.config.login.expires;
+        ;
         // 生成token
         const token = jwt.sign(user, this.config.login.secretKey, {
-            expiresIn: expires,
+            expiresIn: Math.floor((stakeExpireAt - Date.now()) / 1000),
         });
         return {
             access_token: token,
-            expires_in: Math.floor(Date.now() / 1000) + expires,
+            expires_in: Math.floor(stakeExpireAt / 1000),
             token_type: 'Bearer',
         };
     },

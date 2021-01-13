@@ -1,0 +1,31 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "stake",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "getStakeStatus",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "stakeBalance",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "lockExpiry",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
