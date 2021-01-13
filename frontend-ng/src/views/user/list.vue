@@ -191,12 +191,12 @@ export default {
           this.count = res.data.count
         })
         .catch(error => {
-          if (error.response.status === 401) {
-            console.log('登录超时')
-            this.$store.dispatch('FedLogOut').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
-            })
-          }
+          // if (error.response.status === 401) {
+          //   console.log('登录超时')
+          //   this.$store.dispatch('FedLogOut').then(() => {
+          //     location.reload() // 为了重新实例化vue-router对象 避免bug
+          //   })
+          // }
         })
     }
   }
