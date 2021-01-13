@@ -8,7 +8,7 @@ module.exports = {
         ;
         // 生成token
         const token = jwt.sign(user, this.config.login.secretKey, {
-            expiresIn: stakeExpireAt - Date.now(),
+            expiresIn: Math.floor((stakeExpireAt - Date.now()) / 1000),
         });
         return {
             access_token: token,
