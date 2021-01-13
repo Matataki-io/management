@@ -190,7 +190,7 @@ export default {
           this.list = res.data.rows
           this.count = res.data.count
         })
-        .catch(error => {
+        .catch(() => {
           // if (error.response.status === 401) {
           //   console.log('登录超时')
           //   this.$store.dispatch('FedLogOut').then(() => {
