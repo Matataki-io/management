@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎来到 Matataki 后台管理系统</div>
+    <div class="dashboard-text">欢迎来到 Matataki 治理委员会</div>
     <p class="stat">当前网络：<code>{{ network }}</code>， 版本号 <code>{{ version }}</code>。</p>
     <div class="change-logs">
       <h1 class="title">更新日志</h1>
