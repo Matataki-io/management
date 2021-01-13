@@ -17,7 +17,7 @@ module.exports = app => {
   // ipfs
   router.get('/api/ipfs/:hash', passport, controller.posts.ipfs);
   // 登录test
-  router.post('/api/login', controller.login.login);
+  // router.post('/api/login', controller.login.login);
   router.post('/api/loginBySignature', controller.login.loginBySignature);
   // 公告
   router.get('/api/announcement', passport, controller.announcement.index);
