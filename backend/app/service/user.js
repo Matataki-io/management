@@ -14,7 +14,12 @@ class UserService extends Service {
 
     if (ctx.helper.isNull(searchParams)) {
       result.count = await ctx.model.Users.count();
-      result.rows = await ctx.model.Users.findAll({ order: [[ 'id', 'DESC' ]], offset, limit });
+      result.rows = await ctx.model.Users.findAll({
+        attributes: [ 'id', 'nickname', 'avatar', 'introduction', 'create_time', 'is_recommend' ],
+        order: [[ 'id', 'DESC' ]],
+        offset,
+        limit,
+      });
     } else {
       for (const propName in searchParams) {
         if (searchParams[propName] === null || searchParams[propName] === '') {
@@ -31,6 +36,7 @@ class UserService extends Service {
 
       result.count = await ctx.model.Users.count({ where: searchParams });
       result.rows = await ctx.model.Users.findAll({
+        attributes: [ 'id', 'nickname', 'avatar', 'introduction', 'create_time', 'is_recommend' ],
         where: searchParams,
         order: [[ 'id', 'DESC' ]],
         offset,
