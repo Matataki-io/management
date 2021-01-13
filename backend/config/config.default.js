@@ -25,7 +25,7 @@ module.exports = appInfo => {
   config.cluster = {
     listen: {
       path: '',
-      port: 7665,
+      port: 7003,
       hostname: '0.0.0.0',
     },
   };
@@ -36,7 +36,7 @@ module.exports = appInfo => {
   };
 
   config.proxy = true;
-  
+
   // add your middleware config here
   config.middleware = [ 'formatMessage' ];
 
