@@ -30,7 +30,7 @@ class PostsService extends Service {
       }
     }
     const sql = `
-    SELECT t1.*, t2.down 
+    SELECT t1.id, t1.hash, t1.title, t1.author, t1.username, t1.short_content, t1.create_time, t1.cover, t1.is_original, t1.is_recommend, t2.down 
     FROM posts as t1 
     LEFT JOIN post_read_count as t2 ON t1.id = t2.post_id 
     INNER JOIN users u ON t1.uid = u.id
