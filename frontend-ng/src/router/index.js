@@ -70,85 +70,85 @@ export const constantRouterMap = [
         name: 'UserList',
         component: () => import('@/views/user/list'),
         meta: { title: '用户管理', icon: 'user' }
-      },
-      {
-        path: 'detail/:id',
-        name: 'UserDetail',
-        hidden: true,
-        component: () => import('@/views/user/detail'),
-        meta: { title: '用户详情', icon: 'tree' }
       }
+      // {
+      //   path: 'detail/:id',
+      //   name: 'UserDetail',
+      //   hidden: true,
+      //   component: () => import('@/views/user/detail'),
+      //   meta: { title: '用户详情', icon: 'tree' }
+      // }
     ]
   },
-  {
-    path: '/boardcast',
-    component: Layout,
-    redirect: '/boardcast/telegram',
-    name: 'Boardcast',
-    meta: { title: '对用户广播', icon: 'example' },
-    children: [
-      {
-        path: 'telegram',
-        name: 'BoardcastWithTelegram',
-        component: () => import('@/views/boardcast/telegram'),
-        meta: { title: '电报广播', icon: 'guide' }
-      },
-      {
-        path: 'email',
-        name: 'BoardcastWithTelegram',
-        component: () => import('@/views/user/list'),
-        meta: { title: '邮件广播', icon: 'guide' }
-      }
-    ]
-  },
-  {
-    path: '/announcement',
-    component: Layout,
-    redirect: '/announcement/post',
-    name: 'Announcement',
-    meta: { title: '站内公告', icon: 'form' },
-    children: [
-      {
-        path: 'post',
-        name: 'AnnouncementPost',
-        component: () => import('@/views/announcement/post'),
-        meta: { title: '发布公告', icon: 'form' }
-      },
-      {
-        path: 'list',
-        name: 'AnnouncementList',
-        component: () => import('@/views/announcement/list'),
-        meta: { title: '公告列表', icon: 'list' }
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    component: Layout,
-    redirect: '/admin/list',
-    name: 'Admin',
-    meta: { title: '管理员管理', icon: 'user' },
-    children: [
-      {
-        path: 'list',
-        name: 'AdminList',
-        component: () => import('@/views/admin-manage/list'),
-        meta: { title: '管理员列表', icon: 'nested' }
-      },
-      {
-        path: 'add',
-        name: 'AdminAdd',
-        component: () => import('@/views/admin-manage/add'),
-        meta: { title: '添加管理员', icon: 'user' }
-      },
-      {
-        path: 'edit',
-        name: 'edit',
-        component: () => import('@/views/admin-manage/edit'),
-        meta: { title: '修改资料', icon: 'user' }
-      }
-    ]
-  },
+  // {
+  //   path: '/boardcast',
+  //   component: Layout,
+  //   redirect: '/boardcast/telegram',
+  //   name: 'Boardcast',
+  //   meta: { title: '对用户广播', icon: 'example' },
+  //   children: [
+  //     {
+  //       path: 'telegram',
+  //       name: 'BoardcastWithTelegram',
+  //       component: () => import('@/views/boardcast/telegram'),
+  //       meta: { title: '电报广播', icon: 'guide' }
+  //     },
+  //     {
+  //       path: 'email',
+  //       name: 'BoardcastWithTelegram',
+  //       component: () => import('@/views/user/list'),
+  //       meta: { title: '邮件广播', icon: 'guide' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/announcement',
+  //   component: Layout,
+  //   redirect: '/announcement/post',
+  //   name: 'Announcement',
+  //   meta: { title: '站内公告', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: 'post',
+  //       name: 'AnnouncementPost',
+  //       component: () => import('@/views/announcement/post'),
+  //       meta: { title: '发布公告', icon: 'form' }
+  //     },
+  //     {
+  //       path: 'list',
+  //       name: 'AnnouncementList',
+  //       component: () => import('@/views/announcement/list'),
+  //       meta: { title: '公告列表', icon: 'list' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/admin',
+  //   component: Layout,
+  //   redirect: '/admin/list',
+  //   name: 'Admin',
+  //   meta: { title: '管理员管理', icon: 'user' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: 'AdminList',
+  //       component: () => import('@/views/admin-manage/list'),
+  //       meta: { title: '管理员列表', icon: 'nested' }
+  //     },
+  //     {
+  //       path: 'add',
+  //       name: 'AdminAdd',
+  //       component: () => import('@/views/admin-manage/add'),
+  //       meta: { title: '添加管理员', icon: 'user' }
+  //     },
+  //     {
+  //       path: 'edit',
+  //       name: 'edit',
+  //       component: () => import('@/views/admin-manage/edit'),
+  //       meta: { title: '修改资料', icon: 'user' }
+  //     }
+  //   ]
+  // },
   {
     path: '/p',
     component: Layout,
@@ -171,38 +171,38 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
-    path: '/log',
-    component: Layout,
-    redirect: '/log/list',
-    name: 'Logs',
-    meta: { title: '日志', icon: 'nested' },
-    children: [{
-      path: 'list',
-      component: () => import('@/views/log/list')
-    }]
-  },
-  {
-    path: '/minetoken',
-    component: Layout,
-    redirect: '/minetoken/list',
-    name: 'Minetoken',
-    meta: { title: 'Fan票申请', icon: 'user' },
-    children: [
-      {
-        path: 'list',
-        name: 'MinetokenList',
-        component: () => import('@/views/minetoken/list'),
-        meta: { title: '申请管理', icon: 'nested' }
-      },
-      {
-        path: 'survey',
-        name: 'MinetokenSurvey',
-        component: () => import('@/views/minetoken/survey'),
-        meta: { title: '调研提交', icon: 'user' }
-      },
-    ]
-  },
+  // {
+  //   path: '/log',
+  //   component: Layout,
+  //   redirect: '/log/list',
+  //   name: 'Logs',
+  //   meta: { title: '日志', icon: 'nested' },
+  //   children: [{
+  //     path: 'list',
+  //     component: () => import('@/views/log/list')
+  //   }]
+  // },
+  // {
+  //   path: '/minetoken',
+  //   component: Layout,
+  //   redirect: '/minetoken/list',
+  //   name: 'Minetoken',
+  //   meta: { title: 'Fan票申请', icon: 'user' },
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: 'MinetokenList',
+  //       component: () => import('@/views/minetoken/list'),
+  //       meta: { title: '申请管理', icon: 'nested' }
+  //     },
+  //     {
+  //       path: 'survey',
+  //       name: 'MinetokenSurvey',
+  //       component: () => import('@/views/minetoken/survey'),
+  //       meta: { title: '调研提交', icon: 'user' }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

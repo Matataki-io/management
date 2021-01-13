@@ -9,5 +9,5 @@ export default {
   imgHost: `https://ssimg.frontenduse.top`,
   announcement: `/api/announcement`,
   minetokenApplication: `/api/minetoken_application`,
-  minetokenApplicationSurvey: `/api/minetoken_application_survey`,
+  minetokenApplicationSurvey: `/api/minetoken_application_survey`
 }
