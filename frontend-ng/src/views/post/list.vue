@@ -25,14 +25,14 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="id" prop="id" align="center" fixed />
+      <el-table-column label="Id" prop="id" align="center" fixed />
       <el-table-column label="文章hash" prop="hash" align="center" fixed />
       <el-table-column label="文章标题" prop="title" align="center" fixed />
       <el-table-column label="作者" prop="author" align="center" />
       <el-table-column label="作者用户名" prop="username" align="center" />
       <el-table-column label="摘要" prop="short_content" align="center" width="300">
         <template slot-scope="scope">
-          {{ scope.row.short_content.slice(0, 25) + '...' }}
+          {{ scope.row.short_content.slice(0, 50) + '...' }}
         </template>
       </el-table-column>
 
@@ -52,10 +52,10 @@
         </template>
       </el-table-column>
       <!-- <el-table-column label="是否被推荐" prop="is_recommend" align="center" /> -->
-      <el-table-column label="评论需要支付的积分" prop="comment_pay_point" align="center" />
+      <!-- <el-table-column label="评论需要支付的积分" prop="comment_pay_point" align="center" /> -->
       <!-- <el-table-column label="干预时间排序" prop="time_down" align="center" /> -->
 
-      <el-table-column label="降低时间排序" align="center" width="90" fixed="right">
+      <!-- <el-table-column label="降低时间排序" align="center" width="90" fixed="right">
         <template slot-scope="scope">
           <div style="margin: 12px 0;">
             <el-badge :value="scope.row.time_down" class="item" type="primary" :hidden="scope.row.time_down === 0">
@@ -87,7 +87,7 @@
             @change="handleChange($event, scope.$index)"
           />
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="推荐" align="center" fixed="right">
         <template slot-scope="scope">
           <el-switch
@@ -96,13 +96,13 @@
           />
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100" fixed="right">
+      <!-- <el-table-column align="center" label="操作" width="100" fixed="right">
         <template slot-scope="scope">
           <router-link :to="`/p/detail/${scope.row.id}`" target="_blank">
             <el-button type="text" size="small">详情</el-button>
           </router-link>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       :total="count"
