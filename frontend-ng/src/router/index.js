@@ -161,14 +161,14 @@ export const constantRouterMap = [
         name: 'PostList',
         component: () => import('@/views/post/list'),
         meta: { title: '文章管理', icon: 'nested' }
-      },
-      {
-        path: 'detail/:id',
-        name: 'PostDetail',
-        hidden: true,
-        component: () => import('@/views/post/detail'),
-        meta: { title: '文章详情', icon: 'nested' }
       }
+      // {
+      //   path: 'detail/:id',
+      //   name: 'PostDetail',
+      //   hidden: true,
+      //   component: () => import('@/views/post/detail'),
+      //   meta: { title: '文章详情', icon: 'nested' }
+      // }
     ]
   },
   // {
