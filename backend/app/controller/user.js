@@ -58,7 +58,7 @@ class UserController extends Controller {
       isRecommendResult = await ctx.service.user.update(id, { is_recommend: isRecommend ? 1 : 0 });
       log.isRecommendUpdate = true;
       if (isRecommendResult[0] && isRecommend) {
-        ctx.service.announcement.targetedPost('admin', [ parseInt(id) ], '你已被瞬Matataki评为推荐作者', '');
+        ctx.service.announcement.targetedPost(ctx.user.address, [ parseInt(id) ], '你已被瞬Matataki评为推荐作者', '');
       }
     }
 
