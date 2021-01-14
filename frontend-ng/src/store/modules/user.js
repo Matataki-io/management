@@ -27,14 +27,13 @@ const user = {
 
   actions: {
     // 登录
-    Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+    Login({ commit }, { signature, message }) {
       return request({
-        url: apis.login,
+        url: apis.loginBySignature,
         method: 'post',
         data: {
-          username,
-          password: userInfo.password
+          signature,
+          data: message
         }
       }).then(response => {
         const data = response.data

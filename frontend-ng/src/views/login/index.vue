@@ -2,19 +2,71 @@
   <div class="login-container">
     <div class="login-content">
       <h3 class="title">Matataki 治理委员会</h3>
-      <el-button :loading="loading" type="primary" class="sign-in" @click.native.prevent="jumpToMttkOAuth">
-        一键登录
+      <el-button :loading="loading" type="primary" class="sign-in" @click.native.prevent="signToLogin">
+        使用 MetaMask 一键登录
+      </el-button>
+      <br>
+      <el-button type="primary" class="sign-in" @click.native.prevent="$router.push('/stake')">
+        去抵押 META 以获得权限
       </el-button>
     </div>
   </div>
 </template>
 
 <script>
+import { signLoginRequest } from '../../utils/signature'
+
 export default {
   name: 'Login',
+  data: () => ({
+    loading: false,
+    isMetaMaskActive: false,
+    selectedWallet: null,
+    isOnBsc: false
+  }),
+  async mounted() {
+    this.isMetaMaskActive = (typeof window.ethereum !== 'undefined')
+    if (!window.ethereum) return
+    const { networkVersion, selectedAddress } = window.ethereum
+    this.selectedWallet = selectedAddress
+    this.isOnBsc = Number(networkVersion) === 56
+    window.ethereum.on('chainChanged', chainId => {
+      // handle the new network
+      this.isOnBsc = Number(chainId) === 56
+    })
+    window.ethereum.on('accountsChanged', ([primaryAcc]) => {
+      this.selectedWallet = primaryAcc
+    })
+  },
   methods: {
     async jumpToMttkOAuth() {
       window.location = process.env.VUE_APP_OAuthUrl
+    },
+    async signToLogin() {
+      try {
+        if (!this.selectedWallet) throw new Error('请连接 MetaMask 以进行签名')
+        this.loading = true
+        const { signature, message } = await signLoginRequest(this.selectedWallet)
+        console.info('signature', signature)
+        console.info('message', message)
+        await this.$store.dispatch('Login', { signature, message })
+        this.$router.push({ path: this.redirect || '/' })
+        // const { data } = await this.request({
+        //   url: this.apis.loginBySignature,
+        //   method: 'post',
+        //   data: {
+        //     signature,
+        //     data: message
+        //   }
+        // })
+    
+        // const token = `${data.token_type} ${data.access_token}`
+        // console.info('login token', token)
+      } catch (error) {
+        alert('Error, msg: ', error.message)
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -115,6 +167,7 @@ $light_gray:#eee;
   margin: 200px auto 0;
   text-align: center;
   .sign-in {
+    margin: 20px;
     width: 300px;
   }
 }
