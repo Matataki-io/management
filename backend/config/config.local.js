@@ -32,7 +32,7 @@ module.exports = () => {
 
   // 请修改jwt密钥和失效时间
   config.login = {
-    secretKey: '9PE31Ju1La0KFM15vVc2uybgyJfVVkbq', // jwt密钥
+    secretKey: '82a9f10c357f4c0f8f92e384192f9ba', // jwt密钥
     expires: 60 * 60 * 24 * 7 * 4, // Session 为一个月的有效期
     username: 'admin',
     password: 'QWzAed1MpvQ78FSK',
