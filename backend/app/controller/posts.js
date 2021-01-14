@@ -1,8 +1,8 @@
 'use strict';
 
-const axios = require('axios').default
+const axios = require('axios').default;
 const Controller = require('egg').Controller;
-const moment = require('moment')
+const moment = require('moment');
 class PostsController extends Controller {
   // 列表，GET
   async index() {
@@ -37,8 +37,8 @@ class PostsController extends Controller {
 
     const log = {
       for: 'updateFields',
-      id: parseInt(id)
-    }
+      id: parseInt(id),
+    };
     // 时间排序和热门排序
     const { is_recommend, time_down, down, status } = ctx.request.body;
     let result0 = null;
@@ -50,9 +50,10 @@ class PostsController extends Controller {
       log.recommend = true;
 
       // 通知用户入选
-      if(is_recommend) {
+      if (is_recommend) {
         const post = await ctx.service.posts.show(parseInt(id));
-        if(post) this.service.notify.sendEvent(0, [post.uid], 'annouce', post.id, 'featuredArticles');
+        console.log('post', post);
+        if (post) this.service.notify.sendEvent(0, [ post.uid ], 'annouce', post.id, 'featuredArticles');
       }
     }
     if (time_down !== undefined) {
@@ -66,33 +67,31 @@ class PostsController extends Controller {
     if (status !== undefined) {
       result3 = await ctx.model.Posts.update({ status }, { where: { id: parseInt(id) } });
 
-      const post = await ctx.model.query(`SELECT id, uid, create_time FROM posts WHERE id = '${parseInt(id)}';`)
-      const entity = post.filter(item => item[0].id === parseInt(id))
-      let res = JSON.parse(JSON.stringify(entity[0])).pop()
+      const post = await ctx.model.query(`SELECT id, uid, create_time FROM posts WHERE id = '${parseInt(id)}';`);
+      const entity = post.filter(item => item[0].id === parseInt(id));
+      const res = JSON.parse(JSON.stringify(entity[0])).pop();
 
-      res.timestamp = moment(res.create_time).format('YYYY-MM-DD HH:mm:ss')
-      delete res.create_time
-      
+      res.timestamp = moment(res.create_time).format('YYYY-MM-DD HH:mm:ss');
+      delete res.create_time;
+
       if (status === 0) {
         try {
-          await axios.post(this.config.cacheAPI.uri + '/sync/post/add', { id: res.id, uid: res.uid, timestamp: res.timestamp }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }})
-        }
-        catch (e) {
-          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }}).catch(err => { return })
+          await axios.post(this.config.cacheAPI.uri + '/sync/post/add', { id: res.id, uid: res.uid, timestamp: res.timestamp }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` } });
+        } catch (e) {
+          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` } }).catch(err => { return; });
         }
       }
       if (status === 1) {
         try {
-          await axios.post(this.config.cacheAPI.uri + '/sync/post/delete', { id: id }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }})
-        }
-        catch (e) {
-          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` }}).catch(err => { return })
+          await axios.post(this.config.cacheAPI.uri + '/sync/post/delete', { id }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` } });
+        } catch (e) {
+          await axios.post(this.config.cacheAPI.uri + '/report/error', { code: 1105, message: e }, { headers: { Authorization: `Bearer ${this.config.cacheAPI.apiToken}` } }).catch(err => { return; });
         }
       }
       log.isHide = true;
     }
 
-    await this.service.logging.addLog('post', ctx.user.id, log)
+    await this.service.logging.addLog('post', 1, log);
     ctx.body = {
       ...ctx.msg.success,
       data: {
