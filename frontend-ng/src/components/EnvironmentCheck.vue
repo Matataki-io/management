@@ -15,12 +15,17 @@
           target="_blank"
           rel="noopener noreferrer"
         >👉在 MetaMask 添加币安智能链的指南 ↗️ 👈</a>
+      </li>
+      <li>
         <el-button v-if="!selectedWallet && isMetaMaskActive" @click="requestEtherumAccounts">
-          连接
+          连接钱包
         </el-button>
       </li>
       <li v-if="selectedWallet">
-        👛&nbsp;地址: <span class="address">{{ selectedWallet }}</span>， 余额 <b>{{ bnbBalance }}</b> BNB
+        👛&nbsp;地址: <a class="address" :href="`https://bscscan.com/address/${selectedWallet}`" target="_blank">{{ selectedWallet }}</a>
+      </li>
+      <li v-if="selectedWallet">
+        👛&nbsp;余额: <b>{{ bnbBalance }}</b> BNB
       </li>
     </ul>
   </div>
@@ -81,18 +86,32 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .checklist .title {
-    margin: 10px 0;
-    padding: 0;
-    font-size: 18px;
+  margin: 10px 0;
+  padding: 0;
+  font-size: 18px;
 }
-    .checklist .info-list li {
-      margin: 8px 0;
-    }
-    .checklist .info-list li .address {
-        font-size: 14px;
-    color: #9f9f9f;
-    font-weight: 400;
-    }
+.checklist .info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  .link {
+    color: #3a8ee6;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-left: 10px;
+  }
+}
+.checklist .info-list li {
+  margin: 14px 0 14px 20px;
+  font-size: 16px;
+  color: #333;
+}
+.checklist .info-list li .address {
+  font-size: 14px;
+  color: #9f9f9f;
+  font-weight: 400;
+  text-decoration: underline;
+}
 </style>
