@@ -27,6 +27,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import userAvatar from '@/assets/user.png'
 
+import { removeCookie } from '../../../utils/cookie'
+
 export default {
   components: {
     Breadcrumb,
@@ -47,8 +49,12 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
+      removeCookie('access-token')
       this.$store.dispatch('FedLogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+        // location.reload() // 为了重新实例化vue-router对象 避免bug
+        this.$router.push({
+          name: 'login'
+        })
       })
     }
   }
