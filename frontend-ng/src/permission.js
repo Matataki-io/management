@@ -6,7 +6,7 @@ import { getCookie } from './utils/cookie'
 
 NProgress.configure({ showSpinner: false })// NProgress configuration
 
-const whiteList = ['/login'] // 不重定向白名单
+const whiteList = ['/login', '/stake'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   // console.log('to', to, from)
   NProgress.start()
@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
   //   }
   // }
 
-  if (getCookie('access-token')) {
+  if (getCookie('token')) {
     if (to.path === '/login') {
       NProgress.done()
       next({ path: '/' })

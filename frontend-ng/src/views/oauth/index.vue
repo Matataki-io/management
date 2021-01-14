@@ -26,7 +26,7 @@ export default {
       this.error = true
       return
     }
-    setCookie('access-token', accessToken)
+    setCookie('token', accessToken)
     this.$router.push(toPath)
   }
 }
