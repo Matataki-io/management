@@ -1,5 +1,6 @@
 export default {
   login: `api/login`,
+  loginBySignature: `api/loginBySignature`,
   user: `/api/user`,
   posts: `/api/post`,
   ipfs: `/api/ipfs`,
