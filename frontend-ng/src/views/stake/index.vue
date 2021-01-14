@@ -1,29 +1,38 @@
 <template>
-  <div class="stake">
-    <h1 class="title">进入 Matataki 治理委员会</h1>
-    <h2 class="subtitle">持有 META 即可参与 Matataki 的平台治理</h2>
-    <environment-check />
-    <div class="panels">
-      <ul>
-        <li><el-button type="text"><a href="https://bscscan.com/address/0xec7580145ff335ab4b6724ce7131eb799f86b3ae#code" target="_blank">在 BSCScan 查看抵押合约代码 ↗️</a></el-button></li>
-      </ul>
+  <div class="container">
+    <div class="stake">
+      <h1 class="title">进入 Matataki 治理委员会</h1>
+      <h2 class="subtitle">持有 META 即可参与 Matataki 的平台治理</h2>
+      <environment-check />
+      <div class="panels">
+        <h4 class="item-title">
+          合约代码
+        </h4>
+        <ul>
+          <li>
+            <a class="contract" href="https://bscscan.com/address/0xec7580145ff335ab4b6724ce7131eb799f86b3ae#code" target="_blank">在 BSCScan 查看抵押合约代码 ↗️</a>
+          </li>
+        </ul>
+      </div>
+      <div v-if="isStaked" class="staked">
+        <h4 class="item-title">
+          详情信息
+        </h4>
+        <ul>
+          <li>🔒 你已经抵押了 {{ myStakedMeta }} 个 <a href="https://www.matataki.io/token/120" target="_blank">META</a></li>
+          <li>🔒 抵押至 {{ readableExpiryDate }}</li>
+          <li>👛 钱包里还有 {{ myMeta }} 个 <a href="https://www.matataki.io/token/120" target="_blank">META</a></li>
+          <!-- @todo: 需要有人实现输入框什么的 -->
+          <!-- <el-button>添加新抵押（并锁定30天）</el-button> -->
+          <el-button @click="extendExpiry">延长抵押到30天后</el-button>
+        </ul>
+      </div>
+      <div v-else class="not-staked">
+        <p>你还没有抵押过 <a href="https://www.matataki.io/token/120" target="_blank">META</a>，👛 钱包里还有 {{ myMeta }} 个 <a href="https://www.matataki.io/token/120" target="_blank">META</a></p>
+        <el-button v-if="!isApproved" @click="approveStake"> 授权扣除 <a href="https://www.matataki.io/token/120" target="_blank">META</a> </el-button>
+        <el-button v-if="isApproved" @click="stake1Meta"> 抵押 1 <a href="https://www.matataki.io/token/120" target="_blank">META</a>（锁定30天）以获得登陆权限</el-button>
+      </div>
     </div>
-    <div v-if="isStaked" class="staked">
-      <ul>
-        <li>🔒 你已经抵押了 {{ myStakedMeta }} 个 META</li>
-        <li>抵押至 {{ readableExpiryDate }}</li>
-        <li>👛 钱包里还有 {{ myMeta }} 个 META</li>
-        <!-- @todo: 需要有人实现输入框什么的 -->
-        <!-- <el-button>添加新抵押（并锁定30天）</el-button> -->
-        <el-button @click="extendExpiry">延长抵押到30天后</el-button>
-      </ul>
-    </div>
-    <div v-else class="not-staked">
-      <p>你还没有抵押过 META，👛 钱包里还有 {{ myMeta }} 个 META</p>
-      <el-button v-if="!isApproved" @click="approveStake"> 授权扣除 META </el-button>
-      <el-button v-if="isApproved" @click="stake1Meta"> 抵押 1 META（锁定30天）以获得登陆权限</el-button>
-    </div>
-
   </div>
 </template>
 
@@ -31,6 +40,7 @@
 import { BigNumber, ethers, utils } from 'ethers'
 import { approveToStaking, extendLockdown, getAllowance, getStakingStatus, metaBalanceOf, stake } from '../../utils/ethers'
 import EnvironmentCheck from '../../components/EnvironmentCheck.vue'
+import moment from 'moment'
 
 export default {
   name: 'Stake',
@@ -66,7 +76,8 @@ export default {
       return utils.formatUnits(this.balanceOfWallet, 4)
     },
     readableExpiryDate() {
-      return this.stakingExpiry.toLocaleString()
+      const time = this.stakingExpiry.toLocaleString()
+      return moment(time).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   watch: {
@@ -151,3 +162,82 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: #fff;
+}
+.stake {
+  max-width: 700px;
+  margin: 40px auto 0;
+  /* background: #fff; */
+  /* box-shadow: 0 0 10px rgba(0,0,0, 0.05); */
+  padding: 40px 20px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  .title {
+    text-align: center;
+    font-size: 30px;
+    color: #222;
+    padding: 0;
+    margin: 0;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #ababab;
+    padding: 0;
+    margin: 10px 0 50px;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .panels,
+  .staked {
+    margin: 20px 0 0 0;
+    .item-title {
+      margin: 10px 0;
+      padding: 0;
+      font-size: 18px;
+    }
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        margin: 14px 0 14px 20px;
+      }
+    }
+  }
+  .panels {
+    .contract {
+      color: #3a8ee6;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+  }
+  .staked {
+    ul li {
+      font-size: 16px;
+      color: #333;
+    }
+    a {
+      text-decoration: underline;
+    }
+  }
+  .not-staked {
+    font-size: 16px;
+    color: #333;
+    padding: 0;
+    margin: 10px 0;
+    a {
+      text-decoration: underline;
+    }
+  }
+
+}
+</style>
