@@ -34,8 +34,8 @@ class UserController extends Controller {
     const { id } = ctx.params;
     const log = {
       for: 'update',
-      id: parseInt(id)
-    }
+      id: parseInt(id),
+    };
     const { isSeed = null, isMint = null, isExchange = null, isRecommend = null } = ctx.request.body;
     let isSeedResult = null;
     let isMintResult = null;
@@ -57,11 +57,12 @@ class UserController extends Controller {
     if (isRecommend !== null) {
       isRecommendResult = await ctx.service.user.update(id, { is_recommend: isRecommend ? 1 : 0 });
       log.isRecommendUpdate = true;
-      if (isRecommendResult[0] && isRecommend)
-        ctx.service.announcement.targetedPost(ctx.user.username, [parseInt(id)], '你已被瞬Matataki评为推荐作者', '');
+      if (isRecommendResult[0] && isRecommend) {
+        ctx.service.announcement.targetedPost('admin', [ parseInt(id) ], '你已被瞬Matataki评为推荐作者', '');
+      }
     }
 
-    await this.service.logging.addLog('user', ctx.user.id, log)
+    await this.service.logging.addLog('user', 1, log);
     ctx.body = {
       ...ctx.msg.success,
       data: {
