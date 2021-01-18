@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <el-page-header content="环境检查 & META 抵押管理" style=" margin: 20px; " @back="$router.back()" />
     <div class="stake">
       <h1 class="title">进入 Matataki 治理委员会</h1>
       <h2 class="subtitle">持有 META 即可参与 Matataki 的平台治理</h2>
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-import { BigNumber, ethers, utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import { approveToStaking, extendLockdown, getAllowance, getStakingStatus, metaBalanceOf, stake } from '../../utils/ethers'
 import EnvironmentCheck from '../../components/EnvironmentCheck.vue'
 import moment from 'moment'
