@@ -53,8 +53,9 @@ class LoginController extends Controller {
       ctx.body = msg;
       msg.data = ctx.helper.jwtSign({ address }, stakeExpireAt);
       // const ua = uaParser(ctx.get('user-agent'));
-      // await this.service.logging.addLog('login', user.id, {
+      // await this.service.logging.addLog('login', 0, {
       //   ip: ctx.ip,
+      //   wallet: ctx.user.address,
       //   os: ua.os,
       //   browser: ua.browser,
       // });
