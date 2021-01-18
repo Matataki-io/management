@@ -184,7 +184,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/log/list',
     name: 'Logs',
-    meta: { title: '日志', icon: 'nested' },
+    meta: { title: '日志', icon: 'log' },
     children: [{
       path: 'list',
       component: () => import('@/views/log/list')
