@@ -12,6 +12,15 @@
       <el-button type="primary" class="sign-in" @click.native.prevent="$router.push('/stake')">
         去抵押 META 以获得权限
       </el-button>
+
+      <el-button class="sign-in">
+        <a
+          href="https://bscscan.com/token/0xacae234ea5fddd1657038b7aa6b597664056c954"
+          target="_blank"
+          style="color: #0088ff;"
+        >
+          在 BSCScan 查看BSC主网的 META 分布
+        </a></el-button>
     </div>
   </div>
 </template>

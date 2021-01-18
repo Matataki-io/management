@@ -61,7 +61,7 @@ class UserController extends Controller {
         ctx.service.announcement.targetedPost(ctx.user.address, [ parseInt(id) ], '你已被瞬Matataki评为推荐作者', '');
       }
     }
-
+    log.wallet = ctx.user.address;
     await this.service.logging.addLog('user', 1, log);
     ctx.body = {
       ...ctx.msg.success,

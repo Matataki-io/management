@@ -36,7 +36,7 @@ module.exports = app => {
   router.post('/api/loginBySignature', controller.login.loginBySignature);
 
   // // Logging
-  // router.get('/api/logs', passport, controller.logging.index);
+  router.get('/api/logs', passport, controller.logging.index);
 
   // // fan票申请管理
   // router.get('/api/minetoken_application', passport, controller.minetokenApplication.list);
