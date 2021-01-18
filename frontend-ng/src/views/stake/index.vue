@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { BigNumber, ethers, utils } from 'ethers'
+import { BigNumber, utils } from 'ethers'
 import { approveToStaking, extendLockdown, getAllowance, getStakingStatus, metaBalanceOf, stake } from '../../utils/ethers'
 import EnvironmentCheck from '../../components/EnvironmentCheck.vue'
 import moment from 'moment'

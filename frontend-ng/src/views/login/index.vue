@@ -80,7 +80,7 @@ export default {
         //     data: message
         //   }
         // })
-    
+
         // const token = `${data.token_type} ${data.access_token}`
         // console.info('login token', token)
       } catch (error) {
