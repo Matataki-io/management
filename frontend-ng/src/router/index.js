@@ -83,6 +83,12 @@ export const constantRouterMap = [
     ]
   },
   // {
+  //   path: '/feedback',
+  //   name: 'User',
+  //   component: () => import('@/views/feedback'),
+  //   meta: { title: '大家谈', icon: 'forum' }
+  // },
+  // {
   //   path: '/boardcast',
   //   component: Layout,
   //   redirect: '/boardcast/telegram',
