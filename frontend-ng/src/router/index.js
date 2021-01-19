@@ -83,6 +83,12 @@ export const constantRouterMap = [
     ]
   },
   // {
+  //   path: '/feedback',
+  //   name: 'User',
+  //   component: () => import('@/views/feedback'),
+  //   meta: { title: '大家谈', icon: 'forum' }
+  // },
+  // {
   //   path: '/boardcast',
   //   component: Layout,
   //   redirect: '/boardcast/telegram',
@@ -173,17 +179,17 @@ export const constantRouterMap = [
       // }
     ]
   },
-  // {
-  //   path: '/log',
-  //   component: Layout,
-  //   redirect: '/log/list',
-  //   name: 'Logs',
-  //   meta: { title: '日志', icon: 'nested' },
-  //   children: [{
-  //     path: 'list',
-  //     component: () => import('@/views/log/list')
-  //   }]
-  // },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/list',
+    name: 'Logs',
+    meta: { title: '日志', icon: 'log' },
+    children: [{
+      path: 'list',
+      component: () => import('@/views/log/list')
+    }]
+  },
   // {
   //   path: '/minetoken',
   //   component: Layout,
