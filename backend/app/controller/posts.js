@@ -91,6 +91,7 @@ class PostsController extends Controller {
       log.isHide = true;
     }
 
+    log.wallet = ctx.user.address;
     await this.service.logging.addLog('post', 1, log);
     ctx.body = {
       ...ctx.msg.success,
