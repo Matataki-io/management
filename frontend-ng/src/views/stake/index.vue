@@ -77,7 +77,7 @@ export default {
       return utils.formatUnits(this.balanceOfWallet, 4)
     },
     readableExpiryDate() {
-      const time = this.stakingExpiry.toLocaleString()
+      const time = this.stakingExpiry
       return moment(time).format('YYYY-MM-DD HH:mm:ss')
     }
   },
