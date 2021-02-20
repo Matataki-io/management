@@ -93,8 +93,8 @@ export default {
         // const token = `${data.token_type} ${data.access_token}`
         // console.info('login token', token)
       } catch (error) {
-        if (error.code === -32603) alert(`请把 MetaMask 的网络切换到 BSC 主网进行签名`)
-        else alert('发现问题：' + error.message)
+        alert('发现问题：' + error.message + ' 请打开 F12 - Console ，并向开发团队反馈问题')
+        alert('如 console 内无 `signature` 和 `message` 则证明你本地的 MetaMask 配置有问题，请打开抵押页面进行自检')
         console.error(error.name, error.message)
       } finally {
         this.loading = false
