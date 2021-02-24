@@ -4,7 +4,7 @@
     <p class="stat">
       版本号 <code>{{ version }}</code>
     </p>
-    <p><a href="https://github.com/Matataki-io/Matataki-FE/discussions/1018" target="_blank" style="color: #1377d0;"> 反馈给 Matataki 团队 </a></p>
+    <p><a href="https://github.com/Matataki-io/Matataki-FE/discussions/1018" rel="noreferrer noopener" target="_blank" style="color: #1377d0;"> 反馈给 Matataki 团队 </a></p>
     <!-- <div class="change-logs">
       <h1 class="title">更新日志</h1>
       <div v-for="changeLog in changeLogs" :key="changeLog.date" class="log">
