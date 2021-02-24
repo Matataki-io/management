@@ -67,7 +67,7 @@ module.exports = () => {
       db: 0,
     },
   };
-  config.matatakiServer = 'https://apitest.smartsignature.io';
+  config.matatakiServer = 'https://apitest.mttk.net';
   config.matatakiApiKey = 'matataki_management';
   config.ipfs_service = {
     site: 'http://47.52.2.146:5001',
