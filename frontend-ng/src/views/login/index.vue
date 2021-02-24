@@ -4,6 +4,7 @@
       <h3 class="title">Matataki 治理委员会</h3>
       <!-- 要修改注意事项？就在本目录的 notification.vue 里面 -->
       <notification />
+      <p><a href="https://github.com/Matataki-io/Matataki-FE/discussions/1018" rel="noreferrer noopener" target="_blank" style="color: #fff;text-decoration: underline;"> 反馈给 Matataki 团队 </a></p>
       <el-button v-if="shouldDisplayConnectBtn" type="primary" class="sign-in" @click.native.prevent="requestEtherumAccounts">Connect</el-button>
       <el-button v-else :loading="loading" type="primary" class="sign-in" @click.native.prevent="signToLogin">
         使用 MetaMask 一键登录
