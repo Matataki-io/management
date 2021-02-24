@@ -29,6 +29,7 @@
         </ul>
       </div>
       <div v-else class="not-staked">
+        <el-alert type="warning" title="请不要使用硬件钱包">收到用户反馈，部分硬件钱包（如 Trezor）因为存在以太坊协议兼容性问题，MetaMask 提示设备不兼容而导致无法正常登陆本系统，请使用软件创建的钱包抵押 META</el-alert>
         <p>你还没有抵押过 <a href="https://www.matataki.io/token/120" target="_blank">META</a>，👛 钱包里还有 {{ myMeta }} 个 <a href="https://www.matataki.io/token/120" target="_blank">META</a></p>
         <el-button v-if="!isApproved" @click="approveStake"> 授权扣除 <a href="https://www.matataki.io/token/120" target="_blank">META</a> </el-button>
         <el-button v-if="isApproved" @click="stake1Meta"> 抵押 1 <a href="https://www.matataki.io/token/120" target="_blank">META</a>（锁定30天）以获得登陆权限</el-button>
@@ -77,7 +78,7 @@ export default {
       return utils.formatUnits(this.balanceOfWallet, 4)
     },
     readableExpiryDate() {
-      const time = this.stakingExpiry.toLocaleString()
+      const time = this.stakingExpiry
       return moment(time).format('YYYY-MM-DD HH:mm:ss')
     }
   },

@@ -9,6 +9,7 @@
         <p>注意事项</p>
         <ul style="text-align: left;">
           <li>这是一个预览版，暂时仅限 META 代币持有者参与</li>
+          <li><b>收到用户反馈，部分硬件钱包无法正常登陆本系统，请使用软件创建的钱包抵押 META</b></li>
           <li>需要把 MetaMask 钱包切换到BSC网络</li>
           <li>需要你把 META 提现到 BSC 主网的私人钱包，并在下方参与 META 抵押锁仓30天，以获得30天的访问权限</li>
           <li>BSC 主网的META代币地址为： <b>0xacae234ea5fddd1657038b7aa6b597664056c954</b></li>
