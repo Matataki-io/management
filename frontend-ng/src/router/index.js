@@ -169,14 +169,14 @@ export const constantRouterMap = [
         name: 'PostList',
         component: () => import('@/views/post/list'),
         meta: { title: '文章管理', icon: 'nested' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'PostDetail',
+        hidden: true,
+        component: () => import('@/views/post/detail'),
+        meta: { title: '文章详情', icon: 'nested' }
       }
-      // {
-      //   path: 'detail/:id',
-      //   name: 'PostDetail',
-      //   hidden: true,
-      //   component: () => import('@/views/post/detail'),
-      //   meta: { title: '文章详情', icon: 'nested' }
-      // }
     ]
   },
   {
@@ -190,27 +190,27 @@ export const constantRouterMap = [
       component: () => import('@/views/log/list')
     }]
   },
-  // {
-  //   path: '/minetoken',
-  //   component: Layout,
-  //   redirect: '/minetoken/list',
-  //   name: 'Minetoken',
-  //   meta: { title: 'Fan票申请', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'list',
-  //       name: 'MinetokenList',
-  //       component: () => import('@/views/minetoken/list'),
-  //       meta: { title: '申请管理', icon: 'nested' }
-  //     },
-  //     {
-  //       path: 'survey',
-  //       name: 'MinetokenSurvey',
-  //       component: () => import('@/views/minetoken/survey'),
-  //       meta: { title: '调研提交', icon: 'user' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/minetoken',
+    component: Layout,
+    redirect: '/minetoken/list',
+    name: 'Minetoken',
+    meta: { title: 'Fan票申请', icon: 'user' },
+    children: [
+      {
+        path: 'list',
+        name: 'MinetokenList',
+        component: () => import('@/views/minetoken/list'),
+        meta: { title: '申请管理', icon: 'nested' }
+      },
+      {
+        path: 'survey',
+        name: 'MinetokenSurvey',
+        component: () => import('@/views/minetoken/survey'),
+        meta: { title: '调研提交', icon: 'user' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
