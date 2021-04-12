@@ -17,6 +17,7 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.1",
     "axios": "0.18.1",
+    "dayjs": "^1.10.4",
     "echarts": "^4.7.0",
     "element-ui": "2.13.0",
     "ethers": "^5.0.26",
