@@ -28,18 +28,28 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="Id" width="110" prop="id" align="center" fixed />
+      <el-table-column label="用户ID" width="110" prop="id" align="center" fixed>
+        <template slot-scope="scope">
+          <el-link :href="getMatatakiUserUrl(scope.row.id)" target="_blank" type="primary">{{ scope.row.id }}</el-link>
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="用户名" prop="username" align="center" fixed /> -->
       <!-- <el-table-column label="邮箱" prop="email" align="center" fixed /> -->
-      <el-table-column label="昵称" prop="nickname" align="center" />
       <el-table-column label="头像" width="110" align="center">
         <template slot-scope="scope">
           <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100px">
         </template>
       </el-table-column>
+      <el-table-column label="昵称" prop="nickname" align="center" />
       <el-table-column label="自我介绍" align="center" prop="introduction" />
       <!-- <el-table-column label="来源平台" width="110" align="center" prop="platform" /> -->
-      <el-table-column label="注册时间" align="center" prop="create_time" />
+      <el-table-column label="注册时间" align="center" prop="create_time">
+        <template slot-scope="scope">
+          <span :title="new Date(scope.row.create_time).toLocaleString()">
+            {{ formatToRelativeTime(scope.row.create_time) }}
+          </span>
+        </template>
+      </el-table-column>
       <!-- <el-table-column label="最后登录时间" width="110" align="center" prop="last_login_time" /> -->
       <!-- <el-table-column label="注册IP" width="110" align="center" prop="reg_ip" /> -->
       <!-- <el-table-column label="最后登录IP" width="110" align="center" prop="last_login_ip" /> -->
@@ -95,6 +105,10 @@
 <script>
 import { isNull } from '@/utils/validate'
 import { userStatus } from '@/utils/consts'
+import Dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+
 export default {
   filters: {
     statusFilter(status) {
@@ -123,6 +137,14 @@ export default {
       userStatus: userStatus
     }
   },
+  computed: {
+    getMatatakiHostByEnv() {
+      switch (process.env.NODE_ENV) {
+        case 'production': return 'https://www.matataki.io'
+        default: return 'https://test.matataki.io'
+      }
+    }
+  },
   created() {
     this.getList(1)
   },
@@ -142,6 +164,14 @@ export default {
           this.getList(this.pageIndex)
         }
       })
+    },
+    formatToRelativeTime(dates) {
+      Dayjs.extend(relativeTime)
+      return Dayjs().locale('zh-cn').to(Dayjs(dates))
+    },
+    getMatatakiUserUrl(id) {
+      const host = this.getMatatakiHostByEnv
+      return `${host}/user/${id}`
     },
     getImg(hash) {
       return `${this.apis.imgHost}${hash}`

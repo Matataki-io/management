@@ -25,9 +25,17 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="Id" prop="id" align="center" fixed />
-      <el-table-column label="文章hash" prop="hash" align="center" fixed />
+      <el-table-column label="文章ID" prop="id" align="center" fixed>
+        <template slot-scope="scope">
+          <el-link :href="getMatatakiArticleUrl(scope.row.id)" target="_blank" type="primary">{{ scope.row.id }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column label="文章标题" prop="title" align="center" fixed />
+      <el-table-column label="封面" align="center">
+        <template slot-scope="scope">
+          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
+        </template>
+      </el-table-column>
       <el-table-column label="作者" prop="author" align="center" />
       <el-table-column label="作者用户名" prop="username" align="center" />
       <el-table-column label="摘要" prop="short_content" align="center" width="300">
@@ -38,12 +46,9 @@
 
       <el-table-column label="发布时间" prop="create_time" width="105" align="center">
         <template slot-scope="scope">
-          {{ new Date(scope.row.create_time).toLocaleString() }}
-        </template>
-      </el-table-column>
-      <el-table-column label="封面" align="center">
-        <template slot-scope="scope">
-          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
+          <span :title="new Date(scope.row.create_time).toLocaleString()">
+            {{ formatToRelativeTime(scope.row.create_time) }}
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="是否原创" prop="is_original" align="center">
@@ -115,6 +120,10 @@
 
 <script>
 import { isNull } from '@/utils/validate'
+import Dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/zh-cn'
+
 export default {
   filters: {
     statusFilter(status) {
@@ -149,6 +158,14 @@ export default {
       }
     }
   },
+  computed: {
+    getMatatakiHostByEnv() {
+      switch (process.env.NODE_ENV) {
+        case 'production': return 'https://www.matataki.io'
+        default: return 'https://test.matataki.io'
+      }
+    }
+  },
   created() {
     this.getList(1)
   },
@@ -161,6 +178,14 @@ export default {
         `修改成功，${e ? '已被删除' : '已被释出'}`
       )
       if (result) this.list[index].status = Number(e)
+    },
+    getMatatakiArticleUrl(id) {
+      const host = this.getMatatakiHostByEnv
+      return `${host}/p/${id}`
+    },
+    formatToRelativeTime(dates) {
+      Dayjs.extend(relativeTime)
+      return Dayjs().locale('zh-cn').to(Dayjs(dates))
     },
     async handlePromoteChange(e, index) {
       const id = this.list[index].id
