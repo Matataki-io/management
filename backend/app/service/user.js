@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 'use strict';
 const Service = require('egg').Service;
-const consts = require('./consts');
+const { Op } = require('sequelize');
 
 class UserService extends Service {
   async list(offset, limit, searchParams = null) {
@@ -19,6 +19,11 @@ class UserService extends Service {
         order: [[ 'id', 'DESC' ]],
         offset,
         limit,
+        where: {
+          platform: {
+            [Op.ne]: 'cny',
+          },
+        },
       });
     } else {
       for (const propName in searchParams) {
@@ -33,6 +38,12 @@ class UserService extends Service {
           searchParams.status = this.app.Sequelize.where(this.app.Sequelize.literal('status & 2'), 2);
         }
       }
+
+      Object.assign(searchParams, {
+        platform: {
+          [Op.ne]: 'cny',
+        },
+      });
 
       result.count = await ctx.model.Users.count({ where: searchParams });
       result.rows = await ctx.model.Users.findAll({

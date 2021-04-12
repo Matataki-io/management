@@ -4,13 +4,22 @@
     <p class="stat">
       版本号 <code>{{ version }}</code>
     </p>
-    <p><a href="https://github.com/Matataki-io/Matataki-FE/discussions/1018" rel="noreferrer noopener" target="_blank" style="color: #1377d0;"> 反馈给 Matataki 团队 </a></p>
-    <!-- <div class="change-logs">
+    <p>
+      <a
+        href="https://github.com/Matataki-io/Matataki-FE/discussions/1018"
+        rel="noreferrer noopener"
+        target="_blank"
+        style="color: #1377d0"
+      >
+        反馈给 Matataki 团队
+      </a>
+    </p>
+    <div class="change-logs">
       <h1 class="title">更新日志</h1>
       <div v-for="changeLog in changeLogs" :key="changeLog.date" class="log">
         <code>{{ changeLog.date }}</code>： {{ changeLog.content }} - By {{ changeLog.author }}
       </div>
-    </div> -->
+    </div>
     <!-- <PanelGroup :d="panelData"/>
     <line-chart :chart-data="dayCertLit" title="每日认证数量"/>
     <line-chart :chart-data="dayRegisterList" title="每日注册数量"/>
@@ -37,11 +46,33 @@ export default {
   },
   data() {
     return {
-      userGetTokenGt1ListHeaders: [{ label: 'ONTID', prop: 'ONTID' }, { label: '日期', prop: 'Date' }, { label: '数量', prop: 'Count' }],
-      userGetAmountGt5000Headers: [{ label: 'ONTID', prop: 'ONTID' }, { label: '日期', prop: 'Date' }, { label: '数量', prop: 'Amount' }],
-      allSentTokenAmountListHeaders: [{ label: 'ProjectId', prop: 'ProjectId' }, { label: 'TokenName', prop: 'TokenName' }, { label: '数量', prop: 'TotalAmount' }],
-      daySentTokenAmountListHeaders: [{ label: 'ProjectId', prop: 'ProjectId' }, { label: 'TokenName', prop: 'TokenName' }, { label: '日期', prop: 'Date' }, { label: '数量', prop: 'Amount' }],
-      dayValidRpAmountListHeaders: [{ label: 'RedpacketId', prop: 'RedpacketId' }, { label: '红包名', prop: 'RedpacketName' }, { label: '日期', prop: 'Date' }, { label: '数量', prop: 'Count' }],
+      userGetTokenGt1ListHeaders: [
+        { label: 'ONTID', prop: 'ONTID' },
+        { label: '日期', prop: 'Date' },
+        { label: '数量', prop: 'Count' }
+      ],
+      userGetAmountGt5000Headers: [
+        { label: 'ONTID', prop: 'ONTID' },
+        { label: '日期', prop: 'Date' },
+        { label: '数量', prop: 'Amount' }
+      ],
+      allSentTokenAmountListHeaders: [
+        { label: 'ProjectId', prop: 'ProjectId' },
+        { label: 'TokenName', prop: 'TokenName' },
+        { label: '数量', prop: 'TotalAmount' }
+      ],
+      daySentTokenAmountListHeaders: [
+        { label: 'ProjectId', prop: 'ProjectId' },
+        { label: 'TokenName', prop: 'TokenName' },
+        { label: '日期', prop: 'Date' },
+        { label: '数量', prop: 'Amount' }
+      ],
+      dayValidRpAmountListHeaders: [
+        { label: 'RedpacketId', prop: 'RedpacketId' },
+        { label: '红包名', prop: 'RedpacketName' },
+        { label: '日期', prop: 'Date' },
+        { label: '数量', prop: 'Count' }
+      ],
       userGetTokenGt1List: [],
       userGetAmountGt5000List: [],
       daySentTokenAmountList: [],
@@ -62,7 +93,10 @@ export default {
       return 'v' + process.env.VUE_APP_VERSION
     },
     network() {
-      return process.env.VUE_APP_BASE_API === 'https://api.manage.testing.mttk.net/' ? '测试网' : '正式网'
+      return process.env.VUE_APP_BASE_API ===
+        'https://api.manage.testing.mttk.net/'
+        ? '测试网'
+        : '正式网'
     }
   },
   created() {
@@ -73,7 +107,7 @@ export default {
       this.request({
         url: this.apis.dashboard,
         method: 'get'
-      }).then(res => {
+      }).then((res) => {
         const data = res.data
         // 监控每天领取次数大于1次的用户
         this.userGetTokenGt1List = data.userGetTokenGt1List
@@ -86,15 +120,18 @@ export default {
         // 每日有效红包数量
         this.dayValidRpAmountList = data.dayValidRpAmountList
         // 总有效红包数量
-        this.panelData.allValidRpCount = data.allValidRpCount.length > 0 ? data.allValidRpCount[0].Count : 0
+        this.panelData.allValidRpCount =
+          data.allValidRpCount.length > 0 ? data.allValidRpCount[0].Count : 0
         // 每日注册量
         this.dayRegisterList = data.dayRegisterList
         // 总注册量
-        this.panelData.allRegisterCount = data.allRegisterCount.length > 0 ? data.allRegisterCount[0].Count : 0
+        this.panelData.allRegisterCount =
+          data.allRegisterCount.length > 0 ? data.allRegisterCount[0].Count : 0
         // 每日认证数量
         this.dayCertLit = data.dayCertLit
         // 总认证数量
-        this.panelData.allCertCount = data.allCertCount.length > 0 ? data.allCertCount[0].Count : 0
+        this.panelData.allCertCount =
+          data.allCertCount.length > 0 ? data.allCertCount[0].Count : 0
 
         console.log(res)
       })
@@ -114,10 +151,19 @@ export default {
   }
 }
 code {
-    background-color: #f9fafc;
-    padding: 0 4px;
-    border: 1px solid #eaeefb;
-    border-radius: 4px;
-    color: #F56C6C
+  background-color: #f9fafc;
+  padding: 0 4px;
+  border: 1px solid #eaeefb;
+  border-radius: 4px;
+  color: #f56c6c;
+}
+.change-logs {
+  h1 {
+
+  }
+  .log {
+    margin: 10px 0;
+    font-size: 16px;
+  }
 }
 </style>
