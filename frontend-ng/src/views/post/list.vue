@@ -36,8 +36,11 @@
           <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
         </template>
       </el-table-column>
-      <el-table-column label="作者" prop="author" align="center" />
-      <el-table-column label="作者用户名" prop="username" align="center" />
+      <el-table-column label="作者" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.author || scope.row.username }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="摘要" prop="short_content" align="center" width="300">
         <template slot-scope="scope">
           {{ scope.row.short_content.slice(0, 50) + '...' }}

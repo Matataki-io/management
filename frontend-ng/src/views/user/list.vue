@@ -35,9 +35,9 @@
       </el-table-column>
       <!-- <el-table-column label="用户名" prop="username" align="center" fixed /> -->
       <!-- <el-table-column label="邮箱" prop="email" align="center" fixed /> -->
-      <el-table-column label="头像" width="110" align="center">
+      <el-table-column label="头像" width="100" align="center">
         <template slot-scope="scope">
-          <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100px">
+          <img v-if="scope.row.avatar" :src="getImg(scope.row.avatar)" alt="头像" width="100%">
         </template>
       </el-table-column>
       <el-table-column label="昵称" prop="nickname" align="center" />
