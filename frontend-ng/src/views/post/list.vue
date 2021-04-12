@@ -86,7 +86,7 @@
             </el-badge>
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column label="隐藏文章" align="center" fixed="right">
         <template slot-scope="scope">
@@ -95,7 +95,7 @@
             @change="handleChange($event, scope.$index)"
           />
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column label="推荐" align="center" fixed="right">
         <template slot-scope="scope">
           <el-switch
