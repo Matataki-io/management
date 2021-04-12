@@ -59,7 +59,19 @@ class PostsService extends Service {
         limit,
       });
     } */
-    return result;
+
+    // process email, code from mtk be copy
+    const emailMask = this.ctx.helper.emailMask;
+    const list = result.rows.map(i => {
+      const author = emailMask(i.author);
+      const username = emailMask(i.username);
+      return { ...i, author, username };
+    });
+
+    return {
+      rows: list,
+      count: result.count,
+    };
   }
   async show(id) {
     const result = await this.list(0, 1, { id });
