@@ -53,7 +53,7 @@
       <!-- <el-table-column label="最后登录时间" width="110" align="center" prop="last_login_time" /> -->
       <!-- <el-table-column label="注册IP" width="110" align="center" prop="reg_ip" /> -->
       <!-- <el-table-column label="最后登录IP" width="110" align="center" prop="last_login_ip" /> -->
-      <el-table-column label="是否推荐" width="110" align="center" fixed="right">
+      <el-table-column label="是否推荐" width="100" align="center" fixed="right">
         <template slot-scope="scope">
           <el-switch
             :value="Boolean(scope.row.is_recommend)"

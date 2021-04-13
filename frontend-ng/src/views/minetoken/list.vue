@@ -14,28 +14,27 @@
             :key="item.value"
             :label="item.label"
             :value="item.value"
-          >
-          </el-option>
+          />
         </el-select>
       </div>
     </div>
     <el-table :data="list" border stripe class="table">
-      <el-table-column prop="uid" label="用户ID"> </el-table-column>
-      <el-table-column prop="email" label="邮箱"> </el-table-column>
-      <el-table-column prop="logo" label="Logo">
+      <el-table-column prop="uid" label="用户ID" width="100" />
+      <el-table-column prop="email" label="邮箱" />
+      <el-table-column prop="logo" label="Logo" width="80">
         <template slot-scope="scope">
           <img
             v-if="scope.row.logo"
             :src="getImg(scope.row.logo)"
             alt="Logo"
             width="30px"
-          />
+          >
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="名称"> </el-table-column>
-      <el-table-column prop="symbol" label="缩写"> </el-table-column>
-      <el-table-column prop="brief" label="简介"> </el-table-column>
-      <el-table-column prop="tag" label="标签"> </el-table-column>
+      <el-table-column prop="name" label="名称" />
+      <el-table-column prop="symbol" label="缩写" />
+      <el-table-column prop="brief" label="简介" />
+      <el-table-column prop="tag" label="标签" />
       <el-table-column prop="create_time" label="创建时间" width="160">
         <template slot-scope="scope">
           {{ time(scope.row.create_time) }}
@@ -46,20 +45,22 @@
           {{ time(scope.row.update_time) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="210">
+      <el-table-column label="操作" width="230">
         <template slot-scope="scope">
-          <span v-if="scope.row.status === 0">同意申请</span>
+          <span v-if="scope.row.queue === 1">已同意,等待系统处理</span>
+          <span v-else-if="scope.row.status === 0">同意申请</span>
           <span v-else-if="scope.row.status === 1">暂未提交</span>
           <span v-else-if="scope.row.status === 2">
             <el-button
               type="primary"
               size="small"
-              @click="modify(scope.row.uid, 'agree')"
-              >同意</el-button
-            >
-            <el-button type="primary" size="small" @click="reject(scope.row)"
-              >拒绝</el-button
-            >
+              @click="agree(scope.row.uid)"
+            >同意</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="reject(scope.row)"
+            >拒绝</el-button>
           </span>
           <span v-else-if="scope.row.status === 3">拒绝申请</span>
           <span v-else>其他</span>
@@ -74,7 +75,7 @@
                 icon="el-icon-search"
                 circle
                 @click="viewSurvey(scope.row.uid)"
-              ></el-button>
+              />
             </el-tooltip>
           </span>
         </template>
@@ -168,35 +169,32 @@
         </ol>
       </div>
       <el-input
+        v-model="reasonValue"
         type="textarea"
         :rows="6"
         placeholder="请输入内容"
-        v-model="reasonValue"
-      >
-      </el-input>
+      />
       <el-button
+        v-loading="dialogTableVisibleReason && dialogTableVisibleReasonLoading"
         type="primary"
         style="margin-top: 20px;"
         @click="rejectButton"
-        v-loading="dialogTableVisibleReason && dialogTableVisibleReasonLoading"
-        >确定</el-button
-      >
+      >确定</el-button>
     </el-dialog>
 
     <div class="pagination">
       <el-pagination
         background
         layout="prev, pager, next"
-        @current-change="handleCurrentChange"
         :total="count"
-      >
-      </el-pagination>
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment'
 
 export default {
   data() {
@@ -204,18 +202,18 @@ export default {
       dialogTableVisibleSurvey: false,
       dialogTableVisibleReason: false,
       dialogTableVisibleReasonLoading: false,
-      reasonValue: "",
+      reasonValue: '',
       reasonList: [
-        "不能包含主流币种名称",
-        "不能包含违法乱纪信息",
-        "不能包含敏感词汇",
-        "不能包含反动信息",
-        "不能包含黄赌毒信息",
-        "不能包含小广告信息",
-        "不能包含不健康的内容",
-        "不能使用特殊字符次",
-        "请完善信息",
-        "请认真填写内容"
+        '不能包含主流币种名称',
+        '不能包含违法乱纪信息',
+        '不能包含敏感词汇',
+        '不能包含反动信息',
+        '不能包含黄赌毒信息',
+        '不能包含小广告信息',
+        '不能包含不健康的内容',
+        '不能使用特殊字符次',
+        '请完善信息',
+        '请认真填写内容'
       ],
       currentUserInfo: null,
       surveyData: [],
@@ -227,36 +225,36 @@ export default {
       pageIndex: 1,
       options: [
         {
-          value: "update_time",
-          label: "更新时间"
+          value: 'update_time',
+          label: '更新时间'
         },
         {
-          value: "status",
-          label: "需要审核"
+          value: 'status',
+          label: '需要审核'
         }
       ],
-      sort: "status"
-    };
+      sort: 'status'
+    }
   },
   created() {
-    this.getList(1);
+    this.getList(1)
   },
   methods: {
     getImg(hash) {
-      return `${this.apis.imgHost}${hash}`;
+      return `${this.apis.imgHost}${hash}`
     },
     time(time) {
-      return moment(time).format("YYYY-MM-DD HH:mm:ss");
+      return moment(time).format('YYYY-MM-DD HH:mm:ss')
     },
     handleCurrentChange(v) {
-      this.currentPage = v;
-      this.getList(v);
+      this.currentPage = v
+      this.getList(v)
     },
     getList(pageIndex) {
-      this.listLoading = true;
+      this.listLoading = true
       this.request({
         url: this.apis.minetokenApplication,
-        method: "get",
+        method: 'get',
         noLoading: true,
         params: {
           pageSize: this.pageSize,
@@ -265,98 +263,121 @@ export default {
         }
       })
         .then(res => {
-          this.listLoading = false;
-          this.list = res.data.list;
-          this.count = res.data.count;
+          this.listLoading = false
+          this.list = res.data.list
+          this.count = res.data.count
           // console.log("res", res);
         })
         .catch(error => {
           if (error.response.status === 401) {
-            console.log("登录超时");
-            this.$store.dispatch("FedLogOut").then(() => {
-              location.reload(); // 为了重新实例化vue-router对象 避免bug
-            });
+            console.log('登录超时')
+            this.$store.dispatch('FedLogOut').then(() => {
+              location.reload() // 为了重新实例化vue-router对象 避免bug
+            })
           }
-        });
+        })
     },
     reject(data) {
-      this.currentUserInfo = data;
-      this.dialogTableVisibleReason = true;
+      this.currentUserInfo = data
+      this.dialogTableVisibleReason = true
     },
     rejectButton() {
       if (this.reasonValue.trim()) {
-        this.modify(this.currentUserInfo.uid, "reject");
+        this.modify(this.currentUserInfo.uid, 'reject')
       } else {
-        this.$message.error("请输入内容");
+        this.$message.error('请输入内容')
       }
     },
     modify(uid, type) {
-      let data = {
+      const data = {
         uid: uid,
         type: type
-      };
+      }
 
       // 拒绝理由
-      if (type === "reject") {
-        data.reason = this.reasonValue;
-        this.dialogTableVisibleReasonLoading = true;
+      if (type === 'reject') {
+        data.reason = this.reasonValue
+        this.dialogTableVisibleReasonLoading = true
       }
 
       this.request({
         url: this.apis.minetokenApplication,
-        method: "post",
+        method: 'post',
         data: data
       })
         .then(res => {
           // console.log("res", res);
           if (res.code === 0) {
-            this.$message.success("操作成功");
-            this.getList(this.currentPage);
+            this.$message.success('操作成功')
+            this.getList(this.currentPage)
           } else {
-            this.$message.error("操作失败");
+            this.$message.error('操作失败')
           }
         })
         .catch(error => {
-          console.log("error", error);
-          this.$message.error("操作错误");
+          console.log('error', error)
+          this.$message.error('操作错误')
         })
         .finally(() => {
           // 拒绝理由
-          if (type === "reject") {
-            this.dialogTableVisibleReasonLoading = false;
-            this.dialogTableVisibleReason = false;
+          if (type === 'reject') {
+            this.dialogTableVisibleReasonLoading = false
+            this.dialogTableVisibleReason = false
           }
-        });
+        })
+    },
+    // 同意申请
+    async agree(uid) {
+      try {
+        const data = {
+          uid: uid
+        }
+        const res = await this.request({
+          url: this.apis.minetokenApplicationAgree,
+          method: 'post',
+          data: data
+        })
+        console.log('res', res)
+        if (res.code === 0) {
+          this.$message.success('操作成功')
+          this.getList(this.currentPage)
+        } else {
+          throw new Error('操作失败')
+        }
+      } catch (e) {
+        console.log('error', e)
+        this.$message.error('操作错误')
+      }
     },
     changeSort(val) {
-      this.sort = val;
-      this.getList(this.currentPage);
+      this.sort = val
+      this.getList(this.currentPage)
     },
     viewSurvey(uid) {
-      if (!uid) return;
+      if (!uid) return
       this.request({
         url: this.apis.minetokenApplicationSurvey + `/${uid}`,
-        method: "get"
+        method: 'get'
       })
         .then(res => {
           if (res.code === 0 && res.data) {
-            this.surveyData = res.data;
-            this.dialogTableVisibleSurvey = true;
+            this.surveyData = res.data
+            this.dialogTableVisibleSurvey = true
           } else {
-            this.$message.info("暂无表单");
+            this.$message.info('暂无表单')
           }
         })
         .catch(error => {
-          console.log("error", error);
-          this.$message.info("发生错误");
-        });
+          console.log('error', error)
+          this.$message.info('发生错误')
+        })
     },
     setReason(item) {
-      let list = this.reasonValue.split("\n");
-      this.reasonValue += `${list.length}. ${item}\n`;
+      const list = this.reasonValue.split('\n')
+      this.reasonValue += `${list.length}. ${item}\n`
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
