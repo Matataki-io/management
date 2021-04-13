@@ -83,5 +83,10 @@ module.exports = () => {
     uri: 'https://cache.ayaka.moe/matatakitest',
     apiToken: 'DxD38Jr2OpNklYbMD3SI8mJ2vwZtBG1zqa41kDir',
   };
+
+  config.DingTalkRobot = {
+    url: 'https://oapi.dingtalk.com/robot/send',
+    managementPlatform: 'ab1b8276d818b765ac918b56ced665b1a9dfee8ff13545f9c4ec87caf5b0ed6c',
+  };
   return config;
 };
