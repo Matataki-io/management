@@ -25,20 +25,20 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="文章ID" prop="id" align="center" fixed>
+      <el-table-column label="文章ID" prop="id" align="center" fixed width="100">
         <template slot-scope="scope">
           <el-link :href="getMatatakiArticleUrl(scope.row.id)" target="_blank" type="primary">{{ scope.row.id }}</el-link>
         </template>
       </el-table-column>
       <el-table-column label="文章标题" prop="title" align="center" fixed />
-      <el-table-column label="封面" align="center">
+      <el-table-column label="封面" align="center" width="100">
         <template slot-scope="scope">
-          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100px">
+          <img v-if="scope.row.cover" :src="getImg(scope.row.cover)" alt="封面" width="100%">
         </template>
       </el-table-column>
       <el-table-column label="作者" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author || scope.row.username }}</span>
+          <span>{{ scope.row.nickname || scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="摘要" prop="short_content" align="center" width="300">
@@ -54,7 +54,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="是否原创" prop="is_original" align="center">
+      <el-table-column label="是否原创" prop="is_original" align="center" width="80">
         <template slot-scope="scope">
           {{ scope.row.is_original ? "是" : "否" }}
         </template>
@@ -88,7 +88,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column label="隐藏文章" align="center" fixed="right">
+      <el-table-column label="隐藏文章" align="center" fixed="right" width="80">
         <template slot-scope="scope">
           <el-switch
             :value="Boolean(scope.row.status)"
@@ -96,7 +96,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="推荐" align="center" fixed="right">
+      <el-table-column label="推荐" align="center" fixed="right" width="80">
         <template slot-scope="scope">
           <el-switch
             :value="Boolean(scope.row.is_recommend)"
