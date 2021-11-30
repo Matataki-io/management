@@ -144,10 +144,10 @@ $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 .login-container {
-  position: fixed;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   background-color: $bg;
+  padding: 200px 0 40px;
   .login-form {
     position: absolute;
     left: 0;
@@ -197,7 +197,7 @@ $light_gray:#eee;
 <style lang="scss" scoped>
 .login-content {
   max-width: 540px;
-  margin: 200px auto 0;
+  margin: 0 auto;
   text-align: center;
   .sign-in {
     margin: 20px;
