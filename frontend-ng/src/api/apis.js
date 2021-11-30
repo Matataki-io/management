@@ -7,7 +7,7 @@ export default {
   boardcast: `/api/boardcast`,
   admin: `/api/admin`,
   getAllTelegramBindedUser: `/api/getAllTelegramBindedUser`,
-  imgHost: `https://ssimg.frontenduse.top`,
+  imgHost: 'https://smartsignature-img.oss-cn-hongkong.aliyuncs.com',
   announcement: `/api/announcement`,
   minetokenApplication: `/api/minetoken_application`,
   minetokenApplicationAgree: '/api/minetoken_application_agree',
