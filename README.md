@@ -1,12 +1,8 @@
-## 部署文档
+## FE
 
-> 部署文档看语雀文档
+### Development
 
-## Development
-
-### 前端
-
-```shell
+```bash
 cd frontend-ng
 
 yarn
@@ -14,12 +10,31 @@ yarn
 yarn dev
 ```
 
-### 后端
+### Deploy
 
-```shell
+```bash
+cd frontend-ng
+
+yarn build:prod
+```
+
+
+## BE
+
+### Development
+
+```bash
 cd backend
 
 npm i
 
 npm run dev
+```
+
+```bash
+cd backend
+
+sudo npm i
+
+sudo npm run stop && sudo npm run start
 ```
