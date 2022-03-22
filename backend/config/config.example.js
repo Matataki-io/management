@@ -1,9 +1,5 @@
-/* eslint valid-jsdoc: "off" */
-
 'use strict';
 
-/** app info
- */
 module.exports = () => {
   const config = {};
   config.onerror = {
@@ -32,19 +28,19 @@ module.exports = () => {
 
   // 请修改jwt密钥和失效时间
   config.login = {
-    secretKey: '82a9f10c357f4c0f8f92e384192f9ba', // jwt密钥
+    secretKey: '', // jwt密钥
     expires: 60 * 60 * 24 * 7 * 4, // Session 为一个月的有效期
-    username: 'admin',
-    password: 'QWzAed1MpvQ78FSK',
+    username: '',
+    password: '',
   };
   config.sequelize = {
     dialect: 'mysql',
-    hostname: 'kyubeydb.mysql.database.azure.com', // 47.244.147.219
-    host: 'kyubeydb.mysql.database.azure.com',
+    hostname: '',
+    host: '',
     port: 3306,
-    database: 'ssp_test',
-    username: 'ssp_test@kyubeydb',
-    password: 'f0e8619dc0e4483da533472f32dadf55',
+    database: '',
+    username: '',
+    password: '',
     pool: {
       max: 3, // 连接池最大连接数量
       min: 1, // 连接池最小连接数量
@@ -61,32 +57,37 @@ module.exports = () => {
 
   config.redis = {
     client: {
-      port: 6379, // Redis port
-      host: '47.52.2.146', // 47.52.2.146
-      password: '9vIZfzIHJEID1dK2', // 9vIZfzIHJEID1dK2
-      db: 0,
+      port: 6379,
+      host: '',
+      password: '',
+      db: 1,
     },
   };
-  config.matatakiServer = 'https://apitest.mttk.net';
-  config.matatakiApiKey = 'matataki_management';
+  // Matataki Api Url
+  config.matatakiServer = '';
+  // Matataki Api Key
+  config.matatakiApiKey = '';
+  // IPFS Config
   config.ipfs_service = {
-    site: 'http://47.52.2.146:5001',
-    host: '47.52.2.146',
+    site: '',
+    host: '',
     port: 5001,
     protocol: 'http',
   };
+  // Telegram Config
   config.telegram = {
-    botToken: '827566328:AAH5lfENE5cOat9IJ9r4_MOi4dvDYJt-SRI',
+    botToken: '',
   };
   config.proxy = true;
+  // Cache Config
   config.cacheAPI = {
-    uri: 'https://cache.ayaka.moe/matatakitest',
-    apiToken: 'DxD38Jr2OpNklYbMD3SI8mJ2vwZtBG1zqa41kDir',
+    uri: '',
+    apiToken: '',
   };
-
+  // DingTalkRobot Config
   config.DingTalkRobot = {
-    url: 'https://oapi.dingtalk.com/robot/send',
-    managementPlatform: 'ab1b8276d818b765ac918b56ced665b1a9dfee8ff13545f9c4ec87caf5b0ed6c',
+    url: '',
+    managementPlatform: '',
   };
   return config;
 };
